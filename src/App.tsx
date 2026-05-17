@@ -181,12 +181,12 @@ const projects: Project[] = [
   },
   {
     id: "apice",
-    title: "Apice",
+    title: "Ápice",
     eyebrow: "Connecta",
-    subtitle: "Ferramenta web com base visual e recursos de exportação.",
+    subtitle: "Plataforma de estudos para o ENEM 100% movida por IA.",
     description:
-      "Projeto do ecossistema Connecta em React, com autenticação, recursos visuais interativos e exportação de conteúdo para fluxos reais de trabalho.",
-    role: "Desenvolvimento full stack, experiência de uso e integrações do app.",
+      "Projeto do ecossistema Connecta criado para apoiar a preparação para o ENEM com recursos inteligentes, geração de conteúdo e fluxos personalizados de estudo.",
+    role: "Desenvolvimento full stack, experiência de estudo, IA e integrações do app.",
     stack: ["React", "Vite", "tldraw", "jsPDF", "Netlify Identity"],
     metrics: ["Connecta", "Canvas", "Exportação"],
     images: apiceImages,
@@ -212,9 +212,9 @@ const projects: Project[] = [
     id: "musify",
     title: "Musify",
     eyebrow: "Open source",
-    subtitle: "Contribuições em um app Android amplamente usado.",
+    subtitle: "Streaming de música open source para Android.",
     description:
-      "Mais de 25 commits e 1500+ linhas em um projeto de música open-source, incluindo correções de playback, fila, offline, acessibilidade e localização pt-BR.",
+      "Mais de 25 commits e 1500+ linhas em um projeto de streaming de música open-source, incluindo correções de playback, fila, offline, acessibilidade e localização pt-BR.",
     role: "Correções reais em produto usado por outras pessoas, com PRs revisados e mergeados.",
     stack: ["Flutter", "Dart", "Android", "i18n", "Acessibilidade"],
     metrics: ["25+ commits", "1500+ linhas", "Projeto usado"],
@@ -290,32 +290,43 @@ function App() {
   useEffect(() => {
     let frame: number | null = null;
 
-    const updateSlides = () => {
+    const clamp = (value: number, min: number, max: number) =>
+      Math.min(Math.max(value, min), max);
+
+    const updateMotion = () => {
       frame = null;
       const viewportHeight = window.innerHeight || 1;
-      document.querySelectorAll<HTMLElement>(".motion-slide").forEach((slide) => {
-        const rect = slide.getBoundingClientRect();
-        const slideCenter = rect.top + rect.height / 2;
-        const viewportCenter = viewportHeight / 2;
-        const progress = (slideCenter - viewportCenter) / viewportHeight;
-        slide.style.setProperty("--scroll-progress", progress.toFixed(3));
+      const viewportCenter = viewportHeight / 2;
+
+      document.querySelectorAll<HTMLElement>(".motion-track").forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        const sectionCenter = rect.top + rect.height / 2;
+        const progress = clamp((viewportCenter - sectionCenter) / viewportHeight, -1.25, 1.25);
+        const distance = Math.abs(progress);
+        const presence = clamp(1 - distance / 1.08, 0, 1);
+
+        section.style.setProperty("--scroll-progress", progress.toFixed(3));
+        section.style.setProperty("--scroll-abs", distance.toFixed(3));
+        section.style.setProperty("--scroll-presence", presence.toFixed(3));
       });
     };
 
     const requestUpdate = () => {
       if (frame === null) {
-        frame = window.requestAnimationFrame(updateSlides);
+        frame = window.requestAnimationFrame(updateMotion);
       }
     };
 
-    updateSlides();
+    updateMotion();
     window.addEventListener("scroll", requestUpdate, { passive: true });
     window.addEventListener("resize", requestUpdate);
+    window.addEventListener("load", requestUpdate);
 
     return () => {
       if (frame !== null) window.cancelAnimationFrame(frame);
       window.removeEventListener("scroll", requestUpdate);
       window.removeEventListener("resize", requestUpdate);
+      window.removeEventListener("load", requestUpdate);
     };
   }, []);
 
@@ -478,7 +489,7 @@ function App() {
       <div className={`theme-wipe ${themePulse ? "is-active" : ""}`} />
 
       <main>
-        <section className="hero snap-section" id="inicio">
+        <section className="hero snap-section motion-track motion-hero" id="inicio">
           <div className="hero-grid">
             <div className="hero-copy">
               <span className="status-pill">
@@ -517,24 +528,6 @@ function App() {
                   Instagram
                 </a>
               </div>
-
-              <div className="hero-scope-card" aria-label="Resumo técnico">
-                <span className="scope-kicker">Na prática</span>
-                <div>
-                  <span>
-                    <Code2 size={17} />
-                    Interfaces React
-                  </span>
-                  <span>
-                    <ServerCog size={17} />
-                    APIs e Functions
-                  </span>
-                  <span>
-                    <Rocket size={17} />
-                    Deploy real
-                  </span>
-                </div>
-              </div>
             </div>
 
             <div className="hero-visual" aria-label="Foto de Elias">
@@ -550,7 +543,7 @@ function App() {
           </div>
         </section>
 
-        <section className="about-section snap-section" id="sobre">
+        <section className="about-section snap-section motion-track motion-about" id="sobre">
           <div className="section-heading">
             <span>Sobre</span>
             <h2>Simples no visual, direto no que importa.</h2>
@@ -599,16 +592,30 @@ function App() {
           </div>
         </section>
 
-        <section className="projects-intro snap-section" id="projetos">
-          <div>
+        <section className="projects-intro snap-section motion-track motion-intro" id="projetos">
+          <div className="projects-intro-copy">
             <span>Projetos</span>
             <h2>Trabalhos publicados, com contexto e link real.</h2>
           </div>
-          <p>
-            Clique na imagem de cada projeto para abrir a galeria. Os slides usam
-            scroll snap, slideshow e movimento leve para manter a página moderna sem virar
-            uma vitrine exagerada.
-          </p>
+          <div className="projects-intro-side">
+            <div className="hero-scope-card" aria-label="Resumo técnico">
+              <span className="scope-kicker">Na prática</span>
+              <div>
+                <span>
+                  <Code2 size={17} />
+                  Interfaces React
+                </span>
+                <span>
+                  <ServerCog size={17} />
+                  APIs e Functions
+                </span>
+                <span>
+                  <Rocket size={17} />
+                  Deploy real
+                </span>
+              </div>
+            </div>
+          </div>
         </section>
 
         <div className="projects-stack">
@@ -626,7 +633,7 @@ function App() {
           ))}
         </div>
 
-        <section className="more-banner snap-section">
+        <section className="more-banner snap-section motion-track motion-more">
           <div>
             <span>Em construção</span>
             <h2>Vem mais por aí.</h2>
@@ -641,7 +648,7 @@ function App() {
           </a>
         </section>
 
-        <section className="contact-section snap-section" id="contato">
+        <section className="contact-section snap-section motion-track motion-contact" id="contato">
           <div className="contact-copy">
             <span>Contato</span>
             <h2>Vamos conversar.</h2>
@@ -737,7 +744,7 @@ function ProjectSlide({
 
   return (
     <section
-      className={`project-slide motion-slide ${isReverse ? "is-reverse" : ""}`}
+      className={`project-slide motion-slide motion-track ${isReverse ? "is-reverse" : ""}`}
     >
       <div
         className="project-layout"
