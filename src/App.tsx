@@ -104,6 +104,24 @@ const merakiImages = [
   new URL("../Meraki/image copy 3.png", import.meta.url).href,
 ];
 
+const myComputerImages = [
+  new URL("../MyComputer/image.png", import.meta.url).href,
+  new URL("../MyComputer/image copy.png", import.meta.url).href,
+  new URL("../MyComputer/image copy 2.png", import.meta.url).href,
+  new URL("../MyComputer/image copy 3.png", import.meta.url).href,
+  new URL("../MyComputer/image copy 4.png", import.meta.url).href,
+  new URL("../MyComputer/image copy 5.png", import.meta.url).href,
+];
+
+const musifyDesktopImages = [
+  new URL("../MusifyDesktop/image.png", import.meta.url).href,
+  new URL("../MusifyDesktop/image copy.png", import.meta.url).href,
+  new URL("../MusifyDesktop/image copy 2.png", import.meta.url).href,
+  new URL("../MusifyDesktop/image copy 3.png", import.meta.url).href,
+  new URL("../MusifyDesktop/image copy 4.png", import.meta.url).href,
+  new URL("../MusifyDesktop/image copy 5.png", import.meta.url).href,
+];
+
 type Project = {
   id: string;
   title: string;
@@ -115,6 +133,7 @@ type Project = {
   metrics: string[];
   images: string[];
   live?: string;
+  liveLabel?: string;
   repo?: string;
   reverse?: boolean;
   openSource?: boolean;
@@ -206,6 +225,35 @@ const projects: Project[] = [
     images: merakiImages,
     live: "https://merakisarandi.netlify.app/",
     repo: "https://github.com/elias001011/meraki-landing",
+    reverse: true,
+  },
+  {
+    id: "my-computer",
+    title: "My Computer",
+    eyebrow: "Projeto solo",
+    subtitle: "Painel self-hosted para conversar com IA e usar tools locais.",
+    description:
+      "Aplicação local em Node.js com painel HTML/CSS/JS puro, chats com IA, memória persistente, anexos, múltiplos providers, tools de terminal com aprovação e runtime separado em ~/.my-computer.",
+    role: "Produto, arquitetura local-first, UI do painel, servidor Node/CLI, storage local e integração com providers e tools.",
+    stack: ["Node.js", "JavaScript", "HTML", "CSS", "CLI", "Ollama"],
+    metrics: ["Self-hosted", "Tools aprovadas", "Multi-provider"],
+    images: myComputerImages,
+    repo: "https://github.com/elias001011/my-computer",
+  },
+  {
+    id: "musify-desktop-port",
+    title: "Musify Desktop Port",
+    eyebrow: "Port desktop",
+    subtitle: "Port desktop não oficial do Musify para Windows e Linux.",
+    description:
+      "Downstream do gokadzev/Musify que mantém o app upstream o mais intacto possível e adiciona suporte desktop: targets Flutter para Windows/Linux, playback via media_kit, pacotes instaláveis e updater pelas releases deste repo.",
+    role: "Compatibilidade desktop, empacotamento Linux/Windows, workflows de release e guards para APIs Android-only.",
+    stack: ["Flutter", "Dart", "media_kit", "Windows", "Linux", "GitHub Actions"],
+    metrics: ["v10.0.8", "Windows/Linux", "Sync upstream"],
+    images: musifyDesktopImages,
+    live: "https://github.com/elias001011/Musify-Desktop-Port/releases",
+    liveLabel: "Downloads",
+    repo: "https://github.com/elias001011/Musify-Desktop-Port",
     reverse: true,
   },
   {
@@ -828,7 +876,7 @@ function ProjectSlide({
             {project.live && (
               <a className="primary-button small" href={project.live} target="_blank" rel="noreferrer">
                 <Globe2 size={17} />
-                Site ao vivo
+                {project.liveLabel ?? "Site ao vivo"}
               </a>
             )}
             {project.repo && (
