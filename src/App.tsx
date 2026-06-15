@@ -32,7 +32,7 @@ const profile = {
   instagram: "https://www.instagram.com/elias_jrnunes",
   linkedin:
     "https://www.linkedin.com/in/elias-nunes-b695ba406?utm_source=share_via&utm_content=profile&utm_medium=member_android",
-  connecta: "https://connectadigital.netlify.app/",
+  connecta: "https://connectabr.digital/",
   avatar: profileImage,
 };
 
@@ -44,7 +44,281 @@ const palettes = [
   { id: "meraki", label: "Meraki", hint: "Café", swatch: "#a9c98a" },
 ] as const;
 
+const languages = [
+  { id: "pt", label: "PT", name: "Português" },
+  { id: "en", label: "EN", name: "English" },
+  { id: "es", label: "ES", name: "Español" },
+] as const;
+
 type PaletteId = (typeof palettes)[number]["id"];
+type LanguageId = (typeof languages)[number]["id"];
+
+const siteCopy = {
+  pt: {
+    locale: "pt-BR",
+    brandRole: "Portfólio",
+    navLabel: "Navegação principal",
+    nav: [
+      { label: "Início", href: "#inicio" },
+      { label: "Projetos", href: "#projetos" },
+      { label: "Sobre", href: "#sobre" },
+      { label: "Contato", href: "#contato" },
+    ],
+    paletteAria: "Selecionar paleta de cores",
+    language: {
+      aria: "Selecionar idioma",
+      label: "Idioma",
+    },
+    contact: "Contato",
+    menu: {
+      open: "Abrir menu",
+      github: "GitHub",
+    },
+    hero: {
+      status: "Disponível para vagas",
+      lead: (age: number) =>
+        `Desenvolvedor full stack de ${age} anos, sócio da Connecta e focado em transformar ideias em produtos web completos, do front ao backend serverless.`,
+      primary: "Conhecer projetos",
+      secondary: "Falar comigo",
+      socialLabel: "Links sociais",
+      avatarLabel: "Foto de Elias",
+      avatarAlt: "Elias J. R. Nunes com seu gato",
+    },
+    about: {
+      eyebrow: "Sobre",
+      title: "Simples no visual, direto no que importa.",
+      cardTitle: "Quem eu sou",
+      text: "Eu construo interfaces, landings e produtos web com atenção à experiência, performance, backend serverless e deploy. Minha base passa por React, TypeScript, APIs, Netlify Functions e projetos reais publicados.",
+      bullets: [
+        "Aberto para oportunidades e projetos.",
+        "Projetos solo com app, landing, APIs, funções e deploy.",
+        "Contribuições open-source em app usado por outras pessoas.",
+      ],
+      connectaTitle: "Connecta",
+      connectaText:
+        "A Connecta é uma empresa digital brasileira com CNPJ, criada com foco em sites, sistemas e experiências digitais para negócios locais. Eu faço parte como sócio e desenvolvedor.",
+      connectaLink: "Visitar site da Connecta",
+    },
+    projectsIntro: {
+      eyebrow: "Projetos",
+      title: "Trabalhos publicados, com contexto e link real.",
+      scope: "Na prática",
+      skills: ["Interfaces React", "APIs e Functions", "Deploy real"],
+    },
+    more: {
+      eyebrow: "Em construção",
+      title: "Vem mais por aí.",
+      text: "Novos produtos, melhorias nos projetos atuais e mais contribuições open-source devem aparecer por aqui conforme forem ficando prontos.",
+      cta: "Acompanhar no GitHub",
+    },
+    contactSection: {
+      eyebrow: "Contato",
+      title: "Vamos conversar.",
+      text: "Para vagas, freelas, parceria pela Connecta ou feedback nos projetos, esses são os melhores caminhos.",
+    },
+    footer: {
+      rights: "Todos os direitos reservados.",
+      credit: "Desenvolvido por @elias_jrnunes",
+    },
+    projectCard: {
+      openGallery: "Abrir galeria do projeto",
+      screenshotAlt: "Screenshot do projeto",
+      galleryBadgeSingle: "Ver projeto",
+      slideshow: "Slideshow",
+      previousImage: "Imagem anterior",
+      nextImage: "Próxima imagem",
+      showImage: "Mostrar imagem",
+      live: "Site ao vivo",
+      repo: "Repositório",
+    },
+    gallery: {
+      modalLabel: "Galeria",
+      closeBackdrop: "Fechar galeria",
+      close: "Fechar",
+      previous: "Imagem anterior",
+      next: "Próxima imagem",
+      imageAlt: "imagem",
+      viewImage: "Ver imagem",
+    },
+  },
+  en: {
+    locale: "en",
+    brandRole: "Portfolio",
+    navLabel: "Main navigation",
+    nav: [
+      { label: "Home", href: "#inicio" },
+      { label: "Projects", href: "#projetos" },
+      { label: "About", href: "#sobre" },
+      { label: "Contact", href: "#contato" },
+    ],
+    paletteAria: "Select color palette",
+    language: {
+      aria: "Select language",
+      label: "Language",
+    },
+    contact: "Contact",
+    menu: {
+      open: "Open menu",
+      github: "GitHub",
+    },
+    hero: {
+      status: "Available for roles",
+      lead: (age: number) =>
+        `${age}-year-old full stack developer, Connecta partner, focused on turning ideas into complete web products from frontend to serverless backend.`,
+      primary: "Explore projects",
+      secondary: "Contact me",
+      socialLabel: "Social links",
+      avatarLabel: "Photo of Elias",
+      avatarAlt: "Elias J. R. Nunes with his cat",
+    },
+    about: {
+      eyebrow: "About",
+      title: "Clean visuals, focused on what matters.",
+      cardTitle: "Who I am",
+      text: "I build interfaces, landing pages and web products with care for experience, performance, serverless backend work and deployment. My foundation includes React, TypeScript, APIs, Netlify Functions and published real-world projects.",
+      bullets: [
+        "Open to roles and projects.",
+        "Solo projects with apps, landing pages, APIs, functions and deployment.",
+        "Open-source contributions to an app used by real people.",
+      ],
+      connectaTitle: "Connecta",
+      connectaText:
+        "Connecta is a registered Brazilian digital company focused on websites, systems and digital experiences for local businesses. I am a partner and developer there.",
+      connectaLink: "Visit Connecta website",
+    },
+    projectsIntro: {
+      eyebrow: "Projects",
+      title: "Published work, with context and real links.",
+      scope: "In practice",
+      skills: ["React interfaces", "APIs and Functions", "Real deployment"],
+    },
+    more: {
+      eyebrow: "In progress",
+      title: "More is on the way.",
+      text: "New products, improvements to current projects and more open-source contributions will appear here as they become ready.",
+      cta: "Follow on GitHub",
+    },
+    contactSection: {
+      eyebrow: "Contact",
+      title: "Let's talk.",
+      text: "For roles, freelance work, Connecta partnerships or feedback on the projects, these are the best ways to reach me.",
+    },
+    footer: {
+      rights: "All rights reserved.",
+      credit: "Developed by @elias_jrnunes",
+    },
+    projectCard: {
+      openGallery: "Open project gallery for",
+      screenshotAlt: "Screenshot of",
+      galleryBadgeSingle: "View project",
+      slideshow: "Slideshow",
+      previousImage: "Previous image",
+      nextImage: "Next image",
+      showImage: "Show image",
+      live: "Live site",
+      repo: "Repository",
+    },
+    gallery: {
+      modalLabel: "Gallery",
+      closeBackdrop: "Close gallery",
+      close: "Close",
+      previous: "Previous image",
+      next: "Next image",
+      imageAlt: "image",
+      viewImage: "View image",
+    },
+  },
+  es: {
+    locale: "es",
+    brandRole: "Portafolio",
+    navLabel: "Navegación principal",
+    nav: [
+      { label: "Inicio", href: "#inicio" },
+      { label: "Proyectos", href: "#projetos" },
+      { label: "Sobre mí", href: "#sobre" },
+      { label: "Contacto", href: "#contato" },
+    ],
+    paletteAria: "Seleccionar paleta de colores",
+    language: {
+      aria: "Seleccionar idioma",
+      label: "Idioma",
+    },
+    contact: "Contacto",
+    menu: {
+      open: "Abrir menú",
+      github: "GitHub",
+    },
+    hero: {
+      status: "Disponible para oportunidades",
+      lead: (age: number) =>
+        `Desarrollador full stack de ${age} años, socio de Connecta y enfocado en transformar ideas en productos web completos, del frontend al backend serverless.`,
+      primary: "Ver proyectos",
+      secondary: "Contactarme",
+      socialLabel: "Enlaces sociales",
+      avatarLabel: "Foto de Elias",
+      avatarAlt: "Elias J. R. Nunes con su gato",
+    },
+    about: {
+      eyebrow: "Sobre mí",
+      title: "Visual simple, foco en lo importante.",
+      cardTitle: "Quién soy",
+      text: "Construyo interfaces, landing pages y productos web cuidando experiencia, rendimiento, backend serverless y despliegue. Mi base incluye React, TypeScript, APIs, Netlify Functions y proyectos reales publicados.",
+      bullets: [
+        "Abierto a oportunidades y proyectos.",
+        "Proyectos propios con app, landing, APIs, funciones y deploy.",
+        "Contribuciones open-source en una app usada por otras personas.",
+      ],
+      connectaTitle: "Connecta",
+      connectaText:
+        "Connecta es una empresa digital brasileña registrada, enfocada en sitios, sistemas y experiencias digitales para negocios locales. Participo como socio y desarrollador.",
+      connectaLink: "Visitar el sitio de Connecta",
+    },
+    projectsIntro: {
+      eyebrow: "Proyectos",
+      title: "Trabajos publicados, con contexto y enlaces reales.",
+      scope: "En la práctica",
+      skills: ["Interfaces React", "APIs y Functions", "Deploy real"],
+    },
+    more: {
+      eyebrow: "En desarrollo",
+      title: "Hay más en camino.",
+      text: "Nuevos productos, mejoras en los proyectos actuales y más contribuciones open-source aparecerán aquí cuando estén listos.",
+      cta: "Seguir en GitHub",
+    },
+    contactSection: {
+      eyebrow: "Contacto",
+      title: "Hablemos.",
+      text: "Para oportunidades, freelas, alianzas por Connecta o feedback sobre los proyectos, estos son los mejores canales.",
+    },
+    footer: {
+      rights: "Todos los derechos reservados.",
+      credit: "Desarrollado por @elias_jrnunes",
+    },
+    projectCard: {
+      openGallery: "Abrir galería del proyecto",
+      screenshotAlt: "Captura del proyecto",
+      galleryBadgeSingle: "Ver proyecto",
+      slideshow: "Presentación",
+      previousImage: "Imagen anterior",
+      nextImage: "Siguiente imagen",
+      showImage: "Mostrar imagen",
+      live: "Sitio activo",
+      repo: "Repositorio",
+    },
+    gallery: {
+      modalLabel: "Galería",
+      closeBackdrop: "Cerrar galería",
+      close: "Cerrar",
+      previous: "Imagen anterior",
+      next: "Siguiente imagen",
+      imageAlt: "imagen",
+      viewImage: "Ver imagen",
+    },
+  },
+};
+
+type ProjectCardCopy = (typeof siteCopy)["pt"]["projectCard"];
+type GalleryCopy = (typeof siteCopy)["pt"]["gallery"];
 
 const meteorImages = [
   new URL("../Meteor/image.png", import.meta.url).href,
@@ -67,12 +341,6 @@ const meteorLandingImages = [
   new URL("../Meteor-landing/image copy 5.png", import.meta.url).href,
   new URL("../Meteor-landing/image copy 6.png", import.meta.url).href,
   new URL("../Meteor-landing/image copy 7.png", import.meta.url).href,
-];
-
-const sonarImages = [
-  new URL("../Sonar/image.png", import.meta.url).href,
-  new URL("../Sonar/image copy.png", import.meta.url).href,
-  new URL("../Sonar/image copy 2.png", import.meta.url).href,
 ];
 
 const climovaImages = [
@@ -104,6 +372,14 @@ const merakiImages = [
   new URL("../Meraki/image copy 3.png", import.meta.url).href,
 ];
 
+const lyceumImages = [
+  new URL("../Lyceum/image.png", import.meta.url).href,
+  new URL("../Lyceum/image copy.png", import.meta.url).href,
+  new URL("../Lyceum/image copy 2.png", import.meta.url).href,
+  new URL("../Lyceum/image copy 3.png", import.meta.url).href,
+  new URL("../Lyceum/image copy 4.png", import.meta.url).href,
+];
+
 const myComputerImages = [
   new URL("../MyComputer/image.png", import.meta.url).href,
   new URL("../MyComputer/image copy.png", import.meta.url).href,
@@ -113,17 +389,20 @@ const myComputerImages = [
   new URL("../MyComputer/image copy 5.png", import.meta.url).href,
 ];
 
-const musifyDesktopImages = [
-  new URL("../MusifyDesktop/image.png", import.meta.url).href,
-  new URL("../MusifyDesktop/image copy.png", import.meta.url).href,
-  new URL("../MusifyDesktop/image copy 2.png", import.meta.url).href,
-  new URL("../MusifyDesktop/image copy 3.png", import.meta.url).href,
-  new URL("../MusifyDesktop/image copy 4.png", import.meta.url).href,
-  new URL("../MusifyDesktop/image copy 5.png", import.meta.url).href,
-];
+const projectOrder = [
+  "meraki",
+  "lyceum",
+  "apice",
+  "meteor-landing",
+  "meteor",
+  "my-computer",
+  "climova",
+] as const;
+
+type ProjectId = (typeof projectOrder)[number];
 
 type Project = {
-  id: string;
+  id: ProjectId;
   title: string;
   eyebrow: string;
   subtitle: string;
@@ -133,160 +412,282 @@ type Project = {
   metrics: string[];
   images: string[];
   live?: string;
-  liveLabel?: string;
   repo?: string;
   reverse?: boolean;
-  openSource?: boolean;
 };
 
-const projects: Project[] = [
+type ProjectText = Omit<Project, "id" | "images" | "live" | "repo" | "reverse">;
+
+const projectAssets: Record<
+  ProjectId,
   {
-    id: "meteor",
-    title: "Meteor",
-    eyebrow: "Projeto solo",
-    subtitle: "Inteligência climática com IA generativa.",
-    description:
-      "PWA de clima em tempo real com assistente contextual, alertas, dados de múltiplas fontes e BFF em Netlify Functions para proteger chaves de API.",
-    role: "Produto, interface, arquitetura full stack e integrações serverless.",
-    stack: ["React", "TypeScript", "Vite", "Tailwind", "Gemini", "Netlify"],
-    metrics: ["PWA", "IA contextual", "BFF seguro"],
-    images: meteorImages,
-    live: "https://meteor-ai.netlify.app",
-    repo: "https://github.com/elias001011/Meteor",
+    images: string[];
+    live?: string;
+    repo?: string;
+    reverse?: boolean;
+  }
+> = {
+  meraki: {
+    images: merakiImages,
+    live: "https://merakisarandi.netlify.app/",
+    repo: "https://github.com/elias001011/meraki-landing",
   },
-  {
-    id: "meteor-landing",
-    title: "Meteor Landing Page",
-    eyebrow: "Projeto solo",
-    subtitle: "Apresentação oficial do ecossistema Meteor.",
-    description:
-      "Landing page com narrativa em slides, scroll pinning, galerias e contexto sobre alertas climáticos no Rio Grande do Sul.",
-    role: "Design visual, copy, animações de scroll e implementação completa.",
-    stack: ["React", "TypeScript", "GSAP", "Framer Motion", "Lucide"],
-    metrics: ["8 slides", "ScrollTrigger", "Responsivo"],
+  lyceum: {
+    images: lyceumImages,
+    live: "https://aristoteles-especializacao.netlify.app",
+    repo: "https://github.com/elias001011/curso-landingpage",
+    reverse: true,
+  },
+  apice: {
+    images: apiceImages,
+    live: "https://apice-ai.netlify.app",
+    repo: "https://github.com/elias001011/Apice",
+  },
+  "meteor-landing": {
     images: meteorLandingImages,
     live: "https://sobre-meteor-ai.netlify.app",
     repo: "https://github.com/elias001011/Meteor-LandingPage",
     reverse: true,
   },
-  {
-    id: "sonar",
-    title: "SonarCloud",
-    eyebrow: "Projeto solo",
-    subtitle: "Player minimalista de paisagens sonoras.",
-    description:
-      "Aplicação para relaxar, focar ou dormir com sons ambientes, timer com fade out, temas visuais e integração com SoundCloud.",
-    role: "Interface, experiência de áudio, temas e fluxo principal do player.",
-    stack: ["React", "TypeScript", "Vite", "Tailwind", "SoundCloud API"],
-    metrics: ["Timer", "Temas", "Player fixo"],
-    images: sonarImages,
-    live: "https://sonar-cloud.netlify.app",
-    repo: "https://github.com/elias001011/SonarCloud",
+  meteor: {
+    images: meteorImages,
+    live: "https://meteor-ai.netlify.app",
+    repo: "https://github.com/elias001011/Meteor",
   },
-  {
-    id: "climova",
-    title: "Climova",
-    eyebrow: "Projeto solo",
-    subtitle: "Clima simples, visual moderno e mini IA.",
-    description:
-      "Um dos primeiros projetos: dashboard de previsão do tempo com glassmorphism, recomendações automáticas e funções serverless para APIs externas.",
-    role: "Primeira base sólida em interface, API de clima e deploy serverless.",
-    stack: ["HTML", "CSS", "JavaScript", "Netlify Functions", "OpenWeather"],
-    metrics: ["5 dias", "Mini IA", "Unsplash"],
+  "my-computer": {
+    images: myComputerImages,
+    repo: "https://github.com/elias001011/my-computer",
+    reverse: true,
+  },
+  climova: {
     images: climovaImages,
     live: "https://climova.netlify.app",
     repo: "https://github.com/elias001011/Climova",
-    reverse: true,
   },
-  {
-    id: "apice",
-    title: "Ápice",
-    eyebrow: "Connecta",
-    subtitle: "Plataforma de estudos para o ENEM 100% movida por IA.",
-    description:
-      "Projeto do ecossistema Connecta criado para apoiar a preparação para o ENEM com recursos inteligentes, geração de conteúdo e fluxos personalizados de estudo.",
-    role: "Desenvolvimento full stack, experiência de estudo, IA e integrações do app.",
-    stack: ["React", "Vite", "tldraw", "jsPDF", "Netlify Identity"],
-    metrics: ["Connecta", "Canvas", "Exportação"],
-    images: apiceImages,
-    live: "https://apice-ai.netlify.app",
-    repo: "https://github.com/elias001011/Apice",
+};
+
+const projectContent: Record<LanguageId, Record<ProjectId, ProjectText>> = {
+  pt: {
+    meraki: {
+      title: "Meraki",
+      eyebrow: "Connecta",
+      subtitle: "Landing page para cafeteria local.",
+      description:
+        "Site feito inteiramente por mim para uma cafeteria de Sarandi, com galeria, SEO básico, newsletter, Google Analytics e uma experiência visual acolhedora.",
+      role: "Design, desenvolvimento, SEO inicial e publicação dentro da Connecta.",
+      stack: ["React", "SEO", "Analytics", "Newsletter", "Netlify"],
+      metrics: ["Landing", "SEO básico", "Analytics"],
+    },
+    lyceum: {
+      title: "Lyceum",
+      eyebrow: "Connecta",
+      subtitle: "Landing page para especialização em filosofia clássica.",
+      description:
+        "Página comercial para o curso Aristóteles/Lyceum, com narrativa premium, seções de currículo, benefícios, FAQ e galeria visual para apresentar a formação com clareza.",
+      role: "Interface, copy, responsividade, galeria e publicação do projeto pela Connecta.",
+      stack: ["React", "Vite", "Landing Page", "Responsive UI", "Netlify"],
+      metrics: ["Aristóteles", "Galeria", "Turma 2026"],
+    },
+    apice: {
+      title: "Ápice",
+      eyebrow: "Connecta",
+      subtitle: "Plataforma de estudos para o ENEM 100% movida por IA.",
+      description:
+        "Projeto do ecossistema Connecta criado para apoiar a preparação para o ENEM com recursos inteligentes, geração de conteúdo e fluxos personalizados de estudo.",
+      role: "Desenvolvimento full stack, experiência de estudo, IA e integrações do app.",
+      stack: ["React", "Vite", "tldraw", "jsPDF", "Netlify Identity"],
+      metrics: ["Connecta", "Canvas", "Exportação"],
+    },
+    "meteor-landing": {
+      title: "Meteor Landing Page",
+      eyebrow: "Projeto solo",
+      subtitle: "Apresentação oficial do ecossistema Meteor.",
+      description:
+        "Landing page com narrativa em slides, scroll pinning, galerias e contexto sobre alertas climáticos no Rio Grande do Sul.",
+      role: "Design visual, copy, animações de scroll e implementação completa.",
+      stack: ["React", "TypeScript", "GSAP", "Framer Motion", "Lucide"],
+      metrics: ["8 slides", "ScrollTrigger", "Responsivo"],
+    },
+    meteor: {
+      title: "Meteor",
+      eyebrow: "Projeto solo",
+      subtitle: "Inteligência climática com IA generativa.",
+      description:
+        "PWA de clima em tempo real com assistente contextual, alertas, dados de múltiplas fontes e BFF em Netlify Functions para proteger chaves de API.",
+      role: "Produto, interface, arquitetura full stack e integrações serverless.",
+      stack: ["React", "TypeScript", "Vite", "Tailwind", "Gemini", "Netlify"],
+      metrics: ["PWA", "IA contextual", "BFF seguro"],
+    },
+    "my-computer": {
+      title: "My Computer",
+      eyebrow: "Projeto solo",
+      subtitle: "Painel self-hosted para conversar com IA e usar tools locais.",
+      description:
+        "Aplicação local em Node.js com painel HTML/CSS/JS puro, chats com IA, memória persistente, anexos, múltiplos providers, tools de terminal com aprovação e runtime separado em ~/.my-computer.",
+      role: "Produto, arquitetura local-first, UI do painel, servidor Node/CLI, storage local e integração com providers e tools.",
+      stack: ["Node.js", "JavaScript", "HTML", "CSS", "CLI", "Ollama"],
+      metrics: ["Self-hosted", "Tools aprovadas", "Multi-provider"],
+    },
+    climova: {
+      title: "Climova",
+      eyebrow: "Projeto experimental",
+      subtitle: "Clima simples, visual moderno e mini IA.",
+      description:
+        "Primeiro projeto experimental usado como marco de comparação: dashboard de previsão do tempo com glassmorphism, recomendações automáticas e funções serverless para APIs externas.",
+      role: "Primeira base sólida em interface, API de clima e deploy serverless.",
+      stack: ["HTML", "CSS", "JavaScript", "Netlify Functions", "OpenWeather"],
+      metrics: ["Primeiro experimento", "Mini IA", "Unsplash"],
+    },
   },
-  {
-    id: "meraki",
-    title: "Meraki",
-    eyebrow: "Connecta",
-    subtitle: "Landing page para cafeteria local.",
-    description:
-      "Site feito inteiramente por mim para uma cafeteria de Sarandi, com galeria, SEO básico, newsletter, Google Analytics e uma experiência visual acolhedora.",
-    role: "Design, desenvolvimento, SEO inicial e publicação dentro da Connecta.",
-    stack: ["React", "SEO", "Analytics", "Newsletter", "Netlify"],
-    metrics: ["Cafeteria", "SEO básico", "Analytics"],
-    images: merakiImages,
-    live: "https://merakisarandi.netlify.app/",
-    repo: "https://github.com/elias001011/meraki-landing",
-    reverse: true,
+  en: {
+    meraki: {
+      title: "Meraki",
+      eyebrow: "Connecta",
+      subtitle: "Landing page for a local coffee shop.",
+      description:
+        "A website I built end to end for a coffee shop in Sarandi, with a gallery, basic SEO, newsletter, Google Analytics and a warm visual experience.",
+      role: "Design, development, initial SEO and publication through Connecta.",
+      stack: ["React", "SEO", "Analytics", "Newsletter", "Netlify"],
+      metrics: ["Landing", "Basic SEO", "Analytics"],
+    },
+    lyceum: {
+      title: "Lyceum",
+      eyebrow: "Connecta",
+      subtitle: "Landing page for a classical philosophy specialization.",
+      description:
+        "Commercial page for the Aristóteles/Lyceum course, with a premium narrative, curriculum sections, benefits, FAQ and a visual gallery that presents the program clearly.",
+      role: "Interface, copy, responsive layout, gallery and project publication through Connecta.",
+      stack: ["React", "Vite", "Landing Page", "Responsive UI", "Netlify"],
+      metrics: ["Aristóteles", "Gallery", "2026 cohort"],
+    },
+    apice: {
+      title: "Ápice",
+      eyebrow: "Connecta",
+      subtitle: "AI-powered study platform for Brazil's ENEM exam.",
+      description:
+        "A Connecta ecosystem project created to support ENEM preparation with intelligent resources, content generation and personalized study flows.",
+      role: "Full stack development, study experience, AI features and app integrations.",
+      stack: ["React", "Vite", "tldraw", "jsPDF", "Netlify Identity"],
+      metrics: ["Connecta", "Canvas", "Export"],
+    },
+    "meteor-landing": {
+      title: "Meteor Landing Page",
+      eyebrow: "Solo project",
+      subtitle: "Official presentation for the Meteor ecosystem.",
+      description:
+        "Landing page with slide-based storytelling, scroll pinning, galleries and context around climate alerts in Rio Grande do Sul.",
+      role: "Visual design, copy, scroll animations and full implementation.",
+      stack: ["React", "TypeScript", "GSAP", "Framer Motion", "Lucide"],
+      metrics: ["8 slides", "ScrollTrigger", "Responsive"],
+    },
+    meteor: {
+      title: "Meteor",
+      eyebrow: "Solo project",
+      subtitle: "Climate intelligence with generative AI.",
+      description:
+        "Real-time weather PWA with a contextual assistant, alerts, data from multiple sources and a Netlify Functions BFF to protect API keys.",
+      role: "Product, interface, full stack architecture and serverless integrations.",
+      stack: ["React", "TypeScript", "Vite", "Tailwind", "Gemini", "Netlify"],
+      metrics: ["PWA", "Contextual AI", "Secure BFF"],
+    },
+    "my-computer": {
+      title: "My Computer",
+      eyebrow: "Solo project",
+      subtitle: "Self-hosted panel for AI chats and local tools.",
+      description:
+        "Local Node.js app with a plain HTML/CSS/JS dashboard, AI chats, persistent memory, attachments, multiple providers, approval-based terminal tools and a separate runtime in ~/.my-computer.",
+      role: "Product, local-first architecture, dashboard UI, Node/CLI server, local storage and provider/tool integrations.",
+      stack: ["Node.js", "JavaScript", "HTML", "CSS", "CLI", "Ollama"],
+      metrics: ["Self-hosted", "Approved tools", "Multi-provider"],
+    },
+    climova: {
+      title: "Climova",
+      eyebrow: "Experimental project",
+      subtitle: "Simple weather, modern visuals and a mini AI layer.",
+      description:
+        "First experimental project kept as a comparison point: a weather forecast dashboard with glassmorphism, automatic recommendations and serverless functions for external APIs.",
+      role: "First solid base in interface work, weather APIs and serverless deployment.",
+      stack: ["HTML", "CSS", "JavaScript", "Netlify Functions", "OpenWeather"],
+      metrics: ["First experiment", "Mini AI", "Unsplash"],
+    },
   },
-  {
-    id: "my-computer",
-    title: "My Computer",
-    eyebrow: "Projeto solo",
-    subtitle: "Painel self-hosted para conversar com IA e usar tools locais.",
-    description:
-      "Aplicação local em Node.js com painel HTML/CSS/JS puro, chats com IA, memória persistente, anexos, múltiplos providers, tools de terminal com aprovação e runtime separado em ~/.my-computer.",
-    role: "Produto, arquitetura local-first, UI do painel, servidor Node/CLI, storage local e integração com providers e tools.",
-    stack: ["Node.js", "JavaScript", "HTML", "CSS", "CLI", "Ollama"],
-    metrics: ["Self-hosted", "Tools aprovadas", "Multi-provider"],
-    images: myComputerImages,
-    repo: "https://github.com/elias001011/my-computer",
+  es: {
+    meraki: {
+      title: "Meraki",
+      eyebrow: "Connecta",
+      subtitle: "Landing page para una cafetería local.",
+      description:
+        "Sitio hecho de punta a punta para una cafetería de Sarandi, con galería, SEO básico, newsletter, Google Analytics y una experiencia visual acogedora.",
+      role: "Diseño, desarrollo, SEO inicial y publicación dentro de Connecta.",
+      stack: ["React", "SEO", "Analytics", "Newsletter", "Netlify"],
+      metrics: ["Landing", "SEO básico", "Analytics"],
+    },
+    lyceum: {
+      title: "Lyceum",
+      eyebrow: "Connecta",
+      subtitle: "Landing page para especialización en filosofía clásica.",
+      description:
+        "Página comercial para el curso Aristóteles/Lyceum, con narrativa premium, secciones de currículo, beneficios, FAQ y una galería visual para presentar la formación con claridad.",
+      role: "Interfaz, copy, responsividad, galería y publicación del proyecto por Connecta.",
+      stack: ["React", "Vite", "Landing Page", "Responsive UI", "Netlify"],
+      metrics: ["Aristóteles", "Galería", "Grupo 2026"],
+    },
+    apice: {
+      title: "Ápice",
+      eyebrow: "Connecta",
+      subtitle: "Plataforma de estudios para ENEM impulsada por IA.",
+      description:
+        "Proyecto del ecosistema Connecta creado para apoyar la preparación para ENEM con recursos inteligentes, generación de contenido y flujos personalizados de estudio.",
+      role: "Desarrollo full stack, experiencia de estudio, IA e integraciones de la app.",
+      stack: ["React", "Vite", "tldraw", "jsPDF", "Netlify Identity"],
+      metrics: ["Connecta", "Canvas", "Exportación"],
+    },
+    "meteor-landing": {
+      title: "Meteor Landing Page",
+      eyebrow: "Proyecto propio",
+      subtitle: "Presentación oficial del ecosistema Meteor.",
+      description:
+        "Landing page con narrativa en slides, scroll pinning, galerías y contexto sobre alertas climáticas en Rio Grande do Sul.",
+      role: "Diseño visual, copy, animaciones de scroll e implementación completa.",
+      stack: ["React", "TypeScript", "GSAP", "Framer Motion", "Lucide"],
+      metrics: ["8 slides", "ScrollTrigger", "Responsivo"],
+    },
+    meteor: {
+      title: "Meteor",
+      eyebrow: "Proyecto propio",
+      subtitle: "Inteligencia climática con IA generativa.",
+      description:
+        "PWA de clima en tiempo real con asistente contextual, alertas, datos de múltiples fuentes y BFF en Netlify Functions para proteger claves de API.",
+      role: "Producto, interfaz, arquitectura full stack e integraciones serverless.",
+      stack: ["React", "TypeScript", "Vite", "Tailwind", "Gemini", "Netlify"],
+      metrics: ["PWA", "IA contextual", "BFF seguro"],
+    },
+    "my-computer": {
+      title: "My Computer",
+      eyebrow: "Proyecto propio",
+      subtitle: "Panel self-hosted para conversar con IA y usar herramientas locales.",
+      description:
+        "Aplicación local en Node.js con panel HTML/CSS/JS puro, chats con IA, memoria persistente, anexos, múltiples providers, herramientas de terminal con aprobación y runtime separado en ~/.my-computer.",
+      role: "Producto, arquitectura local-first, UI del panel, servidor Node/CLI, storage local e integración con providers y herramientas.",
+      stack: ["Node.js", "JavaScript", "HTML", "CSS", "CLI", "Ollama"],
+      metrics: ["Self-hosted", "Herramientas aprobadas", "Multi-provider"],
+    },
+    climova: {
+      title: "Climova",
+      eyebrow: "Proyecto experimental",
+      subtitle: "Clima simple, visual moderno y mini IA.",
+      description:
+        "Primer proyecto experimental usado como punto de comparación: dashboard de previsión del tiempo con glassmorphism, recomendaciones automáticas y funciones serverless para APIs externas.",
+      role: "Primera base sólida en interfaz, API de clima y deploy serverless.",
+      stack: ["HTML", "CSS", "JavaScript", "Netlify Functions", "OpenWeather"],
+      metrics: ["Primer experimento", "Mini IA", "Unsplash"],
+    },
   },
-  {
-    id: "musify-desktop-port",
-    title: "Musify Desktop Port",
-    eyebrow: "Port desktop",
-    subtitle: "Port desktop não oficial do Musify para Windows e Linux.",
-    description:
-      "Downstream do gokadzev/Musify que mantém o app upstream o mais intacto possível e adiciona suporte desktop: targets Flutter para Windows/Linux, playback via media_kit, pacotes instaláveis e updater pelas releases deste repo.",
-    role: "Compatibilidade desktop, empacotamento Linux/Windows, workflows de release e guards para APIs Android-only.",
-    stack: ["Flutter", "Dart", "media_kit", "Windows", "Linux", "GitHub Actions"],
-    metrics: ["v10.0.8", "Windows/Linux", "Sync upstream"],
-    images: musifyDesktopImages,
-    live: "https://github.com/elias001011/Musify-Desktop-Port/releases",
-    liveLabel: "Downloads",
-    repo: "https://github.com/elias001011/Musify-Desktop-Port",
-    reverse: true,
-  },
-  {
-    id: "musify",
-    title: "Musify",
-    eyebrow: "Open source",
-    subtitle: "Streaming de música open source para Android.",
-    description:
-      "Mais de 25 commits e 1500+ linhas em um projeto de streaming de música open-source, incluindo correções de playback, fila, offline, acessibilidade e localização pt-BR.",
-    role: "Correções reais em produto usado por outras pessoas, com PRs revisados e mergeados.",
-    stack: ["Flutter", "Dart", "Android", "i18n", "Acessibilidade"],
-    metrics: ["25+ commits", "1500+ linhas", "Projeto usado"],
-    images: [],
-    live: "https://gokadzev.github.io/Musify/",
-    repo: "https://github.com/gokadzev/Musify",
-    openSource: true,
-  },
-];
+};
 
 type GalleryState = {
   project: Project;
   index: number;
-};
-
-type GithubCommit = {
-  sha: string;
-  html_url: string;
-  commit: {
-    message: string;
-    author?: {
-      date?: string;
-    };
-  };
 };
 
 function calculateAge(birthDate: Date) {
@@ -308,10 +709,20 @@ function App() {
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [themePulse, setThemePulse] = useState(false);
   const [paletteId, setPaletteId] = useState<PaletteId>("green");
+  const [language, setLanguage] = useState<LanguageId>("pt");
   const [gallery, setGallery] = useState<GalleryState | null>(null);
-  const [commits, setCommits] = useState<GithubCommit[]>([]);
-  const [commitStatus, setCommitStatus] = useState<"loading" | "ready" | "error">(
-    "loading",
+
+  const copy = siteCopy[language];
+  const activePalette = palettes.find((palette) => palette.id === paletteId)!;
+
+  const projects = useMemo<Project[]>(
+    () =>
+      projectOrder.map((id) => ({
+        id,
+        ...projectAssets[id],
+        ...projectContent[language][id],
+      })),
+    [language],
   );
 
   useEffect(() => {
@@ -321,12 +732,24 @@ function App() {
     if (storedPalette && palettes.some((palette) => palette.id === storedPalette)) {
       setPaletteId(storedPalette);
     }
+
+    const storedLanguage = window.localStorage.getItem("elias-language") as
+      | LanguageId
+      | null;
+    if (storedLanguage && languages.some((option) => option.id === storedLanguage)) {
+      setLanguage(storedLanguage);
+    }
   }, []);
 
   useEffect(() => {
     document.documentElement.dataset.theme = paletteId;
     window.localStorage.setItem("elias-palette", paletteId);
   }, [paletteId]);
+
+  useEffect(() => {
+    document.documentElement.lang = copy.locale;
+    window.localStorage.setItem("elias-language", language);
+  }, [copy.locale, language]);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 18);
@@ -379,28 +802,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const controller = new AbortController();
-
-    fetch(
-      "https://api.github.com/repos/gokadzev/Musify/commits?author=elias001011&per_page=4",
-      { signal: controller.signal },
-    )
-      .then((response) => {
-        if (!response.ok) throw new Error("GitHub API unavailable");
-        return response.json() as Promise<GithubCommit[]>;
-      })
-      .then((data) => {
-        setCommits(data);
-        setCommitStatus("ready");
-      })
-      .catch((error: Error) => {
-        if (error.name !== "AbortError") setCommitStatus("error");
-      });
-
-    return () => controller.abort();
-  }, []);
-
-  useEffect(() => {
     if (!gallery) return;
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -419,21 +820,17 @@ function App() {
     };
   }, [gallery]);
 
-  const navItems = [
-    { label: "Início", href: "#inicio" },
-    { label: "Projetos", href: "#projetos" },
-    { label: "Sobre", href: "#sobre" },
-    { label: "Contato", href: "#contato" },
-  ];
-
-  const activePalette = palettes.find((palette) => palette.id === paletteId)!;
-
   function choosePalette(nextPalette: PaletteId) {
     setPaletteId(nextPalette);
     setPaletteOpen(false);
     setThemePulse(false);
     window.setTimeout(() => setThemePulse(true), 0);
     window.setTimeout(() => setThemePulse(false), 520);
+  }
+
+  function chooseLanguage(nextLanguage: LanguageId) {
+    setLanguage(nextLanguage);
+    setMenuOpen(false);
   }
 
   function moveGallery(direction: number) {
@@ -447,20 +844,38 @@ function App() {
     });
   }
 
+  const languageSwitch = (
+    <div className="language-switch" aria-label={copy.language.aria}>
+      <Globe2 size={15} aria-hidden="true" />
+      {languages.map((option) => (
+        <button
+          key={option.id}
+          type="button"
+          className={option.id === language ? "is-active" : ""}
+          aria-pressed={option.id === language}
+          title={option.name}
+          onClick={() => chooseLanguage(option.id)}
+        >
+          {option.label}
+        </button>
+      ))}
+    </div>
+  );
+
   return (
     <>
       <header className={`site-header ${isScrolled ? "is-scrolled" : ""}`}>
-        <nav className="nav-shell" aria-label="Navegação principal">
+        <nav className="nav-shell" aria-label={copy.navLabel}>
           <a className="brand" href="#inicio" onClick={() => setMenuOpen(false)}>
             <span className="brand-mark">E</span>
             <span>
               <strong>Elias</strong>
-              <small>Portfólio</small>
+              <small>{copy.brandRole}</small>
             </span>
           </a>
 
           <div className="nav-links">
-            {navItems.map((item) => (
+            {copy.nav.map((item) => (
               <a key={item.href} href={item.href}>
                 {item.label}
               </a>
@@ -472,7 +887,7 @@ function App() {
               <button
                 className="icon-button palette-trigger"
                 type="button"
-                aria-label="Selecionar paleta de cores"
+                aria-label={copy.paletteAria}
                 aria-expanded={paletteOpen}
                 onClick={() => setPaletteOpen((current) => !current)}
               >
@@ -504,15 +919,17 @@ function App() {
               )}
             </div>
 
+            {languageSwitch}
+
             <a className="nav-cta" href={`mailto:${profile.email}`}>
               <Mail size={16} />
-              Contato
+              {copy.contact}
             </a>
 
             <button
               className="icon-button mobile-menu-button"
               type="button"
-              aria-label="Abrir menu"
+              aria-label={copy.menu.open}
               aria-expanded={menuOpen}
               onClick={() => setMenuOpen((current) => !current)}
             >
@@ -523,13 +940,13 @@ function App() {
 
         {menuOpen && (
           <div className="mobile-menu">
-            {navItems.map((item) => (
+            {copy.nav.map((item) => (
               <a key={item.href} href={item.href} onClick={() => setMenuOpen(false)}>
                 {item.label}
               </a>
             ))}
             <a href={profile.github} target="_blank" rel="noreferrer">
-              GitHub <ExternalLink size={15} />
+              {copy.menu.github} <ExternalLink size={15} />
             </a>
           </div>
         )}
@@ -542,27 +959,23 @@ function App() {
             <div className="hero-copy">
               <span className="status-pill">
                 <span />
-                Disponível para vagas
+                {copy.hero.status}
               </span>
               <h1>{profile.name}</h1>
-              <p className="hero-lead">
-                Desenvolvedor full stack de {age} anos, sócio da Connecta e focado
-                em transformar ideias em produtos web completos, do front ao backend
-                serverless.
-              </p>
+              <p className="hero-lead">{copy.hero.lead(age)}</p>
 
               <div className="hero-actions">
                 <a className="primary-button" href="#projetos">
                   <ArrowDown size={18} />
-                  Conhecer projetos
+                  {copy.hero.primary}
                 </a>
                 <a className="ghost-button" href={`mailto:${profile.email}`}>
                   <Mail size={18} />
-                  Falar comigo
+                  {copy.hero.secondary}
                 </a>
               </div>
 
-              <div className="social-row" aria-label="Links sociais">
+              <div className="social-row" aria-label={copy.hero.socialLabel}>
                 <a href={profile.github} target="_blank" rel="noreferrer">
                   <Github size={17} />
                   GitHub
@@ -578,11 +991,11 @@ function App() {
               </div>
             </div>
 
-            <div className="hero-visual" aria-label="Foto de Elias">
+            <div className="hero-visual" aria-label={copy.hero.avatarLabel}>
               <div className="avatar-frame">
                 <img
                   src={profile.avatar}
-                  alt="Elias J. R. Nunes"
+                  alt={copy.hero.avatarAlt}
                   fetchPriority="high"
                   decoding="async"
                 />
@@ -593,32 +1006,21 @@ function App() {
 
         <section className="about-section snap-section motion-track motion-about" id="sobre">
           <div className="section-heading">
-            <span>Sobre</span>
-            <h2>Simples no visual, direto no que importa.</h2>
+            <span>{copy.about.eyebrow}</span>
+            <h2>{copy.about.title}</h2>
           </div>
 
           <div className="about-grid">
             <article className="about-panel">
-              <h3>Quem eu sou</h3>
-              <p>
-                Eu construo interfaces, landings e produtos web com atenção à
-                experiência, performance, backend serverless e deploy. Minha base
-                passa por React, TypeScript, APIs, Netlify Functions e projetos
-                reais publicados.
-              </p>
+              <h3>{copy.about.cardTitle}</h3>
+              <p>{copy.about.text}</p>
               <ul>
-                <li>
-                  <CheckCircle2 size={18} />
-                  Aberto para oportunidades e projetos.
-                </li>
-                <li>
-                  <CheckCircle2 size={18} />
-                  Projetos solo com app, landing, APIs, funções e deploy.
-                </li>
-                <li>
-                  <CheckCircle2 size={18} />
-                  Contribuições open-source em app usado por outras pessoas.
-                </li>
+                {copy.about.bullets.map((item) => (
+                  <li key={item}>
+                    <CheckCircle2 size={18} />
+                    {item}
+                  </li>
+                ))}
               </ul>
             </article>
 
@@ -626,14 +1028,10 @@ function App() {
               <span className="panel-icon">
                 <Building2 size={22} />
               </span>
-              <h3>Connecta</h3>
-              <p>
-                A Connecta é uma empresa digital brasileira com CNPJ, criada com
-                foco em sites, sistemas e experiências digitais para negócios
-                locais. Eu faço parte como sócio e desenvolvedor.
-              </p>
+              <h3>{copy.about.connectaTitle}</h3>
+              <p>{copy.about.connectaText}</p>
               <a className="text-link" href={profile.connecta} target="_blank" rel="noreferrer">
-                Visitar site da Connecta
+                {copy.about.connectaLink}
                 <ExternalLink size={16} />
               </a>
             </article>
@@ -642,24 +1040,24 @@ function App() {
 
         <section className="projects-intro snap-section motion-track motion-intro" id="projetos">
           <div className="projects-intro-copy">
-            <span>Projetos</span>
-            <h2>Trabalhos publicados, com contexto e link real.</h2>
+            <span>{copy.projectsIntro.eyebrow}</span>
+            <h2>{copy.projectsIntro.title}</h2>
           </div>
           <div className="projects-intro-side">
-            <div className="hero-scope-card" aria-label="Resumo técnico">
-              <span className="scope-kicker">Na prática</span>
+            <div className="hero-scope-card" aria-label={copy.projectsIntro.scope}>
+              <span className="scope-kicker">{copy.projectsIntro.scope}</span>
               <div>
                 <span>
                   <Code2 size={17} />
-                  Interfaces React
+                  {copy.projectsIntro.skills[0]}
                 </span>
                 <span>
                   <ServerCog size={17} />
-                  APIs e Functions
+                  {copy.projectsIntro.skills[1]}
                 </span>
                 <span>
                   <Rocket size={17} />
-                  Deploy real
+                  {copy.projectsIntro.skills[2]}
                 </span>
               </div>
             </div>
@@ -672,8 +1070,7 @@ function App() {
               key={project.id}
               project={project}
               index={index}
-              commits={commits}
-              commitStatus={commitStatus}
+              copy={copy.projectCard}
               onOpenGallery={(imageIndex) =>
                 setGallery({ project, index: imageIndex })
               }
@@ -683,27 +1080,21 @@ function App() {
 
         <section className="more-banner snap-section motion-track motion-more">
           <div>
-            <span>Em construção</span>
-            <h2>Vem mais por aí.</h2>
-            <p>
-              Novos produtos, melhorias nos projetos atuais e mais contribuições
-              open-source devem aparecer por aqui conforme forem ficando prontos.
-            </p>
+            <span>{copy.more.eyebrow}</span>
+            <h2>{copy.more.title}</h2>
+            <p>{copy.more.text}</p>
           </div>
           <a className="ghost-button" href={profile.github} target="_blank" rel="noreferrer">
             <Github size={18} />
-            Acompanhar no GitHub
+            {copy.more.cta}
           </a>
         </section>
 
         <section className="contact-section snap-section motion-track motion-contact" id="contato">
           <div className="contact-copy">
-            <span>Contato</span>
-            <h2>Vamos conversar.</h2>
-            <p>
-              Para vagas, freelas, parceria pela Connecta ou feedback nos
-              projetos, esses são os melhores caminhos.
-            </p>
+            <span>{copy.contactSection.eyebrow}</span>
+            <h2>{copy.contactSection.title}</h2>
+            <p>{copy.contactSection.text}</p>
           </div>
 
           <div className="contact-links">
@@ -730,16 +1121,17 @@ function App() {
       <footer className="site-footer">
         <div>
           <strong>{profile.name}</strong>
-          <span>Todos os direitos reservados.</span>
+          <span>{copy.footer.rights}</span>
         </div>
         <a href={profile.instagram} target="_blank" rel="noreferrer">
-          Desenvolvido por @elias_jrnunes
+          {copy.footer.credit}
         </a>
       </footer>
 
       {gallery && (
         <GalleryModal
           gallery={gallery}
+          copy={copy.gallery}
           onClose={() => setGallery(null)}
           onMove={moveGallery}
           onSelect={(index) => setGallery({ project: gallery.project, index })}
@@ -752,14 +1144,12 @@ function App() {
 function ProjectSlide({
   project,
   index,
-  commits,
-  commitStatus,
+  copy,
   onOpenGallery,
 }: {
   project: Project;
   index: number;
-  commits: GithubCommit[];
-  commitStatus: "loading" | "ready" | "error";
+  copy: ProjectCardCopy;
   onOpenGallery: (imageIndex: number) => void;
 }) {
   const isReverse = project.reverse;
@@ -798,54 +1188,50 @@ function ProjectSlide({
         className="project-layout"
         data-project={`${String(index + 1).padStart(2, "0")} / ${project.eyebrow}`}
       >
-        {project.openSource ? (
-          <CommitFeed commits={commits} status={commitStatus} variant="panel" />
-        ) : (
-          <div className="project-visual">
-            <button
-              type="button"
-              className="project-image-button"
-              onClick={() => onOpenGallery(currentImage)}
-              aria-label={`Abrir galeria do projeto ${project.title}`}
-            >
-              <img
-                key={project.images[currentImage]}
-                src={project.images[currentImage]}
-                alt={`Screenshot do projeto ${project.title}`}
-                loading="lazy"
-                decoding="async"
-              />
-              <span className="gallery-badge">
-                <Images size={17} />
-                {project.images.length > 1
-                  ? `${currentImage + 1} / ${project.images.length}`
-                  : "Ver projeto"}
-              </span>
-            </button>
+        <div className="project-visual">
+          <button
+            type="button"
+            className="project-image-button"
+            onClick={() => onOpenGallery(currentImage)}
+            aria-label={`${copy.openGallery} ${project.title}`}
+          >
+            <img
+              key={project.images[currentImage]}
+              src={project.images[currentImage]}
+              alt={`${copy.screenshotAlt} ${project.title}`}
+              loading="lazy"
+              decoding="async"
+            />
+            <span className="gallery-badge">
+              <Images size={17} />
+              {project.images.length > 1
+                ? `${currentImage + 1} / ${project.images.length}`
+                : copy.galleryBadgeSingle}
+            </span>
+          </button>
 
-            {hasSlideshow && (
-              <div className="slideshow-controls" aria-label={`Slideshow ${project.title}`}>
-                <button type="button" aria-label="Imagem anterior" onClick={showPreviousImage}>
-                  <ArrowLeft size={17} />
-                </button>
-                <div className="slide-dots">
-                  {project.images.map((image, imageIndex) => (
-                    <button
-                      key={image}
-                      type="button"
-                      className={imageIndex === currentImage ? "is-active" : ""}
-                      aria-label={`Mostrar imagem ${imageIndex + 1}`}
-                      onClick={() => setCurrentImage(imageIndex)}
-                    />
-                  ))}
-                </div>
-                <button type="button" aria-label="Próxima imagem" onClick={showNextImage}>
-                  <ArrowRight size={17} />
-                </button>
+          {hasSlideshow && (
+            <div className="slideshow-controls" aria-label={`${copy.slideshow} ${project.title}`}>
+              <button type="button" aria-label={copy.previousImage} onClick={showPreviousImage}>
+                <ArrowLeft size={17} />
+              </button>
+              <div className="slide-dots">
+                {project.images.map((image, imageIndex) => (
+                  <button
+                    key={image}
+                    type="button"
+                    className={imageIndex === currentImage ? "is-active" : ""}
+                    aria-label={`${copy.showImage} ${imageIndex + 1}`}
+                    onClick={() => setCurrentImage(imageIndex)}
+                  />
+                ))}
               </div>
-            )}
-          </div>
-        )}
+              <button type="button" aria-label={copy.nextImage} onClick={showNextImage}>
+                <ArrowRight size={17} />
+              </button>
+            </div>
+          )}
+        </div>
 
         <div className="project-copy">
           <span className="project-eyebrow">
@@ -876,13 +1262,13 @@ function ProjectSlide({
             {project.live && (
               <a className="primary-button small" href={project.live} target="_blank" rel="noreferrer">
                 <Globe2 size={17} />
-                {project.liveLabel ?? "Site ao vivo"}
+                {copy.live}
               </a>
             )}
             {project.repo && (
               <a className="ghost-button small" href={project.repo} target="_blank" rel="noreferrer">
                 <Github size={17} />
-                Repositório
+                {copy.repo}
               </a>
             )}
           </div>
@@ -892,54 +1278,15 @@ function ProjectSlide({
   );
 }
 
-function CommitFeed({
-  commits,
-  status,
-  variant = "inline",
-}: {
-  commits: GithubCommit[];
-  status: "loading" | "ready" | "error";
-  variant?: "inline" | "panel";
-}) {
-  return (
-    <div className={`commit-feed ${variant === "panel" ? "commit-feed-panel" : ""}`}>
-      <div className="commit-feed-heading">
-        <Github size={16} />
-        <span>Commits recentes</span>
-      </div>
-      {variant === "panel" && (
-        <div className="commit-feed-stats">
-          <span>25+ commits</span>
-          <span>1500+ linhas</span>
-          <span>Open source</span>
-        </div>
-      )}
-
-      {status === "loading" && <p>Carregando atividade recente...</p>}
-      {status === "error" && (
-        <p>25+ commits confirmados no projeto. O GitHub pode limitar chamadas anônimas.</p>
-      )}
-      {status === "ready" &&
-        commits.map((commit) => {
-          const message = commit.commit.message.split("\n")[0];
-          return (
-            <a key={commit.sha} href={commit.html_url} target="_blank" rel="noreferrer">
-              <span>{message}</span>
-              <small>{commit.sha.slice(0, 7)}</small>
-            </a>
-          );
-        })}
-    </div>
-  );
-}
-
 function GalleryModal({
   gallery,
+  copy,
   onClose,
   onMove,
   onSelect,
 }: {
   gallery: GalleryState;
+  copy: GalleryCopy;
   onClose: () => void;
   onMove: (direction: number) => void;
   onSelect: (index: number) => void;
@@ -948,30 +1295,30 @@ function GalleryModal({
   const image = project.images[index];
 
   return (
-    <div className="gallery-modal" role="dialog" aria-modal="true" aria-label={`Galeria ${project.title}`}>
-      <button className="gallery-backdrop" type="button" aria-label="Fechar galeria" onClick={onClose} />
+    <div className="gallery-modal" role="dialog" aria-modal="true" aria-label={`${copy.modalLabel} ${project.title}`}>
+      <button className="gallery-backdrop" type="button" aria-label={copy.closeBackdrop} onClick={onClose} />
       <div className="gallery-panel">
         <div className="gallery-header">
           <div>
             <span>{project.eyebrow}</span>
             <strong>{project.title}</strong>
           </div>
-          <button className="icon-button" type="button" aria-label="Fechar" onClick={onClose}>
+          <button className="icon-button" type="button" aria-label={copy.close} onClick={onClose}>
             <X size={20} />
           </button>
         </div>
 
         <div className="gallery-stage">
-          <button className="gallery-nav previous" type="button" aria-label="Imagem anterior" onClick={() => onMove(-1)}>
+          <button className="gallery-nav previous" type="button" aria-label={copy.previous} onClick={() => onMove(-1)}>
             <ArrowLeft size={20} />
           </button>
           <img
             key={image}
             src={image}
-            alt={`${project.title} - imagem ${index + 1}`}
+            alt={`${project.title} - ${copy.imageAlt} ${index + 1}`}
             decoding="async"
           />
-          <button className="gallery-nav next" type="button" aria-label="Próxima imagem" onClick={() => onMove(1)}>
+          <button className="gallery-nav next" type="button" aria-label={copy.next} onClick={() => onMove(1)}>
             <ArrowRight size={20} />
           </button>
         </div>
@@ -983,7 +1330,7 @@ function GalleryModal({
               type="button"
               className={thumbIndex === index ? "is-active" : ""}
               onClick={() => onSelect(thumbIndex)}
-              aria-label={`Ver imagem ${thumbIndex + 1}`}
+              aria-label={`${copy.viewImage} ${thumbIndex + 1}`}
             >
               <img src={thumb} alt="" loading="lazy" decoding="async" />
             </button>

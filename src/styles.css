@@ -101,6 +101,7 @@ body,
 .nav-shell,
 .mobile-menu,
 .palette-popover,
+.language-switch,
 .primary-button,
 .ghost-button,
 .icon-button,
@@ -384,6 +385,51 @@ img {
 
 .palette-menu {
   position: relative;
+}
+
+.language-switch {
+  min-height: 42px;
+  padding: 4px 6px 4px 9px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--muted);
+}
+
+.language-switch svg {
+  flex: 0 0 auto;
+  color: var(--accent);
+}
+
+.language-switch button {
+  min-width: 34px;
+  height: 30px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 850;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.language-switch button:hover,
+.language-switch button:focus-visible,
+.language-switch button.is-active {
+  background: var(--accent);
+  color: var(--button-text);
+}
+
+.language-switch button:active {
+  transform: scale(0.95);
 }
 
 .palette-popover {
@@ -1849,6 +1895,10 @@ img {
 }
 
 @media (max-width: 720px) {
+  html {
+    scroll-snap-type: none;
+  }
+
   .site-header {
     padding: 10px 12px 0;
   }
@@ -1858,11 +1908,32 @@ img {
     padding: 8px;
   }
 
+  .nav-actions {
+    gap: 6px;
+  }
+
   .brand small,
   .nav-cta,
   .palette-trigger span,
   .palette-trigger svg:last-child {
     display: none;
+  }
+
+  .language-switch {
+    min-height: 38px;
+    padding: 3px 4px;
+    gap: 2px;
+  }
+
+  .language-switch svg {
+    display: none;
+  }
+
+  .language-switch button {
+    min-width: 30px;
+    height: 28px;
+    padding: 0 6px;
+    font-size: 0.72rem;
   }
 
   .palette-popover {
@@ -1979,8 +2050,8 @@ img {
   .project-slide {
     position: relative;
     min-height: auto;
-    padding-top: 70px;
-    padding-bottom: 70px;
+    padding-top: 58px;
+    padding-bottom: 58px;
     border-top: 1px solid var(--line);
     background:
       linear-gradient(180deg, rgba(255, 255, 255, 0.018), transparent 42%),
@@ -2061,12 +2132,29 @@ img {
   }
 
   .project-copy h2 {
-    font-size: 2.72rem;
+    font-size: 2.48rem;
     line-height: 1;
   }
 
   .project-subtitle {
     font-size: 1.15rem;
+  }
+
+  .project-description {
+    font-size: 1rem;
+    line-height: 1.62;
+  }
+
+  .metric-row,
+  .stack-row {
+    gap: 7px;
+  }
+
+  .metric-row span,
+  .stack-row span {
+    min-height: 30px;
+    padding: 0 10px;
+    font-size: 0.8rem;
   }
 
   .project-actions .primary-button,
@@ -2084,10 +2172,15 @@ img {
   }
 
   .site-footer {
-    padding-right: 18px;
-    padding-left: 18px;
+    padding: 18px;
+    gap: 8px;
     align-items: flex-start;
     flex-direction: column;
+    font-size: 0.88rem;
+  }
+
+  .site-footer div {
+    gap: 2px;
   }
 
   .gallery-modal {
