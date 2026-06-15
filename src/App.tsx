@@ -131,6 +131,13 @@ const siteCopy = {
       live: "Site ao vivo",
       repo: "Repositório",
     },
+    commitFeed: {
+      heading: "Commits recentes",
+      stats: ["25+ commits", "1500+ linhas", "Open source"],
+      loading: "Carregando atividade recente...",
+      error:
+        "25+ commits confirmados no projeto. O GitHub pode limitar chamadas anônimas.",
+    },
     gallery: {
       modalLabel: "Galeria",
       closeBackdrop: "Fechar galeria",
@@ -217,6 +224,13 @@ const siteCopy = {
       showImage: "Show image",
       live: "Live site",
       repo: "Repository",
+    },
+    commitFeed: {
+      heading: "Recent commits",
+      stats: ["25+ commits", "1500+ lines", "Open source"],
+      loading: "Loading recent activity...",
+      error:
+        "25+ commits confirmed in the project. GitHub may rate-limit anonymous requests.",
     },
     gallery: {
       modalLabel: "Gallery",
@@ -305,6 +319,13 @@ const siteCopy = {
       live: "Sitio activo",
       repo: "Repositorio",
     },
+    commitFeed: {
+      heading: "Commits recientes",
+      stats: ["25+ commits", "1500+ líneas", "Open source"],
+      loading: "Cargando actividad reciente...",
+      error:
+        "25+ commits confirmados en el proyecto. GitHub puede limitar llamadas anónimas.",
+    },
     gallery: {
       modalLabel: "Galería",
       closeBackdrop: "Cerrar galería",
@@ -318,6 +339,7 @@ const siteCopy = {
 };
 
 type ProjectCardCopy = (typeof siteCopy)["pt"]["projectCard"];
+type CommitFeedCopy = (typeof siteCopy)["pt"]["commitFeed"];
 type GalleryCopy = (typeof siteCopy)["pt"]["gallery"];
 
 const meteorImages = [
@@ -389,6 +411,15 @@ const myComputerImages = [
   new URL("../MyComputer/image copy 5.png", import.meta.url).href,
 ];
 
+const musifyDesktopImages = [
+  new URL("../MusifyDesktop/image.png", import.meta.url).href,
+  new URL("../MusifyDesktop/image copy.png", import.meta.url).href,
+  new URL("../MusifyDesktop/image copy 2.png", import.meta.url).href,
+  new URL("../MusifyDesktop/image copy 3.png", import.meta.url).href,
+  new URL("../MusifyDesktop/image copy 4.png", import.meta.url).href,
+  new URL("../MusifyDesktop/image copy 5.png", import.meta.url).href,
+];
+
 const projectOrder = [
   "meraki",
   "lyceum",
@@ -397,6 +428,8 @@ const projectOrder = [
   "meteor",
   "my-computer",
   "climova",
+  "musify-desktop-port",
+  "musify",
 ] as const;
 
 type ProjectId = (typeof projectOrder)[number];
@@ -412,11 +445,13 @@ type Project = {
   metrics: string[];
   images: string[];
   live?: string;
+  liveLabel?: string;
   repo?: string;
   reverse?: boolean;
+  openSource?: boolean;
 };
 
-type ProjectText = Omit<Project, "id" | "images" | "live" | "repo" | "reverse">;
+type ProjectText = Omit<Project, "id" | "images" | "live" | "repo" | "reverse" | "openSource">;
 
 const projectAssets: Record<
   ProjectId,
@@ -425,6 +460,7 @@ const projectAssets: Record<
     live?: string;
     repo?: string;
     reverse?: boolean;
+    openSource?: boolean;
   }
 > = {
   meraki: {
@@ -463,6 +499,18 @@ const projectAssets: Record<
     images: climovaImages,
     live: "https://climova.netlify.app",
     repo: "https://github.com/elias001011/Climova",
+  },
+  "musify-desktop-port": {
+    images: musifyDesktopImages,
+    live: "https://github.com/elias001011/Musify-Desktop-Port/releases",
+    repo: "https://github.com/elias001011/Musify-Desktop-Port",
+    reverse: true,
+  },
+  musify: {
+    images: [],
+    live: "https://gokadzev.github.io/Musify/",
+    repo: "https://github.com/gokadzev/Musify",
+    openSource: true,
   },
 };
 
@@ -538,6 +586,27 @@ const projectContent: Record<LanguageId, Record<ProjectId, ProjectText>> = {
       stack: ["HTML", "CSS", "JavaScript", "Netlify Functions", "OpenWeather"],
       metrics: ["Primeiro experimento", "Mini IA", "Unsplash"],
     },
+    "musify-desktop-port": {
+      title: "Musify Desktop Port",
+      eyebrow: "Port desktop",
+      subtitle: "Port desktop não oficial do Musify para Windows e Linux.",
+      description:
+        "Downstream do gokadzev/Musify que mantém o app upstream o mais intacto possível e adiciona suporte desktop: targets Flutter para Windows/Linux, playback via media_kit, pacotes instaláveis e updater pelas releases deste repo.",
+      role: "Compatibilidade desktop, empacotamento Linux/Windows, workflows de release e guards para APIs Android-only.",
+      stack: ["Flutter", "Dart", "media_kit", "Windows", "Linux", "GitHub Actions"],
+      metrics: ["v10.0.8", "Windows/Linux", "Sync upstream"],
+      liveLabel: "Downloads",
+    },
+    musify: {
+      title: "Musify",
+      eyebrow: "Open source",
+      subtitle: "Streaming de música open source para Android.",
+      description:
+        "Mais de 25 commits e 1500+ linhas em um projeto de streaming de música open-source, incluindo correções de playback, fila, offline, acessibilidade e localização pt-BR.",
+      role: "Correções reais em produto usado por outras pessoas, com PRs revisados e mergeados.",
+      stack: ["Flutter", "Dart", "Android", "i18n", "Acessibilidade"],
+      metrics: ["25+ commits", "1500+ linhas", "Projeto usado"],
+    },
   },
   en: {
     meraki: {
@@ -609,6 +678,27 @@ const projectContent: Record<LanguageId, Record<ProjectId, ProjectText>> = {
       role: "First solid base in interface work, weather APIs and serverless deployment.",
       stack: ["HTML", "CSS", "JavaScript", "Netlify Functions", "OpenWeather"],
       metrics: ["First experiment", "Mini AI", "Unsplash"],
+    },
+    "musify-desktop-port": {
+      title: "Musify Desktop Port",
+      eyebrow: "Desktop port",
+      subtitle: "Unofficial Musify desktop port for Windows and Linux.",
+      description:
+        "A downstream of gokadzev/Musify that keeps the upstream app as intact as possible while adding desktop support: Flutter targets for Windows/Linux, media_kit playback, installable packages and release-based updates.",
+      role: "Desktop compatibility, Linux/Windows packaging, release workflows and guards for Android-only APIs.",
+      stack: ["Flutter", "Dart", "media_kit", "Windows", "Linux", "GitHub Actions"],
+      metrics: ["v10.0.8", "Windows/Linux", "Upstream sync"],
+      liveLabel: "Downloads",
+    },
+    musify: {
+      title: "Musify",
+      eyebrow: "Open source",
+      subtitle: "Open-source music streaming for Android.",
+      description:
+        "More than 25 commits and 1500+ lines in an open-source music streaming project, including fixes for playback, queue, offline mode, accessibility and Brazilian Portuguese localization.",
+      role: "Real fixes in a product used by other people, with reviewed and merged PRs.",
+      stack: ["Flutter", "Dart", "Android", "i18n", "Accessibility"],
+      metrics: ["25+ commits", "1500+ lines", "Used project"],
     },
   },
   es: {
@@ -682,12 +772,44 @@ const projectContent: Record<LanguageId, Record<ProjectId, ProjectText>> = {
       stack: ["HTML", "CSS", "JavaScript", "Netlify Functions", "OpenWeather"],
       metrics: ["Primer experimento", "Mini IA", "Unsplash"],
     },
+    "musify-desktop-port": {
+      title: "Musify Desktop Port",
+      eyebrow: "Port desktop",
+      subtitle: "Port desktop no oficial de Musify para Windows y Linux.",
+      description:
+        "Downstream de gokadzev/Musify que mantiene la app upstream lo más intacta posible y suma soporte desktop: targets Flutter para Windows/Linux, reproducción con media_kit, paquetes instalables y updater por releases.",
+      role: "Compatibilidad desktop, empaquetado Linux/Windows, workflows de release y protecciones para APIs solo de Android.",
+      stack: ["Flutter", "Dart", "media_kit", "Windows", "Linux", "GitHub Actions"],
+      metrics: ["v10.0.8", "Windows/Linux", "Sync upstream"],
+      liveLabel: "Descargas",
+    },
+    musify: {
+      title: "Musify",
+      eyebrow: "Open source",
+      subtitle: "Streaming de música open source para Android.",
+      description:
+        "Más de 25 commits y 1500+ líneas en un proyecto open-source de streaming de música, incluyendo correcciones de playback, cola, modo offline, accesibilidad y localización pt-BR.",
+      role: "Correcciones reales en un producto usado por otras personas, con PRs revisados y mergeados.",
+      stack: ["Flutter", "Dart", "Android", "i18n", "Accesibilidad"],
+      metrics: ["25+ commits", "1500+ líneas", "Proyecto usado"],
+    },
   },
 };
 
 type GalleryState = {
   project: Project;
   index: number;
+};
+
+type GithubCommit = {
+  sha: string;
+  html_url: string;
+  commit: {
+    message: string;
+    author?: {
+      date?: string;
+    };
+  };
 };
 
 function calculateAge(birthDate: Date) {
@@ -711,6 +833,10 @@ function App() {
   const [paletteId, setPaletteId] = useState<PaletteId>("green");
   const [language, setLanguage] = useState<LanguageId>("pt");
   const [gallery, setGallery] = useState<GalleryState | null>(null);
+  const [commits, setCommits] = useState<GithubCommit[]>([]);
+  const [commitStatus, setCommitStatus] = useState<"loading" | "ready" | "error">(
+    "loading",
+  );
 
   const copy = siteCopy[language];
   const activePalette = palettes.find((palette) => palette.id === paletteId)!;
@@ -750,6 +876,28 @@ function App() {
     document.documentElement.lang = copy.locale;
     window.localStorage.setItem("elias-language", language);
   }, [copy.locale, language]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    fetch(
+      "https://api.github.com/repos/gokadzev/Musify/commits?author=elias001011&per_page=4",
+      { signal: controller.signal },
+    )
+      .then((response) => {
+        if (!response.ok) throw new Error("GitHub API unavailable");
+        return response.json() as Promise<GithubCommit[]>;
+      })
+      .then((data) => {
+        setCommits(data);
+        setCommitStatus("ready");
+      })
+      .catch((error: Error) => {
+        if (error.name !== "AbortError") setCommitStatus("error");
+      });
+
+    return () => controller.abort();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 18);
@@ -1071,6 +1219,9 @@ function App() {
               project={project}
               index={index}
               copy={copy.projectCard}
+              commitCopy={copy.commitFeed}
+              commits={commits}
+              commitStatus={commitStatus}
               onOpenGallery={(imageIndex) =>
                 setGallery({ project, index: imageIndex })
               }
@@ -1145,11 +1296,17 @@ function ProjectSlide({
   project,
   index,
   copy,
+  commitCopy,
+  commits,
+  commitStatus,
   onOpenGallery,
 }: {
   project: Project;
   index: number;
   copy: ProjectCardCopy;
+  commitCopy: CommitFeedCopy;
+  commits: GithubCommit[];
+  commitStatus: "loading" | "ready" | "error";
   onOpenGallery: (imageIndex: number) => void;
 }) {
   const isReverse = project.reverse;
@@ -1188,50 +1345,59 @@ function ProjectSlide({
         className="project-layout"
         data-project={`${String(index + 1).padStart(2, "0")} / ${project.eyebrow}`}
       >
-        <div className="project-visual">
-          <button
-            type="button"
-            className="project-image-button"
-            onClick={() => onOpenGallery(currentImage)}
-            aria-label={`${copy.openGallery} ${project.title}`}
-          >
-            <img
-              key={project.images[currentImage]}
-              src={project.images[currentImage]}
-              alt={`${copy.screenshotAlt} ${project.title}`}
-              loading="lazy"
-              decoding="async"
-            />
-            <span className="gallery-badge">
-              <Images size={17} />
-              {project.images.length > 1
-                ? `${currentImage + 1} / ${project.images.length}`
-                : copy.galleryBadgeSingle}
-            </span>
-          </button>
+        {project.openSource ? (
+          <CommitFeed
+            commits={commits}
+            status={commitStatus}
+            copy={commitCopy}
+            variant="panel"
+          />
+        ) : (
+          <div className="project-visual">
+            <button
+              type="button"
+              className="project-image-button"
+              onClick={() => onOpenGallery(currentImage)}
+              aria-label={`${copy.openGallery} ${project.title}`}
+            >
+              <img
+                key={project.images[currentImage]}
+                src={project.images[currentImage]}
+                alt={`${copy.screenshotAlt} ${project.title}`}
+                loading="lazy"
+                decoding="async"
+              />
+              <span className="gallery-badge">
+                <Images size={17} />
+                {project.images.length > 1
+                  ? `${currentImage + 1} / ${project.images.length}`
+                  : copy.galleryBadgeSingle}
+              </span>
+            </button>
 
-          {hasSlideshow && (
-            <div className="slideshow-controls" aria-label={`${copy.slideshow} ${project.title}`}>
-              <button type="button" aria-label={copy.previousImage} onClick={showPreviousImage}>
-                <ArrowLeft size={17} />
-              </button>
-              <div className="slide-dots">
-                {project.images.map((image, imageIndex) => (
-                  <button
-                    key={image}
-                    type="button"
-                    className={imageIndex === currentImage ? "is-active" : ""}
-                    aria-label={`${copy.showImage} ${imageIndex + 1}`}
-                    onClick={() => setCurrentImage(imageIndex)}
-                  />
-                ))}
+            {hasSlideshow && (
+              <div className="slideshow-controls" aria-label={`${copy.slideshow} ${project.title}`}>
+                <button type="button" aria-label={copy.previousImage} onClick={showPreviousImage}>
+                  <ArrowLeft size={17} />
+                </button>
+                <div className="slide-dots">
+                  {project.images.map((image, imageIndex) => (
+                    <button
+                      key={image}
+                      type="button"
+                      className={imageIndex === currentImage ? "is-active" : ""}
+                      aria-label={`${copy.showImage} ${imageIndex + 1}`}
+                      onClick={() => setCurrentImage(imageIndex)}
+                    />
+                  ))}
+                </div>
+                <button type="button" aria-label={copy.nextImage} onClick={showNextImage}>
+                  <ArrowRight size={17} />
+                </button>
               </div>
-              <button type="button" aria-label={copy.nextImage} onClick={showNextImage}>
-                <ArrowRight size={17} />
-              </button>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
 
         <div className="project-copy">
           <span className="project-eyebrow">
@@ -1262,7 +1428,7 @@ function ProjectSlide({
             {project.live && (
               <a className="primary-button small" href={project.live} target="_blank" rel="noreferrer">
                 <Globe2 size={17} />
-                {copy.live}
+                {project.liveLabel ?? copy.live}
               </a>
             )}
             {project.repo && (
@@ -1275,6 +1441,47 @@ function ProjectSlide({
         </div>
       </div>
     </section>
+  );
+}
+
+function CommitFeed({
+  commits,
+  status,
+  copy,
+  variant = "inline",
+}: {
+  commits: GithubCommit[];
+  status: "loading" | "ready" | "error";
+  copy: CommitFeedCopy;
+  variant?: "inline" | "panel";
+}) {
+  return (
+    <div className={`commit-feed ${variant === "panel" ? "commit-feed-panel" : ""}`}>
+      <div className="commit-feed-heading">
+        <Github size={16} />
+        <span>{copy.heading}</span>
+      </div>
+      {variant === "panel" && (
+        <div className="commit-feed-stats">
+          {copy.stats.map((stat) => (
+            <span key={stat}>{stat}</span>
+          ))}
+        </div>
+      )}
+
+      {status === "loading" && <p>{copy.loading}</p>}
+      {status === "error" && <p>{copy.error}</p>}
+      {status === "ready" &&
+        commits.map((commit) => {
+          const message = commit.commit.message.split("\n")[0];
+          return (
+            <a key={commit.sha} href={commit.html_url} target="_blank" rel="noreferrer">
+              <span>{message}</span>
+              <small>{commit.sha.slice(0, 7)}</small>
+            </a>
+          );
+        })}
+    </div>
   );
 }
 
