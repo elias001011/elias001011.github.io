@@ -75,7 +75,7 @@ const siteCopy = {
       github: "GitHub",
     },
     hero: {
-      status: "Disponível para vagas",
+      status: "",
       lead: (age: number) =>
         `Desenvolvedor full stack de ${age} anos, sócio da Connecta e focado em transformar ideias em produtos web completos, do front ao backend serverless.`,
       primary: "Conhecer projetos",
@@ -169,7 +169,7 @@ const siteCopy = {
       github: "GitHub",
     },
     hero: {
-      status: "Available for roles",
+      status: "",
       lead: (age: number) =>
         `${age}-year-old full stack developer, Connecta partner, focused on turning ideas into complete web products from frontend to serverless backend.`,
       primary: "Explore projects",
@@ -263,7 +263,7 @@ const siteCopy = {
       github: "GitHub",
     },
     hero: {
-      status: "Disponible para oportunidades",
+      status: "",
       lead: (age: number) =>
         `Desarrollador full stack de ${age} años, socio de Connecta y enfocado en transformar ideas en productos web completos, del frontend al backend serverless.`,
       primary: "Ver proyectos",
@@ -536,16 +536,6 @@ const projectContent: Record<LanguageId, Record<ProjectId, ProjectText>> = {
       stack: ["React", "TypeScript", "GSAP", "Framer Motion", "Lucide"],
       metrics: ["8 slides", "ScrollTrigger", "Responsivo"],
     },
-    meteor: {
-      title: "Meteor",
-      eyebrow: "Projeto solo",
-      subtitle: "Inteligência climática com IA generativa.",
-      description:
-        "PWA de clima em tempo real com assistente contextual, alertas, dados de múltiplas fontes e BFF em Netlify Functions para proteger chaves de API.",
-      role: "Produto, interface, arquitetura full stack e integrações serverless.",
-      stack: ["React", "TypeScript", "Vite", "Tailwind", "Gemini", "Netlify"],
-      metrics: ["PWA", "IA contextual", "BFF seguro"],
-    },
     "my-computer": {
       title: "My Computer",
       eyebrow: "Projeto solo",
@@ -639,16 +629,6 @@ const projectContent: Record<LanguageId, Record<ProjectId, ProjectText>> = {
       stack: ["React", "TypeScript", "GSAP", "Framer Motion", "Lucide"],
       metrics: ["8 slides", "ScrollTrigger", "Responsive"],
     },
-    meteor: {
-      title: "Meteor",
-      eyebrow: "Solo project",
-      subtitle: "Climate intelligence with generative AI.",
-      description:
-        "Real-time weather PWA with a contextual assistant, alerts, data from multiple sources and a Netlify Functions BFF to protect API keys.",
-      role: "Product, interface, full stack architecture and serverless integrations.",
-      stack: ["React", "TypeScript", "Vite", "Tailwind", "Gemini", "Netlify"],
-      metrics: ["PWA", "Contextual AI", "Secure BFF"],
-    },
     "my-computer": {
       title: "My Computer",
       eyebrow: "Solo project",
@@ -741,16 +721,6 @@ const projectContent: Record<LanguageId, Record<ProjectId, ProjectText>> = {
       role: "Diseño visual, copy, animaciones de scroll e implementación completa.",
       stack: ["React", "TypeScript", "GSAP", "Framer Motion", "Lucide"],
       metrics: ["8 slides", "ScrollTrigger", "Responsivo"],
-    },
-    meteor: {
-      title: "Meteor",
-      eyebrow: "Proyecto propio",
-      subtitle: "Inteligencia climática con IA generativa.",
-      description:
-        "PWA de clima en tiempo real con asistente contextual, alertas, datos de múltiples fuentes y BFF en Netlify Functions para proteger claves de API.",
-      role: "Producto, interfaz, arquitectura full stack e integraciones serverless.",
-      stack: ["React", "TypeScript", "Vite", "Tailwind", "Gemini", "Netlify"],
-      metrics: ["PWA", "IA contextual", "BFF seguro"],
     },
     "my-computer": {
       title: "My Computer",
@@ -1125,10 +1095,12 @@ function App() {
         <section className="hero snap-section motion-track motion-hero" id="inicio">
           <div className="hero-grid">
             <div className="hero-copy">
-              <span className="status-pill">
-                <span />
-                {copy.hero.status}
-              </span>
+              {copy.hero.status && (
+                <span className="status-pill">
+                  <span />
+                  {copy.hero.status}
+                </span>
+              )}
               <h1>{profile.name}</h1>
               <p className="hero-lead">{copy.hero.lead(age)}</p>
 
@@ -1372,7 +1344,7 @@ function ProjectSlide({
             copy={commitCopy}
             variant="panel"
           />
-        ) : (
+        ) : project.images.length > 0 ? (
           <div className="project-visual">
             <button
               type="button"
@@ -1417,7 +1389,7 @@ function ProjectSlide({
               </div>
             )}
           </div>
-        )}
+        ) : null}
 
         <div className="project-copy">
           <span className="project-eyebrow">
