@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
-const profileImage = new URL("../me.jpg", import.meta.url).href;
+const profileImage = new URL("../me.webp", import.meta.url).href;
 
 const profile = {
   name: "Elias J. R. Nunes",
@@ -343,71 +343,71 @@ type CommitFeedCopy = (typeof siteCopy)["pt"]["commitFeed"];
 type GalleryCopy = (typeof siteCopy)["pt"]["gallery"];
 
 const meteorImages = [
-  new URL("../Meteor/image.png", import.meta.url).href,
-  new URL("../Meteor/image copy.png", import.meta.url).href,
-  new URL("../Meteor/image copy 2.png", import.meta.url).href,
-  new URL("../Meteor/image copy 3.png", import.meta.url).href,
-  new URL("../Meteor/image copy 4.png", import.meta.url).href,
-  new URL("../Meteor/image copy 5.png", import.meta.url).href,
-  new URL("../Meteor/image copy 6.png", import.meta.url).href,
-  new URL("../Meteor/image copy 7.png", import.meta.url).href,
-  new URL("../Meteor/image copy 8.png", import.meta.url).href,
+  new URL("../Meteor/image.webp", import.meta.url).href,
+  new URL("../Meteor/image copy.webp", import.meta.url).href,
+  new URL("../Meteor/image copy 2.webp", import.meta.url).href,
+  new URL("../Meteor/image copy 3.webp", import.meta.url).href,
+  new URL("../Meteor/image copy 4.webp", import.meta.url).href,
+  new URL("../Meteor/image copy 5.webp", import.meta.url).href,
+  new URL("../Meteor/image copy 6.webp", import.meta.url).href,
+  new URL("../Meteor/image copy 7.webp", import.meta.url).href,
+  new URL("../Meteor/image copy 8.webp", import.meta.url).href,
 ];
 
 const meteorLandingImages = [
-  new URL("../Meteor-landing/image.png", import.meta.url).href,
-  new URL("../Meteor-landing/image copy.png", import.meta.url).href,
-  new URL("../Meteor-landing/image copy 2.png", import.meta.url).href,
-  new URL("../Meteor-landing/image copy 3.png", import.meta.url).href,
-  new URL("../Meteor-landing/image copy 4.png", import.meta.url).href,
-  new URL("../Meteor-landing/image copy 5.png", import.meta.url).href,
-  new URL("../Meteor-landing/image copy 6.png", import.meta.url).href,
-  new URL("../Meteor-landing/image copy 7.png", import.meta.url).href,
+  new URL("../Meteor-landing/image.webp", import.meta.url).href,
+  new URL("../Meteor-landing/image copy.webp", import.meta.url).href,
+  new URL("../Meteor-landing/image copy 2.webp", import.meta.url).href,
+  new URL("../Meteor-landing/image copy 3.webp", import.meta.url).href,
+  new URL("../Meteor-landing/image copy 4.webp", import.meta.url).href,
+  new URL("../Meteor-landing/image copy 5.webp", import.meta.url).href,
+  new URL("../Meteor-landing/image copy 6.webp", import.meta.url).href,
+  new URL("../Meteor-landing/image copy 7.webp", import.meta.url).href,
 ];
 
 const apiceImages = [
-  new URL("../Apice/image.png", import.meta.url).href,
-  new URL("../Apice/image copy.png", import.meta.url).href,
-  new URL("../Apice/image copy 2.png", import.meta.url).href,
-  new URL("../Apice/image copy 3.png", import.meta.url).href,
-  new URL("../Apice/image copy 4.png", import.meta.url).href,
-  new URL("../Apice/image copy 5.png", import.meta.url).href,
-  new URL("../Apice/image copy 6.png", import.meta.url).href,
-  new URL("../Apice/image copy 7.png", import.meta.url).href,
-  new URL("../Apice/image copy 8.png", import.meta.url).href,
-  new URL("../Apice/image copy 9.png", import.meta.url).href,
-  new URL("../Apice/image copy 10.png", import.meta.url).href,
-  new URL("../Apice/image copy 11.png", import.meta.url).href,
+  new URL("../Apice/image.webp", import.meta.url).href,
+  new URL("../Apice/image copy.webp", import.meta.url).href,
+  new URL("../Apice/image copy 2.webp", import.meta.url).href,
+  new URL("../Apice/image copy 3.webp", import.meta.url).href,
+  new URL("../Apice/image copy 4.webp", import.meta.url).href,
+  new URL("../Apice/image copy 5.webp", import.meta.url).href,
+  new URL("../Apice/image copy 6.webp", import.meta.url).href,
+  new URL("../Apice/image copy 7.webp", import.meta.url).href,
+  new URL("../Apice/image copy 8.webp", import.meta.url).href,
+  new URL("../Apice/image copy 9.webp", import.meta.url).href,
+  new URL("../Apice/image copy 10.webp", import.meta.url).href,
+  new URL("../Apice/image copy 11.webp", import.meta.url).href,
 ];
 
 const myComputerImages = [
-  new URL("../MyComputer/image.png", import.meta.url).href,
-  new URL("../MyComputer/image copy.png", import.meta.url).href,
-  new URL("../MyComputer/image copy 2.png", import.meta.url).href,
-  new URL("../MyComputer/image copy 3.png", import.meta.url).href,
-  new URL("../MyComputer/image copy 4.png", import.meta.url).href,
-  new URL("../MyComputer/image copy 5.png", import.meta.url).href,
+  new URL("../MyComputer/image.webp", import.meta.url).href,
+  new URL("../MyComputer/image copy.webp", import.meta.url).href,
+  new URL("../MyComputer/image copy 2.webp", import.meta.url).href,
+  new URL("../MyComputer/image copy 3.webp", import.meta.url).href,
+  new URL("../MyComputer/image copy 4.webp", import.meta.url).href,
+  new URL("../MyComputer/image copy 5.webp", import.meta.url).href,
 ];
 
 const musifyDesktopImages = [
-  new URL("../MusifyDesktop/image.png", import.meta.url).href,
-  new URL("../MusifyDesktop/image copy.png", import.meta.url).href,
-  new URL("../MusifyDesktop/image copy 2.png", import.meta.url).href,
-  new URL("../MusifyDesktop/image copy 3.png", import.meta.url).href,
-  new URL("../MusifyDesktop/image copy 4.png", import.meta.url).href,
-  new URL("../MusifyDesktop/image copy 5.png", import.meta.url).href,
+  new URL("../MusifyDesktop/image.webp", import.meta.url).href,
+  new URL("../MusifyDesktop/image copy.webp", import.meta.url).href,
+  new URL("../MusifyDesktop/image copy 2.webp", import.meta.url).href,
+  new URL("../MusifyDesktop/image copy 3.webp", import.meta.url).href,
+  new URL("../MusifyDesktop/image copy 4.webp", import.meta.url).href,
+  new URL("../MusifyDesktop/image copy 5.webp", import.meta.url).href,
 ];
 
 const syncMyMusicImages: string[] = [];
 
 const meteorFlutterImages = [
-  new URL("../MeteorFlutter/18690.jpg", import.meta.url).href,
-  new URL("../MeteorFlutter/18691.jpg", import.meta.url).href,
-  new URL("../MeteorFlutter/18692.jpg", import.meta.url).href,
-  new URL("../MeteorFlutter/18693.jpg", import.meta.url).href,
-  new URL("../MeteorFlutter/18694.jpg", import.meta.url).href,
-  new URL("../MeteorFlutter/18695.jpg", import.meta.url).href,
-  new URL("../MeteorFlutter/18696.jpg", import.meta.url).href,
+  new URL("../MeteorFlutter/18690.webp", import.meta.url).href,
+  new URL("../MeteorFlutter/18691.webp", import.meta.url).href,
+  new URL("../MeteorFlutter/18692.webp", import.meta.url).href,
+  new URL("../MeteorFlutter/18693.webp", import.meta.url).href,
+  new URL("../MeteorFlutter/18694.webp", import.meta.url).href,
+  new URL("../MeteorFlutter/18695.webp", import.meta.url).href,
+  new URL("../MeteorFlutter/18696.webp", import.meta.url).href,
 ];
 
 const youtubeMusicExplodeImages: string[] = [];
