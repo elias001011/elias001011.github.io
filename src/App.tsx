@@ -453,7 +453,7 @@ const projectAssets: Record<
   },
   "meteor-landing": {
     images: meteorLandingImages,
-    live: "https://lp-meteor-ai.netlify.app",
+    live: "https://lp--meteor-ai.netlify.app/",
     repo: "https://github.com/elias001011/Meteor-LandingPage",
     reverse: true,
   },
