@@ -365,13 +365,6 @@ const meteorLandingImages = [
   new URL("../Meteor-landing/image copy 7.png", import.meta.url).href,
 ];
 
-const climovaImages = [
-  new URL("../Climova/image.png", import.meta.url).href,
-  new URL("../Climova/image copy.png", import.meta.url).href,
-  new URL("../Climova/image copy 2.png", import.meta.url).href,
-  new URL("../Climova/image copy 3.png", import.meta.url).href,
-];
-
 const apiceImages = [
   new URL("../Apice/image.png", import.meta.url).href,
   new URL("../Apice/image copy.png", import.meta.url).href,
@@ -385,21 +378,6 @@ const apiceImages = [
   new URL("../Apice/image copy 9.png", import.meta.url).href,
   new URL("../Apice/image copy 10.png", import.meta.url).href,
   new URL("../Apice/image copy 11.png", import.meta.url).href,
-];
-
-const merakiImages = [
-  new URL("../Meraki/image.png", import.meta.url).href,
-  new URL("../Meraki/image copy.png", import.meta.url).href,
-  new URL("../Meraki/image copy 2.png", import.meta.url).href,
-  new URL("../Meraki/image copy 3.png", import.meta.url).href,
-];
-
-const lyceumImages = [
-  new URL("../Lyceum/image.png", import.meta.url).href,
-  new URL("../Lyceum/image copy.png", import.meta.url).href,
-  new URL("../Lyceum/image copy 2.png", import.meta.url).href,
-  new URL("../Lyceum/image copy 3.png", import.meta.url).href,
-  new URL("../Lyceum/image copy 4.png", import.meta.url).href,
 ];
 
 const myComputerImages = [
@@ -420,16 +398,21 @@ const musifyDesktopImages = [
   new URL("../MusifyDesktop/image copy 5.png", import.meta.url).href,
 ];
 
+const syncMyMusicImages: string[] = [];
+
+const meteorFlutterImages: string[] = [];
+
+const youtubeMusicExplodeImages: string[] = [];
+
 const projectOrder = [
-  "meraki",
-  "lyceum",
-  "apice",
-  "meteor-landing",
   "meteor",
+  "apice",
   "my-computer",
-  "climova",
   "musify-desktop-port",
-  "musify",
+  "meteor-landing",
+  "sync-my-music",
+  "meteor-flutter",
+  "youtube-music-explode-dart",
 ] as const;
 
 type ProjectId = (typeof projectOrder)[number];
@@ -463,17 +446,6 @@ const projectAssets: Record<
     openSource?: boolean;
   }
 > = {
-  meraki: {
-    images: merakiImages,
-    live: "https://merakisarandi.netlify.app/",
-    repo: "https://github.com/elias001011/meraki-landing",
-  },
-  lyceum: {
-    images: lyceumImages,
-    live: "https://aristoteles-especializacao.netlify.app",
-    repo: "https://github.com/elias001011/curso-landingpage",
-    reverse: true,
-  },
   apice: {
     images: apiceImages,
     live: "https://apice-ai.netlify.app",
@@ -481,7 +453,7 @@ const projectAssets: Record<
   },
   "meteor-landing": {
     images: meteorLandingImages,
-    live: "https://sobre-meteor-ai.netlify.app",
+    live: "https://lp-meteor-ai.netlify.app",
     repo: "https://github.com/elias001011/Meteor-LandingPage",
     reverse: true,
   },
@@ -495,10 +467,15 @@ const projectAssets: Record<
     repo: "https://github.com/elias001011/my-computer",
     reverse: true,
   },
-  climova: {
-    images: climovaImages,
-    live: "https://climova.netlify.app",
-    repo: "https://github.com/elias001011/Climova",
+  "sync-my-music": {
+    images: syncMyMusicImages,
+    repo: "https://github.com/elias001011/sync-my-music",
+    reverse: true,
+  },
+  "meteor-flutter": {
+    images: meteorFlutterImages,
+    repo: "https://github.com/elias001011/Meteor/tree/android",
+    reverse: true,
   },
   "musify-desktop-port": {
     images: musifyDesktopImages,
@@ -506,35 +483,23 @@ const projectAssets: Record<
     repo: "https://github.com/elias001011/Musify-Desktop-Port",
     reverse: true,
   },
-  musify: {
-    images: [],
-    live: "https://gokadzev.github.io/Musify/",
-    repo: "https://github.com/gokadzev/Musify",
-    openSource: true,
+  "youtube-music-explode-dart": {
+    images: youtubeMusicExplodeImages,
+    repo: "https://github.com/elias001011/youtube_music_explode_dart",
   },
 };
 
 const projectContent: Record<LanguageId, Record<ProjectId, ProjectText>> = {
   pt: {
-    meraki: {
-      title: "Meraki",
-      eyebrow: "Connecta",
-      subtitle: "Landing page para cafeteria local.",
+    meteor: {
+      title: "Meteor",
+      eyebrow: "Projeto solo",
+      subtitle: "Inteligência climática com IA generativa.",
       description:
-        "Site feito inteiramente por mim para uma cafeteria de Sarandi, com galeria, SEO básico, newsletter, Google Analytics e uma experiência visual acolhedora.",
-      role: "Design, desenvolvimento, SEO inicial e publicação dentro da Connecta.",
-      stack: ["React", "SEO", "Analytics", "Newsletter", "Netlify"],
-      metrics: ["Landing", "SEO básico", "Analytics"],
-    },
-    lyceum: {
-      title: "Lyceum",
-      eyebrow: "Connecta",
-      subtitle: "Landing page para especialização em filosofia clássica.",
-      description:
-        "Página comercial para o curso Aristóteles/Lyceum, com narrativa premium, seções de currículo, benefícios, FAQ e galeria visual para apresentar a formação com clareza.",
-      role: "Interface, copy, responsividade, galeria e publicação do projeto pela Connecta.",
-      stack: ["React", "Vite", "Landing Page", "Responsive UI", "Netlify"],
-      metrics: ["Aristóteles", "Galeria", "Turma 2026"],
+        "PWA de clima em tempo real com assistente contextual, alertas, dados de múltiplas fontes e BFF em Netlify Functions para proteger chaves de API.",
+      role: "Produto, interface, arquitetura full stack e integrações serverless.",
+      stack: ["React", "TypeScript", "Vite", "Tailwind", "Gemini", "Netlify"],
+      metrics: ["PWA", "IA contextual", "BFF seguro"],
     },
     apice: {
       title: "Ápice",
@@ -576,15 +541,25 @@ const projectContent: Record<LanguageId, Record<ProjectId, ProjectText>> = {
       stack: ["Node.js", "JavaScript", "HTML", "CSS", "CLI", "Ollama"],
       metrics: ["Self-hosted", "Tools aprovadas", "Multi-provider"],
     },
-    climova: {
-      title: "Climova",
-      eyebrow: "Projeto experimental",
-      subtitle: "Clima simples, visual moderno e mini IA.",
+    "sync-my-music": {
+      title: "Sync My Music",
+      eyebrow: "Projeto solo",
+      subtitle: "Central de música self-hosted.",
       description:
-        "Primeiro projeto experimental usado como marco de comparação: dashboard de previsão do tempo com glassmorphism, recomendações automáticas e funções serverless para APIs externas.",
-      role: "Primeira base sólida em interface, API de clima e deploy serverless.",
-      stack: ["HTML", "CSS", "JavaScript", "Netlify Functions", "OpenWeather"],
-      metrics: ["Primeiro experimento", "Mini IA", "Unsplash"],
+        "Biblioteca canônica de música com sincronização de playlists entre serviços, recaps de escuta unificados, integrações com Musify e Sonora, e dashboard LAN com Docker.",
+      role: "Produto, backend Python/FastAPI, engine de sync, UI React e deploy.",
+      stack: ["Python", "FastAPI", "React", "SQLite", "Docker", "Netlify"],
+      metrics: ["Self-hosted", "N-way sync", "Multi-account"],
+    },
+    "meteor-flutter": {
+      title: "Meteor Flutter",
+      eyebrow: "Projeto solo",
+      subtitle: "App Android nativo do Meteor em Flutter.",
+      description:
+        "Aplicativo Android com Home em cards, mapa, notícias, assistente IA, tema AMOLED preto real, push via FCM e cache local — compartilha o mesmo BFF serverless da web.",
+      role: "Produto mobile, UI Flutter/Material 3, Firebase Auth, App Check, FCM e integração com o BFF.",
+      stack: ["Flutter", "Dart", "Material 3", "Firebase", "FCM", "GitHub Actions"],
+      metrics: ["Android", "Material You", "Push nativo"],
     },
     "musify-desktop-port": {
       title: "Musify Desktop Port",
@@ -597,37 +572,27 @@ const projectContent: Record<LanguageId, Record<ProjectId, ProjectText>> = {
       metrics: ["v10.0.8", "Windows/Linux", "Sync upstream"],
       liveLabel: "Downloads",
     },
-    musify: {
-      title: "Musify",
+    "youtube-music-explode-dart": {
+      title: "youtube_music_explode_dart",
       eyebrow: "Open source",
-      subtitle: "Streaming de música open source para Android.",
+      subtitle: "Client Dart para a API InnerTube do YouTube Music.",
       description:
-        "Mais de 25 commits e 1500+ linhas em um projeto de streaming de música open-source, incluindo correções de playback, fila, offline, acessibilidade e localização pt-BR.",
-      role: "Correções reais em produto usado por outras pessoas, com PRs revisados e mergeados.",
-      stack: ["Flutter", "Dart", "Android", "i18n", "Acessibilidade"],
-      metrics: ["25+ commits", "1500+ linhas", "Projeto usado"],
+        "Biblioteca Dart minimalista para acessar artistas, discografia, top songs e busca no YouTube Music — usada pelo Musify para páginas de artistas e importação de playlists do Spotify.",
+      role: "API reverse-engineered, matching por word-set, sem scraping de HTML.",
+      stack: ["Dart", "YouTube Music", "InnerTube", "youtube_explode_dart"],
+      metrics: ["WEB_REMIX", "Browse + Search", "Usado pelo Musify"],
     },
   },
   en: {
-    meraki: {
-      title: "Meraki",
-      eyebrow: "Connecta",
-      subtitle: "Landing page for a local coffee shop.",
+    meteor: {
+      title: "Meteor",
+      eyebrow: "Solo project",
+      subtitle: "Climate intelligence with generative AI.",
       description:
-        "A website I built end to end for a coffee shop in Sarandi, with a gallery, basic SEO, newsletter, Google Analytics and a warm visual experience.",
-      role: "Design, development, initial SEO and publication through Connecta.",
-      stack: ["React", "SEO", "Analytics", "Newsletter", "Netlify"],
-      metrics: ["Landing", "Basic SEO", "Analytics"],
-    },
-    lyceum: {
-      title: "Lyceum",
-      eyebrow: "Connecta",
-      subtitle: "Landing page for a classical philosophy specialization.",
-      description:
-        "Commercial page for the Aristóteles/Lyceum course, with a premium narrative, curriculum sections, benefits, FAQ and a visual gallery that presents the program clearly.",
-      role: "Interface, copy, responsive layout, gallery and project publication through Connecta.",
-      stack: ["React", "Vite", "Landing Page", "Responsive UI", "Netlify"],
-      metrics: ["Aristóteles", "Gallery", "2026 cohort"],
+        "Real-time weather PWA with a contextual assistant, alerts, data from multiple sources and a Netlify Functions BFF to protect API keys.",
+      role: "Product, interface, full stack architecture and serverless integrations.",
+      stack: ["React", "TypeScript", "Vite", "Tailwind", "Gemini", "Netlify"],
+      metrics: ["PWA", "Contextual AI", "Secure BFF"],
     },
     apice: {
       title: "Ápice",
@@ -669,15 +634,25 @@ const projectContent: Record<LanguageId, Record<ProjectId, ProjectText>> = {
       stack: ["Node.js", "JavaScript", "HTML", "CSS", "CLI", "Ollama"],
       metrics: ["Self-hosted", "Approved tools", "Multi-provider"],
     },
-    climova: {
-      title: "Climova",
-      eyebrow: "Experimental project",
-      subtitle: "Simple weather, modern visuals and a mini AI layer.",
+    "sync-my-music": {
+      title: "Sync My Music",
+      eyebrow: "Solo project",
+      subtitle: "Self-hosted music control center.",
       description:
-        "First experimental project kept as a comparison point: a weather forecast dashboard with glassmorphism, automatic recommendations and serverless functions for external APIs.",
-      role: "First solid base in interface work, weather APIs and serverless deployment.",
-      stack: ["HTML", "CSS", "JavaScript", "Netlify Functions", "OpenWeather"],
-      metrics: ["First experiment", "Mini AI", "Unsplash"],
+        "Canonical music library with cross-service playlist sync, unified listening recaps, Musify and Sonora integrations, and a LAN dashboard with Docker.",
+      role: "Product, Python/FastAPI backend, sync engine, React UI and deployment.",
+      stack: ["Python", "FastAPI", "React", "SQLite", "Docker", "Netlify"],
+      metrics: ["Self-hosted", "N-way sync", "Multi-account"],
+    },
+    "meteor-flutter": {
+      title: "Meteor Flutter",
+      eyebrow: "Solo project",
+      subtitle: "Native Android Meteor app in Flutter.",
+      description:
+        "Android app with card-based Home, map, news, AI assistant, true-black AMOLED theme, FCM push and local cache — sharing the same serverless BFF as the web.",
+      role: "Mobile product, Flutter/Material 3 UI, Firebase Auth, App Check, FCM and BFF integration.",
+      stack: ["Flutter", "Dart", "Material 3", "Firebase", "FCM", "GitHub Actions"],
+      metrics: ["Android", "Material You", "Native push"],
     },
     "musify-desktop-port": {
       title: "Musify Desktop Port",
@@ -690,37 +665,27 @@ const projectContent: Record<LanguageId, Record<ProjectId, ProjectText>> = {
       metrics: ["v10.0.8", "Windows/Linux", "Upstream sync"],
       liveLabel: "Downloads",
     },
-    musify: {
-      title: "Musify",
+    "youtube-music-explode-dart": {
+      title: "youtube_music_explode_dart",
       eyebrow: "Open source",
-      subtitle: "Open-source music streaming for Android.",
+      subtitle: "Dart client for YouTube Music's InnerTube API.",
       description:
-        "More than 25 commits and 1500+ lines in an open-source music streaming project, including fixes for playback, queue, offline mode, accessibility and Brazilian Portuguese localization.",
-      role: "Real fixes in a product used by other people, with reviewed and merged PRs.",
-      stack: ["Flutter", "Dart", "Android", "i18n", "Accessibility"],
-      metrics: ["25+ commits", "1500+ lines", "Used project"],
+        "Minimal Dart library to access artists, discography, top songs and search on YouTube Music — used by Musify for artist pages and Spotify playlist import.",
+      role: "Reverse-engineered API, word-set matching, no HTML scraping.",
+      stack: ["Dart", "YouTube Music", "InnerTube", "youtube_explode_dart"],
+      metrics: ["WEB_REMIX", "Browse + Search", "Used by Musify"],
     },
   },
   es: {
-    meraki: {
-      title: "Meraki",
-      eyebrow: "Connecta",
-      subtitle: "Landing page para una cafetería local.",
+    meteor: {
+      title: "Meteor",
+      eyebrow: "Proyecto propio",
+      subtitle: "Inteligencia climática con IA generativa.",
       description:
-        "Sitio hecho de punta a punta para una cafetería de Sarandi, con galería, SEO básico, newsletter, Google Analytics y una experiencia visual acogedora.",
-      role: "Diseño, desarrollo, SEO inicial y publicación dentro de Connecta.",
-      stack: ["React", "SEO", "Analytics", "Newsletter", "Netlify"],
-      metrics: ["Landing", "SEO básico", "Analytics"],
-    },
-    lyceum: {
-      title: "Lyceum",
-      eyebrow: "Connecta",
-      subtitle: "Landing page para especialización en filosofía clásica.",
-      description:
-        "Página comercial para el curso Aristóteles/Lyceum, con narrativa premium, secciones de currículo, beneficios, FAQ y una galería visual para presentar la formación con claridad.",
-      role: "Interfaz, copy, responsividad, galería y publicación del proyecto por Connecta.",
-      stack: ["React", "Vite", "Landing Page", "Responsive UI", "Netlify"],
-      metrics: ["Aristóteles", "Galería", "Grupo 2026"],
+        "PWA de clima en tiempo real con asistente contextual, alertas, datos de múltiples fuentes y BFF en Netlify Functions para proteger claves de API.",
+      role: "Producto, interfaz, arquitectura full stack e integraciones serverless.",
+      stack: ["React", "TypeScript", "Vite", "Tailwind", "Gemini", "Netlify"],
+      metrics: ["PWA", "IA contextual", "BFF seguro"],
     },
     apice: {
       title: "Ápice",
@@ -762,15 +727,25 @@ const projectContent: Record<LanguageId, Record<ProjectId, ProjectText>> = {
       stack: ["Node.js", "JavaScript", "HTML", "CSS", "CLI", "Ollama"],
       metrics: ["Self-hosted", "Herramientas aprobadas", "Multi-provider"],
     },
-    climova: {
-      title: "Climova",
-      eyebrow: "Proyecto experimental",
-      subtitle: "Clima simple, visual moderno y mini IA.",
+    "sync-my-music": {
+      title: "Sync My Music",
+      eyebrow: "Proyecto propio",
+      subtitle: "Central de música self-hosted.",
       description:
-        "Primer proyecto experimental usado como punto de comparación: dashboard de previsión del tiempo con glassmorphism, recomendaciones automáticas y funciones serverless para APIs externas.",
-      role: "Primera base sólida en interfaz, API de clima y deploy serverless.",
-      stack: ["HTML", "CSS", "JavaScript", "Netlify Functions", "OpenWeather"],
-      metrics: ["Primer experimento", "Mini IA", "Unsplash"],
+        "Biblioteca canónica de música con sincronización de playlists entre servicios, recaps de escucha unificados, integraciones con Musify y Sonora, y dashboard LAN con Docker.",
+      role: "Producto, backend Python/FastAPI, motor de sync, UI React y despliegue.",
+      stack: ["Python", "FastAPI", "React", "SQLite", "Docker", "Netlify"],
+      metrics: ["Self-hosted", "N-way sync", "Multi-account"],
+    },
+    "meteor-flutter": {
+      title: "Meteor Flutter",
+      eyebrow: "Proyecto propio",
+      subtitle: "App Android nativa de Meteor en Flutter.",
+      description:
+        "App Android con Home en cards, mapa, noticias, asistente IA, tema AMOLED negro real, push vía FCM y caché local — comparte el mismo BFF serverless que la web.",
+      role: "Producto mobile, UI Flutter/Material 3, Firebase Auth, App Check, FCM e integración con el BFF.",
+      stack: ["Flutter", "Dart", "Material 3", "Firebase", "FCM", "GitHub Actions"],
+      metrics: ["Android", "Material You", "Push nativo"],
     },
     "musify-desktop-port": {
       title: "Musify Desktop Port",
@@ -783,15 +758,15 @@ const projectContent: Record<LanguageId, Record<ProjectId, ProjectText>> = {
       metrics: ["v10.0.8", "Windows/Linux", "Sync upstream"],
       liveLabel: "Descargas",
     },
-    musify: {
-      title: "Musify",
+    "youtube-music-explode-dart": {
+      title: "youtube_music_explode_dart",
       eyebrow: "Open source",
-      subtitle: "Streaming de música open source para Android.",
+      subtitle: "Client Dart para la API InnerTube de YouTube Music.",
       description:
-        "Más de 25 commits y 1500+ líneas en un proyecto open-source de streaming de música, incluyendo correcciones de playback, cola, modo offline, accesibilidad y localización pt-BR.",
-      role: "Correcciones reales en un producto usado por otras personas, con PRs revisados y mergeados.",
-      stack: ["Flutter", "Dart", "Android", "i18n", "Accesibilidad"],
-      metrics: ["25+ commits", "1500+ líneas", "Proyecto usado"],
+        "Biblioteca Dart minimalista para acceder a artistas, discografía, top songs y búsqueda en YouTube Music — usada por Musify para páginas de artistas e importación de playlists de Spotify.",
+      role: "API reverse-engineered, matching por word-set, sin scraping de HTML.",
+      stack: ["Dart", "YouTube Music", "InnerTube", "youtube_explode_dart"],
+      metrics: ["WEB_REMIX", "Browse + Search", "Usado por Musify"],
     },
   },
 };
