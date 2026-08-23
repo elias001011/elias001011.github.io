@@ -400,7 +400,15 @@ const musifyDesktopImages = [
 
 const syncMyMusicImages: string[] = [];
 
-const meteorFlutterImages: string[] = [];
+const meteorFlutterImages = [
+  new URL("../MeteorFlutter/18690.jpg", import.meta.url).href,
+  new URL("../MeteorFlutter/18691.jpg", import.meta.url).href,
+  new URL("../MeteorFlutter/18692.jpg", import.meta.url).href,
+  new URL("../MeteorFlutter/18693.jpg", import.meta.url).href,
+  new URL("../MeteorFlutter/18694.jpg", import.meta.url).href,
+  new URL("../MeteorFlutter/18695.jpg", import.meta.url).href,
+  new URL("../MeteorFlutter/18696.jpg", import.meta.url).href,
+];
 
 const youtubeMusicExplodeImages: string[] = [];
 
