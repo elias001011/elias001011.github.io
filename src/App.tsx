@@ -421,6 +421,7 @@ const projectOrder = [
   "sync-my-music",
   "meteor-flutter",
   "youtube-music-explode-dart",
+  "musify",
 ] as const;
 
 type ProjectId = (typeof projectOrder)[number];
@@ -494,6 +495,12 @@ const projectAssets: Record<
   "youtube-music-explode-dart": {
     images: youtubeMusicExplodeImages,
     repo: "https://github.com/elias001011/youtube_music_explode_dart",
+  },
+  musify: {
+    images: [],
+    live: "https://gokadzev.github.io/Musify/",
+    repo: "https://github.com/gokadzev/Musify",
+    openSource: true,
   },
 };
 
@@ -590,6 +597,16 @@ const projectContent: Record<LanguageId, Record<ProjectId, ProjectText>> = {
       stack: ["Dart", "YouTube Music", "InnerTube", "youtube_explode_dart"],
       metrics: ["WEB_REMIX", "Browse + Search", "Usado pelo Musify"],
     },
+    musify: {
+      title: "Musify",
+      eyebrow: "Open source",
+      subtitle: "Streaming de música open source para Android.",
+      description:
+        "Mais de 25 commits e 1500+ linhas em um projeto de streaming de música open-source, incluindo correções de playback, fila, offline, acessibilidade e localização pt-BR.",
+      role: "Correções reais em produto usado por outras pessoas, com PRs revisados e mergeados.",
+      stack: ["Flutter", "Dart", "Android", "i18n", "Acessibilidade"],
+      metrics: ["25+ commits", "1500+ linhas", "Projeto usado"],
+    },
   },
   en: {
     meteor: {
@@ -683,6 +700,16 @@ const projectContent: Record<LanguageId, Record<ProjectId, ProjectText>> = {
       stack: ["Dart", "YouTube Music", "InnerTube", "youtube_explode_dart"],
       metrics: ["WEB_REMIX", "Browse + Search", "Used by Musify"],
     },
+    musify: {
+      title: "Musify",
+      eyebrow: "Open source",
+      subtitle: "Open-source music streaming for Android.",
+      description:
+        "More than 25 commits and 1500+ lines in an open-source music streaming project, including fixes for playback, queue, offline mode, accessibility and Brazilian Portuguese localization.",
+      role: "Real fixes in a product used by other people, with reviewed and merged PRs.",
+      stack: ["Flutter", "Dart", "Android", "i18n", "Accessibility"],
+      metrics: ["25+ commits", "1500+ lines", "Used project"],
+    },
   },
   es: {
     meteor: {
@@ -775,6 +802,16 @@ const projectContent: Record<LanguageId, Record<ProjectId, ProjectText>> = {
       role: "API reverse-engineered, matching por word-set, sin scraping de HTML.",
       stack: ["Dart", "YouTube Music", "InnerTube", "youtube_explode_dart"],
       metrics: ["WEB_REMIX", "Browse + Search", "Usado por Musify"],
+    },
+    musify: {
+      title: "Musify",
+      eyebrow: "Open source",
+      subtitle: "Streaming de música open source para Android.",
+      description:
+        "Más de 25 commits y 1500+ líneas en un proyecto open-source de streaming de música, incluyendo correcciones de playback, cola, modo offline, accesibilidad y localización pt-BR.",
+      role: "Correcciones reales en un producto usado por otras personas, con PRs revisados y mergeados.",
+      stack: ["Flutter", "Dart", "Android", "i18n", "Accesibilidad"],
+      metrics: ["25+ commits", "1500+ líneas", "Proyecto usado"],
     },
   },
 };
