@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
-const profileImage = new URL("../me.jpg", import.meta.url).href;
+const profileImage = new URL("../me.webp", import.meta.url).href;
 
 const profile = {
   name: "Elias J. R. Nunes",
@@ -75,7 +75,7 @@ const siteCopy = {
       github: "GitHub",
     },
     hero: {
-      status: "Disponível para vagas",
+      status: "",
       lead: (age: number) =>
         `Desenvolvedor full stack de ${age} anos, sócio da Connecta e focado em transformar ideias em produtos web completos, do front ao backend serverless.`,
       primary: "Conhecer projetos",
@@ -106,7 +106,7 @@ const siteCopy = {
       skills: ["Interfaces React", "APIs e Functions", "Deploy real"],
     },
     more: {
-      eyebrow: "Em construção",
+      eyebrow: "Em desenvolvimento",
       title: "Vem mais por aí.",
       text: "Novos produtos, melhorias nos projetos atuais e mais contribuições open-source devem aparecer por aqui conforme forem ficando prontos.",
       cta: "Acompanhar no GitHub",
@@ -133,10 +133,10 @@ const siteCopy = {
     },
     commitFeed: {
       heading: "Commits recentes",
-      stats: ["25+ commits", "1500+ linhas", "Open source"],
+      stats: ["50+ commits", "10000+ linhas", "Open source"],
       loading: "Carregando atividade recente...",
       error:
-        "25+ commits confirmados no projeto. O GitHub pode limitar chamadas anônimas.",
+        "50+ commits confirmados no projeto. O GitHub pode limitar chamadas anônimas.",
     },
     gallery: {
       modalLabel: "Galeria",
@@ -169,7 +169,7 @@ const siteCopy = {
       github: "GitHub",
     },
     hero: {
-      status: "Available for roles",
+      status: "",
       lead: (age: number) =>
         `${age}-year-old full stack developer, Connecta partner, focused on turning ideas into complete web products from frontend to serverless backend.`,
       primary: "Explore projects",
@@ -200,7 +200,7 @@ const siteCopy = {
       skills: ["React interfaces", "APIs and Functions", "Real deployment"],
     },
     more: {
-      eyebrow: "In progress",
+      eyebrow: "In development",
       title: "More is on the way.",
       text: "New products, improvements to current projects and more open-source contributions will appear here as they become ready.",
       cta: "Follow on GitHub",
@@ -227,10 +227,10 @@ const siteCopy = {
     },
     commitFeed: {
       heading: "Recent commits",
-      stats: ["25+ commits", "1500+ lines", "Open source"],
+      stats: ["50+ commits", "10000+ lines", "Open source"],
       loading: "Loading recent activity...",
       error:
-        "25+ commits confirmed in the project. GitHub may rate-limit anonymous requests.",
+        "50+ commits confirmed in the project. GitHub may rate-limit anonymous requests.",
     },
     gallery: {
       modalLabel: "Gallery",
@@ -263,7 +263,7 @@ const siteCopy = {
       github: "GitHub",
     },
     hero: {
-      status: "Disponible para oportunidades",
+      status: "",
       lead: (age: number) =>
         `Desarrollador full stack de ${age} años, socio de Connecta y enfocado en transformar ideas en productos web completos, del frontend al backend serverless.`,
       primary: "Ver proyectos",
@@ -321,10 +321,10 @@ const siteCopy = {
     },
     commitFeed: {
       heading: "Commits recientes",
-      stats: ["25+ commits", "1500+ líneas", "Open source"],
+      stats: ["50+ commits", "10000+ líneas", "Open source"],
       loading: "Cargando actividad reciente...",
       error:
-        "25+ commits confirmados en el proyecto. GitHub puede limitar llamadas anónimas.",
+        "50+ commits confirmados en el proyecto. GitHub puede limitar llamadas anónimas.",
     },
     gallery: {
       modalLabel: "Galería",
@@ -343,88 +343,116 @@ type CommitFeedCopy = (typeof siteCopy)["pt"]["commitFeed"];
 type GalleryCopy = (typeof siteCopy)["pt"]["gallery"];
 
 const meteorImages = [
-  new URL("../Meteor/image.png", import.meta.url).href,
-  new URL("../Meteor/image copy.png", import.meta.url).href,
-  new URL("../Meteor/image copy 2.png", import.meta.url).href,
-  new URL("../Meteor/image copy 3.png", import.meta.url).href,
-  new URL("../Meteor/image copy 4.png", import.meta.url).href,
-  new URL("../Meteor/image copy 5.png", import.meta.url).href,
-  new URL("../Meteor/image copy 6.png", import.meta.url).href,
-  new URL("../Meteor/image copy 7.png", import.meta.url).href,
-  new URL("../Meteor/image copy 8.png", import.meta.url).href,
+  new URL("../Meteor/image.webp", import.meta.url).href,
+  new URL("../Meteor/image copy.webp", import.meta.url).href,
+  new URL("../Meteor/image copy 2.webp", import.meta.url).href,
+  new URL("../Meteor/image copy 3.webp", import.meta.url).href,
+  new URL("../Meteor/image copy 4.webp", import.meta.url).href,
+  new URL("../Meteor/image copy 5.webp", import.meta.url).href,
+  new URL("../Meteor/image copy 6.webp", import.meta.url).href,
+  new URL("../Meteor/image copy 7.webp", import.meta.url).href,
+  new URL("../Meteor/image copy 8.webp", import.meta.url).href,
 ];
 
 const meteorLandingImages = [
-  new URL("../Meteor-landing/image.png", import.meta.url).href,
-  new URL("../Meteor-landing/image copy.png", import.meta.url).href,
-  new URL("../Meteor-landing/image copy 2.png", import.meta.url).href,
-  new URL("../Meteor-landing/image copy 3.png", import.meta.url).href,
-  new URL("../Meteor-landing/image copy 4.png", import.meta.url).href,
-  new URL("../Meteor-landing/image copy 5.png", import.meta.url).href,
-  new URL("../Meteor-landing/image copy 6.png", import.meta.url).href,
-  new URL("../Meteor-landing/image copy 7.png", import.meta.url).href,
+  new URL("../Meteor-landing/image.webp", import.meta.url).href,
+  new URL("../Meteor-landing/image copy.webp", import.meta.url).href,
+  new URL("../Meteor-landing/image copy 2.webp", import.meta.url).href,
+  new URL("../Meteor-landing/image copy 3.webp", import.meta.url).href,
+  new URL("../Meteor-landing/image copy 4.webp", import.meta.url).href,
+  new URL("../Meteor-landing/image copy 5.webp", import.meta.url).href,
+  new URL("../Meteor-landing/image copy 6.webp", import.meta.url).href,
+  new URL("../Meteor-landing/image copy 7.webp", import.meta.url).href,
 ];
 
 const apiceImages = [
-  new URL("../Apice/image.png", import.meta.url).href,
-  new URL("../Apice/image copy.png", import.meta.url).href,
-  new URL("../Apice/image copy 2.png", import.meta.url).href,
-  new URL("../Apice/image copy 3.png", import.meta.url).href,
-  new URL("../Apice/image copy 4.png", import.meta.url).href,
-  new URL("../Apice/image copy 5.png", import.meta.url).href,
-  new URL("../Apice/image copy 6.png", import.meta.url).href,
-  new URL("../Apice/image copy 7.png", import.meta.url).href,
-  new URL("../Apice/image copy 8.png", import.meta.url).href,
-  new URL("../Apice/image copy 9.png", import.meta.url).href,
-  new URL("../Apice/image copy 10.png", import.meta.url).href,
-  new URL("../Apice/image copy 11.png", import.meta.url).href,
+  new URL("../Apice/image.webp", import.meta.url).href,
+  new URL("../Apice/image copy.webp", import.meta.url).href,
+  new URL("../Apice/image copy 2.webp", import.meta.url).href,
+  new URL("../Apice/image copy 3.webp", import.meta.url).href,
+  new URL("../Apice/image copy 4.webp", import.meta.url).href,
+  new URL("../Apice/image copy 5.webp", import.meta.url).href,
+  new URL("../Apice/image copy 6.webp", import.meta.url).href,
+  new URL("../Apice/image copy 7.webp", import.meta.url).href,
+  new URL("../Apice/image copy 8.webp", import.meta.url).href,
+  new URL("../Apice/image copy 9.webp", import.meta.url).href,
+  new URL("../Apice/image copy 10.webp", import.meta.url).href,
+  new URL("../Apice/image copy 11.webp", import.meta.url).href,
 ];
 
 const myComputerImages = [
-  new URL("../MyComputer/image.png", import.meta.url).href,
-  new URL("../MyComputer/image copy.png", import.meta.url).href,
-  new URL("../MyComputer/image copy 2.png", import.meta.url).href,
-  new URL("../MyComputer/image copy 3.png", import.meta.url).href,
-  new URL("../MyComputer/image copy 4.png", import.meta.url).href,
-  new URL("../MyComputer/image copy 5.png", import.meta.url).href,
+  new URL("../MyComputer/image.webp", import.meta.url).href,
+  new URL("../MyComputer/image copy.webp", import.meta.url).href,
+  new URL("../MyComputer/image copy 2.webp", import.meta.url).href,
+  new URL("../MyComputer/image copy 3.webp", import.meta.url).href,
+  new URL("../MyComputer/image copy 4.webp", import.meta.url).href,
+  new URL("../MyComputer/image copy 5.webp", import.meta.url).href,
 ];
 
 const musifyDesktopImages = [
-  new URL("../MusifyDesktop/image.png", import.meta.url).href,
-  new URL("../MusifyDesktop/image copy.png", import.meta.url).href,
-  new URL("../MusifyDesktop/image copy 2.png", import.meta.url).href,
-  new URL("../MusifyDesktop/image copy 3.png", import.meta.url).href,
-  new URL("../MusifyDesktop/image copy 4.png", import.meta.url).href,
-  new URL("../MusifyDesktop/image copy 5.png", import.meta.url).href,
+  new URL("../MusifyDesktop/image.webp", import.meta.url).href,
+  new URL("../MusifyDesktop/image copy.webp", import.meta.url).href,
+  new URL("../MusifyDesktop/image copy 2.webp", import.meta.url).href,
+  new URL("../MusifyDesktop/image copy 3.webp", import.meta.url).href,
+  new URL("../MusifyDesktop/image copy 4.webp", import.meta.url).href,
+  new URL("../MusifyDesktop/image copy 5.webp", import.meta.url).href,
 ];
 
 const syncMyMusicImages: string[] = [];
 
 const meteorFlutterImages = [
-  new URL("../MeteorFlutter/18690.jpg", import.meta.url).href,
-  new URL("../MeteorFlutter/18691.jpg", import.meta.url).href,
-  new URL("../MeteorFlutter/18692.jpg", import.meta.url).href,
-  new URL("../MeteorFlutter/18693.jpg", import.meta.url).href,
-  new URL("../MeteorFlutter/18694.jpg", import.meta.url).href,
-  new URL("../MeteorFlutter/18695.jpg", import.meta.url).href,
-  new URL("../MeteorFlutter/18696.jpg", import.meta.url).href,
+  new URL("../MeteorFlutter/18690.webp", import.meta.url).href,
+  new URL("../MeteorFlutter/18691.webp", import.meta.url).href,
+  new URL("../MeteorFlutter/18692.webp", import.meta.url).href,
+  new URL("../MeteorFlutter/18693.webp", import.meta.url).href,
+  new URL("../MeteorFlutter/18694.webp", import.meta.url).href,
+  new URL("../MeteorFlutter/18695.webp", import.meta.url).href,
+  new URL("../MeteorFlutter/18696.webp", import.meta.url).href,
 ];
 
-const youtubeMusicExplodeImages: string[] = [];
+const youtubeMusicExplodeImages = [
+  new URL("../YoutubeMusicExplode/image.webp", import.meta.url).href,
+];
+
+const tec2dImages = [
+  new URL("../Tec2D/image.webp", import.meta.url).href,
+  new URL("../Tec2D/image copy.webp", import.meta.url).href,
+  new URL("../Tec2D/image copy 2.webp", import.meta.url).href,
+  new URL("../Tec2D/image copy 3.webp", import.meta.url).href,
+  new URL("../Tec2D/image copy 4.webp", import.meta.url).href,
+  new URL("../Tec2D/image copy 5.webp", import.meta.url).href,
+  new URL("../Tec2D/image copy 6.webp", import.meta.url).href,
+  new URL("../Tec2D/image copy 7.webp", import.meta.url).href,
+  new URL("../Tec2D/image copy 8.webp", import.meta.url).href,
+  new URL("../Tec2D/image copy 9.webp", import.meta.url).href,
+];
+
+const sepiaReaderImages = [
+  new URL("../SepiaReader/image.webp", import.meta.url).href,
+  new URL("../SepiaReader/image copy.webp", import.meta.url).href,
+  new URL("../SepiaReader/image copy 2.webp", import.meta.url).href,
+  new URL("../SepiaReader/image copy 3.webp", import.meta.url).href,
+  new URL("../SepiaReader/image copy 4.webp", import.meta.url).href,
+  new URL("../SepiaReader/image copy 5.webp", import.meta.url).href,
+  new URL("../SepiaReader/image copy 6.webp", import.meta.url).href,
+];
 
 const projectOrder = [
-  "meteor",
+  "tec2d",
   "apice",
   "my-computer",
   "musify-desktop-port",
   "meteor-landing",
-  "sync-my-music",
   "meteor-flutter",
+  "meteor",
+  "sepia-reader",
   "youtube-music-explode-dart",
   "musify",
 ] as const;
 
-type ProjectId = (typeof projectOrder)[number];
+const developmentOrder = ["sync-my-music"] as const;
+
+type ProjectId = (typeof projectOrder)[number] | (typeof developmentOrder)[number];
 
 type Project = {
   id: ProjectId;
@@ -441,9 +469,13 @@ type Project = {
   repo?: string;
   reverse?: boolean;
   openSource?: boolean;
+  featured?: boolean;
 };
 
-type ProjectText = Omit<Project, "id" | "images" | "live" | "repo" | "reverse" | "openSource">;
+type ProjectText = Omit<
+  Project,
+  "id" | "images" | "live" | "repo" | "reverse" | "openSource" | "featured"
+>;
 
 const projectAssets: Record<
   ProjectId,
@@ -453,8 +485,19 @@ const projectAssets: Record<
     repo?: string;
     reverse?: boolean;
     openSource?: boolean;
+    featured?: boolean;
   }
 > = {
+  tec2d: {
+    images: tec2dImages,
+    live: "https://tec2d.com.br",
+    featured: true,
+  },
+  "sepia-reader": {
+    images: sepiaReaderImages,
+    repo: "https://github.com/elias001011/sepia-reader",
+    reverse: true,
+  },
   apice: {
     images: apiceImages,
     live: "https://apice-ai.netlify.app",
@@ -506,6 +549,26 @@ const projectAssets: Record<
 
 const projectContent: Record<LanguageId, Record<ProjectId, ProjectText>> = {
   pt: {
+    tec2d: {
+      title: "Tec2D",
+      eyebrow: "Connecta · Cliente real",
+      subtitle: "Assistência técnica Classe A, em produção no ar.",
+      description:
+        "Site institucional e painel administrativo completo para a Tec2D, assistência técnica de celulares e eletrônicos em Sarandi (RS). Projeto real da Connecta, hospedado em VPS próprio, com catálogo, blog com SEO, operação de vendas e gestão financeira.",
+      role: "Full stack: site institucional, painel administrativo, catálogo, blog com SEO e operação de vendas, via Connecta.",
+      stack: ["HTML", "CSS", "JavaScript", "Node.js", "Express", "SEO"],
+      metrics: ["Cliente real", "Em produção", "Parceria Connecta"],
+    },
+    "sepia-reader": {
+      title: "Sépia",
+      eyebrow: "Projeto solo",
+      subtitle: "Leitor, biblioteca e editor de Markdown sem distrações.",
+      description:
+        "App Flutter para ler, ouvir e escrever Markdown: modo leitura com marcadores ancorados ao texto, leitura em voz alta com vozes neurais offline (Piper e Kokoro), editor com atalhos e biblioteca local com pastas e busca. Mesma base para Android, iOS e Web.",
+      role: "Produto solo, Flutter multiplataforma, TTS offline, editor de Markdown e biblioteca local.",
+      stack: ["Flutter", "Dart", "Markdown", "sherpa-onnx", "Material 3"],
+      metrics: ["3 plataformas", "TTS offline", "Editor Markdown"],
+    },
     meteor: {
       title: "Meteor",
       eyebrow: "Projeto solo",
@@ -535,16 +598,6 @@ const projectContent: Record<LanguageId, Record<ProjectId, ProjectText>> = {
       role: "Design visual, copy, animações de scroll e implementação completa.",
       stack: ["React", "TypeScript", "GSAP", "Framer Motion", "Lucide"],
       metrics: ["8 slides", "ScrollTrigger", "Responsivo"],
-    },
-    meteor: {
-      title: "Meteor",
-      eyebrow: "Projeto solo",
-      subtitle: "Inteligência climática com IA generativa.",
-      description:
-        "PWA de clima em tempo real com assistente contextual, alertas, dados de múltiplas fontes e BFF em Netlify Functions para proteger chaves de API.",
-      role: "Produto, interface, arquitetura full stack e integrações serverless.",
-      stack: ["React", "TypeScript", "Vite", "Tailwind", "Gemini", "Netlify"],
-      metrics: ["PWA", "IA contextual", "BFF seguro"],
     },
     "my-computer": {
       title: "My Computer",
@@ -602,13 +655,33 @@ const projectContent: Record<LanguageId, Record<ProjectId, ProjectText>> = {
       eyebrow: "Open source",
       subtitle: "Streaming de música open source para Android.",
       description:
-        "Mais de 25 commits e 1500+ linhas em um projeto de streaming de música open-source, incluindo correções de playback, fila, offline, acessibilidade e localização pt-BR.",
+        "Mais de 50 commits e 10000+ linhas em um projeto de streaming de música open-source, incluindo correções de playback, fila, offline, acessibilidade e localização pt-BR.",
       role: "Correções reais em produto usado por outras pessoas, com PRs revisados e mergeados.",
       stack: ["Flutter", "Dart", "Android", "i18n", "Acessibilidade"],
-      metrics: ["25+ commits", "1500+ linhas", "Projeto usado"],
+      metrics: ["50+ commits", "10000+ linhas", "Projeto usado"],
     },
   },
   en: {
+    tec2d: {
+      title: "Tec2D",
+      eyebrow: "Connecta · Real client",
+      subtitle: "Class-A tech repair shop, live in production.",
+      description:
+        "Institutional site and full admin panel for Tec2D, a phone and electronics repair shop in Sarandi, Brazil. A real Connecta project, self-hosted on its own VPS, with a catalog, SEO blog, sales operations and financial management.",
+      role: "Full stack: institutional site, admin panel, catalog, SEO blog and sales operations, via Connecta.",
+      stack: ["HTML", "CSS", "JavaScript", "Node.js", "Express", "SEO"],
+      metrics: ["Real client", "In production", "Connecta partnership"],
+    },
+    "sepia-reader": {
+      title: "Sépia",
+      eyebrow: "Solo project",
+      subtitle: "Distraction-free Markdown reader, library and editor.",
+      description:
+        "A Flutter app to read, listen to and write Markdown: a reading mode with text-anchored bookmarks, text-to-speech with offline neural voices (Piper and Kokoro), a shortcut-driven editor and a local library with folders and search. Same codebase for Android, iOS and Web.",
+      role: "Solo product, cross-platform Flutter, offline TTS, Markdown editor and local library.",
+      stack: ["Flutter", "Dart", "Markdown", "sherpa-onnx", "Material 3"],
+      metrics: ["3 platforms", "Offline TTS", "Markdown editor"],
+    },
     meteor: {
       title: "Meteor",
       eyebrow: "Solo project",
@@ -638,16 +711,6 @@ const projectContent: Record<LanguageId, Record<ProjectId, ProjectText>> = {
       role: "Visual design, copy, scroll animations and full implementation.",
       stack: ["React", "TypeScript", "GSAP", "Framer Motion", "Lucide"],
       metrics: ["8 slides", "ScrollTrigger", "Responsive"],
-    },
-    meteor: {
-      title: "Meteor",
-      eyebrow: "Solo project",
-      subtitle: "Climate intelligence with generative AI.",
-      description:
-        "Real-time weather PWA with a contextual assistant, alerts, data from multiple sources and a Netlify Functions BFF to protect API keys.",
-      role: "Product, interface, full stack architecture and serverless integrations.",
-      stack: ["React", "TypeScript", "Vite", "Tailwind", "Gemini", "Netlify"],
-      metrics: ["PWA", "Contextual AI", "Secure BFF"],
     },
     "my-computer": {
       title: "My Computer",
@@ -705,13 +768,33 @@ const projectContent: Record<LanguageId, Record<ProjectId, ProjectText>> = {
       eyebrow: "Open source",
       subtitle: "Open-source music streaming for Android.",
       description:
-        "More than 25 commits and 1500+ lines in an open-source music streaming project, including fixes for playback, queue, offline mode, accessibility and Brazilian Portuguese localization.",
+        "More than 50 commits and 10000+ lines in an open-source music streaming project, including fixes for playback, queue, offline mode, accessibility and Brazilian Portuguese localization.",
       role: "Real fixes in a product used by other people, with reviewed and merged PRs.",
       stack: ["Flutter", "Dart", "Android", "i18n", "Accessibility"],
-      metrics: ["25+ commits", "1500+ lines", "Used project"],
+      metrics: ["50+ commits", "10000+ lines", "Used project"],
     },
   },
   es: {
+    tec2d: {
+      title: "Tec2D",
+      eyebrow: "Connecta · Cliente real",
+      subtitle: "Asistencia técnica Clase A, en producción real.",
+      description:
+        "Sitio institucional y panel administrativo completo para Tec2D, asistencia técnica de celulares y electrónicos en Sarandi (Brasil). Proyecto real de Connecta, alojado en VPS propio, con catálogo, blog con SEO, operación de ventas y gestión financiera.",
+      role: "Full stack: sitio institucional, panel administrativo, catálogo, blog con SEO y operación de ventas, vía Connecta.",
+      stack: ["HTML", "CSS", "JavaScript", "Node.js", "Express", "SEO"],
+      metrics: ["Cliente real", "En producción", "Alianza Connecta"],
+    },
+    "sepia-reader": {
+      title: "Sépia",
+      eyebrow: "Proyecto propio",
+      subtitle: "Lector, biblioteca y editor de Markdown sin distracciones.",
+      description:
+        "App Flutter para leer, escuchar y escribir Markdown: modo lectura con marcadores anclados al texto, lectura en voz alta con voces neuronales offline (Piper y Kokoro), editor con atajos y biblioteca local con carpetas y búsqueda. Misma base para Android, iOS y Web.",
+      role: "Producto propio, Flutter multiplataforma, TTS offline, editor de Markdown y biblioteca local.",
+      stack: ["Flutter", "Dart", "Markdown", "sherpa-onnx", "Material 3"],
+      metrics: ["3 plataformas", "TTS offline", "Editor Markdown"],
+    },
     meteor: {
       title: "Meteor",
       eyebrow: "Proyecto propio",
@@ -741,16 +824,6 @@ const projectContent: Record<LanguageId, Record<ProjectId, ProjectText>> = {
       role: "Diseño visual, copy, animaciones de scroll e implementación completa.",
       stack: ["React", "TypeScript", "GSAP", "Framer Motion", "Lucide"],
       metrics: ["8 slides", "ScrollTrigger", "Responsivo"],
-    },
-    meteor: {
-      title: "Meteor",
-      eyebrow: "Proyecto propio",
-      subtitle: "Inteligencia climática con IA generativa.",
-      description:
-        "PWA de clima en tiempo real con asistente contextual, alertas, datos de múltiples fuentes y BFF en Netlify Functions para proteger claves de API.",
-      role: "Producto, interfaz, arquitectura full stack e integraciones serverless.",
-      stack: ["React", "TypeScript", "Vite", "Tailwind", "Gemini", "Netlify"],
-      metrics: ["PWA", "IA contextual", "BFF seguro"],
     },
     "my-computer": {
       title: "My Computer",
@@ -808,10 +881,10 @@ const projectContent: Record<LanguageId, Record<ProjectId, ProjectText>> = {
       eyebrow: "Open source",
       subtitle: "Streaming de música open source para Android.",
       description:
-        "Más de 25 commits y 1500+ líneas en un proyecto open-source de streaming de música, incluyendo correcciones de playback, cola, modo offline, accesibilidad y localización pt-BR.",
+        "Más de 50 commits y 10000+ líneas en un proyecto open-source de streaming de música, incluyendo correcciones de playback, cola, modo offline, accesibilidad y localización pt-BR.",
       role: "Correcciones reales en un producto usado por otras personas, con PRs revisados y mergeados.",
       stack: ["Flutter", "Dart", "Android", "i18n", "Accesibilidad"],
-      metrics: ["25+ commits", "1500+ líneas", "Proyecto usado"],
+      metrics: ["50+ commits", "10000+ líneas", "Proyecto usado"],
     },
   },
 };
@@ -864,6 +937,16 @@ function App() {
   const projects = useMemo<Project[]>(
     () =>
       projectOrder.map((id) => ({
+        id,
+        ...projectAssets[id],
+        ...projectContent[language][id],
+      })),
+    [language],
+  );
+
+  const developmentProjects = useMemo<Project[]>(
+    () =>
+      developmentOrder.map((id) => ({
         id,
         ...projectAssets[id],
         ...projectContent[language][id],
@@ -999,6 +1082,7 @@ function App() {
   function chooseLanguage(nextLanguage: LanguageId) {
     setLanguage(nextLanguage);
     setMenuOpen(false);
+    setPaletteOpen(false);
   }
 
   function moveGallery(direction: number) {
@@ -1012,30 +1096,14 @@ function App() {
     });
   }
 
-  const languageSwitch = (
-    <div className="language-switch" aria-label={copy.language.aria}>
-      <Globe2 size={15} aria-hidden="true" />
-      {languages.map((option) => (
-        <button
-          key={option.id}
-          type="button"
-          className={option.id === language ? "is-active" : ""}
-          aria-pressed={option.id === language}
-          title={option.name}
-          onClick={() => chooseLanguage(option.id)}
-        >
-          {option.label}
-        </button>
-      ))}
-    </div>
-  );
-
   return (
     <>
       <header className={`site-header ${isScrolled ? "is-scrolled" : ""}`}>
         <nav className="nav-shell" aria-label={copy.navLabel}>
           <a className="brand" href="#inicio" onClick={() => setMenuOpen(false)}>
-            <span className="brand-mark">E</span>
+            <span className={`brand-mark ${isScrolled ? "is-visible" : ""}`}>
+              <img src={profile.avatar} alt="" decoding="async" />
+            </span>
             <span>
               <strong>Elias</strong>
               <small>{copy.brandRole}</small>
@@ -1066,28 +1134,49 @@ function App() {
 
               {paletteOpen && (
                 <div className="palette-popover">
-                  {palettes.map((palette) => (
-                    <button
-                      key={palette.id}
-                      type="button"
-                      className={palette.id === paletteId ? "is-active" : ""}
-                      onClick={() => choosePalette(palette.id)}
-                    >
-                      <span
-                        className="palette-swatch"
-                        style={{ backgroundColor: palette.swatch }}
-                      />
-                      <span>
-                        <strong>{palette.label}</strong>
-                        <small>{palette.hint}</small>
-                      </span>
-                    </button>
-                  ))}
+                  <div className="palette-options">
+                    {palettes.map((palette) => (
+                      <button
+                        key={palette.id}
+                        type="button"
+                        className={palette.id === paletteId ? "is-active" : ""}
+                        onClick={() => choosePalette(palette.id)}
+                      >
+                        <span
+                          className="palette-swatch"
+                          style={{ backgroundColor: palette.swatch }}
+                        />
+                        <span>
+                          <strong>{palette.label}</strong>
+                          <small>{palette.hint}</small>
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="popover-language" aria-label={copy.language.aria}>
+                    <span className="popover-language-label">
+                      <Globe2 size={14} aria-hidden="true" />
+                      {copy.language.label}
+                    </span>
+                    <div className="popover-language-options">
+                      {languages.map((option) => (
+                        <button
+                          key={option.id}
+                          type="button"
+                          className={option.id === language ? "is-active" : ""}
+                          aria-pressed={option.id === language}
+                          title={option.name}
+                          onClick={() => chooseLanguage(option.id)}
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
-
-            {languageSwitch}
 
             <a className="nav-cta" href={`mailto:${profile.email}`}>
               <Mail size={16} />
@@ -1125,10 +1214,12 @@ function App() {
         <section className="hero snap-section motion-track motion-hero" id="inicio">
           <div className="hero-grid">
             <div className="hero-copy">
-              <span className="status-pill">
-                <span />
-                {copy.hero.status}
-              </span>
+              {copy.hero.status && (
+                <span className="status-pill">
+                  <span />
+                  {copy.hero.status}
+                </span>
+              )}
               <h1>{profile.name}</h1>
               <p className="hero-lead">{copy.hero.lead(age)}</p>
 
@@ -1250,15 +1341,18 @@ function App() {
         </div>
 
         <section className="more-banner snap-section motion-track motion-more">
-          <div>
+          <div className="more-copy">
             <span>{copy.more.eyebrow}</span>
             <h2>{copy.more.title}</h2>
             <p>{copy.more.text}</p>
+            <a className="ghost-button" href={profile.github} target="_blank" rel="noreferrer">
+              <Github size={18} />
+              {copy.more.cta}
+            </a>
           </div>
-          <a className="ghost-button" href={profile.github} target="_blank" rel="noreferrer">
-            <Github size={18} />
-            {copy.more.cta}
-          </a>
+          {developmentProjects.map((project) => (
+            <DevelopmentCard key={project.id} project={project} copy={copy.projectCard} />
+          ))}
         </section>
 
         <section className="contact-section snap-section motion-track motion-contact" id="contato">
@@ -1359,12 +1453,9 @@ function ProjectSlide({
 
   return (
     <section
-      className={`project-slide motion-slide motion-track ${isReverse ? "is-reverse" : ""}`}
+      className={`project-slide motion-slide motion-track ${isReverse ? "is-reverse" : ""} ${project.featured ? "is-featured" : ""}`}
     >
-      <div
-        className="project-layout"
-        data-project={`${String(index + 1).padStart(2, "0")} / ${project.eyebrow}`}
-      >
+      <div className="project-layout">
         {project.openSource ? (
           <CommitFeed
             commits={commits}
@@ -1372,7 +1463,7 @@ function ProjectSlide({
             copy={commitCopy}
             variant="panel"
           />
-        ) : (
+        ) : project.images.length > 0 ? (
           <div className="project-visual">
             <button
               type="button"
@@ -1417,7 +1508,7 @@ function ProjectSlide({
               </div>
             )}
           </div>
-        )}
+        ) : null}
 
         <div className="project-copy">
           <span className="project-eyebrow">
@@ -1461,6 +1552,33 @@ function ProjectSlide({
         </div>
       </div>
     </section>
+  );
+}
+
+function DevelopmentCard({
+  project,
+  copy,
+}: {
+  project: Project;
+  copy: ProjectCardCopy;
+}) {
+  return (
+    <article className="dev-card">
+      <span className="dev-card-eyebrow">{project.eyebrow}</span>
+      <h3>{project.title}</h3>
+      <p>{project.subtitle}</p>
+      <div className="stack-row">
+        {project.stack.map((tech) => (
+          <span key={tech}>{tech}</span>
+        ))}
+      </div>
+      {project.repo && (
+        <a className="ghost-button small" href={project.repo} target="_blank" rel="noreferrer">
+          <Github size={16} />
+          {copy.repo}
+        </a>
+      )}
+    </article>
   );
 }
 
