@@ -1029,6 +1029,7 @@ body.ready .reveal-photo { opacity: 1; transform: none; }
 .zen {
   position: relative;
   overflow: hidden;
+  overflow: clip; /* clip não vira contêiner de rolagem: sem isso o player não consegue grudar na tela */
   padding: 130px 0 120px;
   background: var(--void-2);
   border-top: 1px solid var(--edge);
@@ -1199,7 +1200,7 @@ body.ready .reveal-photo { opacity: 1; transform: none; }
 /* vitrine: a janela levanta conforme entra; os celulares flutuam em ritmos diferentes */
 .zen-showcase { margin-top: 90px; }
 
-.zen-showcase-inner { position: relative; perspective: 1600px; padding-bottom: 60px; }
+.zen-showcase-inner { position: relative; perspective: 1600px; }
 
 .zen-window {
   position: relative;
@@ -1236,12 +1237,15 @@ body.ready .reveal-photo { opacity: 1; transform: none; }
 .phone-left { left: -2%; transform: translateY(calc((0.5 - var(--p, 0.5)) * 260px * var(--par, 1))) rotate(-7deg); }
 .phone-right { right: -2%; bottom: 90px; transform: translateY(calc((0.5 - var(--p, 0.5)) * 380px * var(--par, 1))) rotate(6deg); }
 
-/* "tocando agora" flutuando sobre a vitrine */
+/* "tocando agora": o player. Fica abaixo da captura e gruda no pé da tela enquanto a vitrine está visível;
+   quando a vitrine acaba, ele sobe junto com ela. */
 .now-playing {
-  position: absolute;
+  position: sticky;
   z-index: 3;
-  left: 50%;
-  bottom: 22px;
+  bottom: 16px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 20px auto 22px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -1253,7 +1257,6 @@ body.ready .reveal-photo { opacity: 1; transform: none; }
   -webkit-backdrop-filter: blur(16px);
   box-shadow: 0 24px 60px -24px #000, 0 0 40px -16px rgba(var(--zen-rgb), 0.5);
   color: #f0efec;
-  transform: translateX(-50%) translateY(calc((0.5 - var(--p, 0.5)) * 90px));
 }
 
 .now-playing-cover {
@@ -1262,8 +1265,10 @@ body.ready .reveal-photo { opacity: 1; transform: none; }
   border-radius: 999px;
   overflow: hidden;
   flex-shrink: 0;
-  animation: spin 9s linear infinite;
+  animation: spin 9s linear infinite paused;
 }
+
+.now-playing.is-on .now-playing-cover { animation-play-state: running; }
 
 .now-playing-cover img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 26%; transform: scale(2.4); }
 
@@ -1271,6 +1276,17 @@ body.ready .reveal-photo { opacity: 1; transform: none; }
 
 .now-playing-body { display: grid; gap: 6px; }
 .now-playing-label { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(240, 239, 236, 0.6); }
+
+.now-playing-track {
+  display: inline-block;
+  max-width: 14ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: bottom;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
 
 .now-playing-bar {
   display: block;
@@ -1285,11 +1301,26 @@ body.ready .reveal-photo { opacity: 1; transform: none; }
   display: block;
   height: 100%;
   border-radius: 3px;
+  width: var(--progress, 0%);
   background: var(--zen);
-  animation: progress 14s linear infinite;
 }
 
-@keyframes progress { from { width: 0; } to { width: 100%; } }
+/* o botão ocupa o lugar do alto-falante / das ondas */
+.now-playing-toggle {
+  display: grid;
+  place-items: center;
+  min-width: 38px;
+  height: 38px;
+  padding: 0 4px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.now-playing-toggle:disabled { cursor: default; opacity: 0.45; }
+.now-playing-toggle:focus-visible { outline: 2px solid var(--zen); outline-offset: 2px; }
 
 .now-playing-wave { display: flex; align-items: center; gap: 2px; height: 20px; }
 
@@ -2095,8 +2126,7 @@ body.ready .reveal-photo { opacity: 1; transform: none; }
   .cursor { display: none; }
   html.has-cursor, html.has-cursor * { cursor: auto !important; }
   *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; transition-delay: 0ms !important; }
-  .zen-window, .zen-phone, .zen-phones-track, .now-playing { transform: none !important; }
-  .now-playing { transform: translateX(-50%) !important; }
+  .zen-window, .zen-phone, .zen-phones-track { transform: none !important; }
 }
 
 /* ============ RESPONSIVO ============ */
@@ -2149,12 +2179,10 @@ body.ready .reveal-photo { opacity: 1; transform: none; }
   .zen-feature { min-height: 0; }
   .zen-shots { grid-template-columns: 1fr; }
   .zen-showcase { margin-top: 64px; --par: 0.3; }
-  .zen-showcase-inner { padding-bottom: 80px; }
   .zen-phone { width: 24%; border-radius: 16px; padding: 4px; bottom: 30px; }
   .zen-phone img { border-radius: 12px; }
   .phone-right { bottom: 70px; }
-  .now-playing { bottom: 4px; gap: 8px; }
-  .now-playing-wave { display: none; }
+  .now-playing { bottom: 10px; gap: 8px; margin-top: 16px; }
 
   .zen-phones-track {
     width: auto;

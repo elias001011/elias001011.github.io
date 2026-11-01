@@ -229,6 +229,8 @@ const pt = {
     } as Record<string, string>,
     marquee: ["Moods", "Mix pessoal", "Local Sync", "Letras sincronizadas", "Ondas sonoras", "Fundo dinâmico", "Gerenciador de downloads", "Atalhos remapeáveis", "Time Machine", "Rádios"],
     nowPlaying: "Tocando agora",
+    soundOn: "Ligar o som e tocar",
+    soundOff: "Silenciar e pausar",
     compareTitle: "Musify × Zenify",
     compare: [
       ["Plataformas", "Android e builds desktop", "Android, Linux e Windows com .deb, instalador e portátil"],
@@ -380,6 +382,8 @@ const en: Copy = {
     },
     marquee: ["Moods", "Personal Mix", "Local Sync", "Synced lyrics", "Sound waves", "Dynamic background", "Download manager", "Remappable shortcuts", "Time Machine", "Radios"],
     nowPlaying: "Now playing",
+    soundOn: "Turn the sound on and play",
+    soundOff: "Mute and pause",
     compareTitle: "Musify × Zenify",
     compare: [
       ["Platforms", "Android, desktop builds", "Android, Linux and Windows with .deb, installer and portable"],
@@ -529,6 +533,8 @@ const es: Copy = {
     },
     marquee: ["Moods", "Mix personal", "Local Sync", "Letras sincronizadas", "Ondas sonoras", "Fondo dinámico", "Gestor de descargas", "Atajos configurables", "Time Machine", "Radios"],
     nowPlaying: "Sonando ahora",
+    soundOn: "Activar el sonido y reproducir",
+    soundOff: "Silenciar y pausar",
     compareTitle: "Musify × Zenify",
     compare: [
       ["Plataformas", "Android y builds de escritorio", "Android, Linux y Windows con .deb, instalador y portable"],
