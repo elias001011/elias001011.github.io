@@ -1,23 +1,39 @@
 import {
+  Accessibility,
   ArrowLeft,
   ArrowRight,
   ArrowUpRight,
   AudioLines,
+  Building2,
+  Check,
+  ChevronDown,
+  Disc3,
   Download,
   Github,
+  Globe2,
+  History,
+  House,
   Images,
   Instagram,
   Keyboard,
+  LayoutGrid,
   Linkedin,
+  ListMusic,
   Mail,
-  Moon,
+  MicVocal,
+  MonitorSmartphone,
+  Palette,
+  PictureInPicture2,
+  Play,
+  RotateCcw,
   Sparkles,
-  Sun,
   Wifi,
   X,
-  Disc3,
+  type LucideIcon,
 } from "lucide-react";
 import { Fragment, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import connectaWordmark from "./assets/brand/connecta-logo-branca.svg";
+import hostingerBadge from "./assets/brand/hostinger-partner-badge-dark.svg";
 import {
   languages,
   musify,
@@ -32,8 +48,17 @@ import {
   type ProjectId,
 } from "./content";
 import { useScrollMotion } from "./motion";
+import { ParticleShape } from "./ParticleShape";
 
-type Theme = "dark" | "light";
+const palettes = [
+  { id: "green", label: "Verde", hint: "Connecta", swatch: "#67d390" },
+  { id: "blue", label: "Azul", hint: "Meteor", swatch: "#8bbcff" },
+  { id: "black", label: "Preto", hint: "Clean", swatch: "#f3f3ee" },
+  { id: "graphite", label: "Grafite", hint: "Neutro", swatch: "#bcc6d4" },
+  { id: "cafeteria", label: "Cafeteria", hint: "Quente", swatch: "#a9c98a" },
+] as const;
+
+type PaletteId = (typeof palettes)[number]["id"];
 
 type Project = {
   id: ProjectId;
@@ -54,18 +79,22 @@ type GalleryState = { project: Project; index: number };
 type GithubCommit = {
   sha: string;
   html_url: string;
-  commit: { message: string; author?: { date?: string } };
+  commit: { message: string };
 };
 
-function calculateAge(birthDate: Date) {
-  const today = new Date();
-  let age = today.getFullYear() - birthDate.getFullYear();
-  const hasBirthdayPassed =
-    today.getMonth() > birthDate.getMonth() ||
-    (today.getMonth() === birthDate.getMonth() && today.getDate() >= birthDate.getDate());
-  if (!hasBirthdayPassed) age -= 1;
-  return age;
-}
+type LiveStats = {
+  prs: number;
+  commits: number;
+  stars: number;
+  version: string;
+};
+
+const navIcons: LucideIcon[] = [House, Building2, AudioLines, LayoutGrid, Mail];
+const highlightIcons: LucideIcon[] = [History, MicVocal, PictureInPicture2, ListMusic, MonitorSmartphone, RotateCcw, Accessibility];
+const featureIcons: LucideIcon[] = [Sparkles, AudioLines, Disc3, Wifi, Download, Keyboard];
+const techMarquee = ["Flutter", "Dart", "React", "TypeScript", "Node.js", "Netlify Functions", "Firebase", "Android", "Linux", "Windows", "GitHub Actions", "Python", "media_kit", "Vite"];
+
+const HOSTINGER = "https://www.hostinger.com/br?REFERRALCODE=HNWPKDASIGKR";
 
 function readStored(key: string) {
   try {
@@ -90,20 +119,81 @@ function initialLanguage(): LanguageId {
   return languages.some((option) => option.id === browser) ? (browser as LanguageId) : "pt";
 }
 
+function initialPalette(): PaletteId {
+  // "meraki" era o nome antigo da paleta Cafeteria
+  const stored = readStored("elias-palette")?.replace("meraki", "cafeteria");
+  return palettes.some((palette) => palette.id === stored) ? (stored as PaletteId) : "green";
+}
+
+const fill = (text: string, stats: LiveStats) =>
+  text.replace("{prs}", String(stats.prs)).replace("{stars}", String(stats.stars));
+
+/* Números ao vivo do GitHub, com cache de 30 min para não gastar o limite
+   anônimo da API. Se algo falhar, fica o valor mínimo já conferido. */
+function useLiveStats() {
+  const [stats, setStats] = useState<LiveStats>(() => {
+    const base: LiveStats = { ...musify.fallback, version: zenify.fallbackVersion };
+    try {
+      const cached = JSON.parse(readStored("elias-gh-stats") ?? "null") as { at: number; stats: LiveStats } | null;
+      if (cached && Date.now() - cached.at < 30 * 60 * 1000) return { ...base, ...cached.stats };
+    } catch {
+      /* cache inválido: ignora */
+    }
+    return base;
+  });
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const { signal } = controller;
+    const api = "https://api.github.com";
+    const json = (url: string) => fetch(url, { signal }).then((r) => (r.ok ? r.json() : Promise.reject(r.status)));
+
+    const prs = json(`${api}/search/issues?q=repo:gokadzev/Musify+author:elias001011+is:pr+is:merged&per_page=1`).then(
+      (data: { total_count?: number }) => data.total_count,
+    );
+    const commits = fetch(`${api}/repos/gokadzev/Musify/commits?author=elias001011&per_page=1`, { signal }).then((r) => {
+      if (!r.ok) return Promise.reject(r.status);
+      const last = r.headers.get("link")?.match(/[?&]page=(\d+)>; rel="last"/);
+      return last ? Number(last[1]) : undefined;
+    });
+    const stars = json(`${api}/repos/gokadzev/Musify`).then((data: { stargazers_count?: number }) =>
+      data.stargazers_count ? Math.floor(data.stargazers_count / 1000) : undefined,
+    );
+    const version = json(`${api}/repos/elias001011/Zenify/releases/latest`).then((data: { tag_name?: string }) => data.tag_name);
+
+    Promise.allSettled([prs, commits, stars, version]).then(([p, c, s, v]) => {
+      if (signal.aborted) return;
+      setStats((current) => {
+        const next = { ...current };
+        if (p.status === "fulfilled" && p.value) next.prs = Math.max(p.value, musify.fallback.prs);
+        if (c.status === "fulfilled" && c.value) next.commits = Math.max(c.value, musify.fallback.commits);
+        if (s.status === "fulfilled" && s.value) next.stars = s.value;
+        if (v.status === "fulfilled" && v.value) next.version = v.value;
+        writeStored("elias-gh-stats", JSON.stringify({ at: Date.now(), stats: next }));
+        return next;
+      });
+    });
+
+    return () => controller.abort();
+  }, []);
+
+  return stats;
+}
+
 function App() {
-  const age = useMemo(() => calculateAge(profile.birthDate), []);
   const [language, setLanguage] = useState<LanguageId>(initialLanguage);
-  const [theme, setTheme] = useState<Theme>(() =>
-    document.documentElement.dataset.theme === "light" ? "light" : "dark",
-  );
+  const [paletteId, setPaletteId] = useState<PaletteId>(initialPalette);
+  const [paletteOpen, setPaletteOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [gallery, setGallery] = useState<GalleryState | null>(null);
   const [commits, setCommits] = useState<GithubCommit[]>([]);
   const [commitStatus, setCommitStatus] = useState<"loading" | "ready" | "error">("loading");
-  const [zenVersion, setZenVersion] = useState(zenify.fallbackVersion);
+  const paletteRef = useRef<HTMLDivElement>(null);
+  const stats = useLiveStats();
 
   const copy = siteCopy[language];
+  const activePalette = palettes.find((palette) => palette.id === paletteId) ?? palettes[0];
 
   const projects = useMemo(() => {
     const build = (id: ProjectId): Project => ({ id, ...projectLinks[id], ...projectText[language][id] });
@@ -114,18 +204,26 @@ function App() {
 
   useScrollMotion(language);
 
+  // sem tela de carregamento: as entradas do topo começam assim que monta
+  useEffect(() => {
+    const start = () => {
+      document.body.classList.add("ready");
+      const target = window.location.hash && document.getElementById(window.location.hash.slice(1));
+      if (target) target.scrollIntoView({ behavior: "auto" });
+    };
+    const timer = window.setTimeout(start, 60);
+    return () => window.clearTimeout(timer);
+  }, []);
+
   useEffect(() => {
     document.documentElement.lang = copy.locale;
     writeStored("elias-language", language);
   }, [copy.locale, language]);
 
   useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    document
-      .querySelector('meta[name="theme-color"]')
-      ?.setAttribute("content", theme === "light" ? "#f0efec" : "#060607");
-    writeStored("elias-theme", theme);
-  }, [theme]);
+    document.documentElement.dataset.theme = paletteId;
+    writeStored("elias-palette", paletteId);
+  }, [paletteId]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -139,10 +237,24 @@ function App() {
   }, [menuOpen]);
 
   useEffect(() => {
-    const controller = new AbortController();
-    const { signal } = controller;
+    if (!paletteOpen) return;
+    const onPointer = (event: PointerEvent) => {
+      if (!paletteRef.current?.contains(event.target as Node)) setPaletteOpen(false);
+    };
+    const onKey = (event: KeyboardEvent) => event.key === "Escape" && setPaletteOpen(false);
+    document.addEventListener("pointerdown", onPointer);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("pointerdown", onPointer);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [paletteOpen]);
 
-    fetch("https://api.github.com/repos/gokadzev/Musify/commits?author=elias001011&per_page=5", { signal })
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch("https://api.github.com/repos/gokadzev/Musify/commits?author=elias001011&per_page=5", {
+      signal: controller.signal,
+    })
       .then((response) => {
         if (!response.ok) throw new Error("GitHub API unavailable");
         return response.json() as Promise<GithubCommit[]>;
@@ -154,14 +266,6 @@ function App() {
       .catch((error: Error) => {
         if (error.name !== "AbortError") setCommitStatus("error");
       });
-
-    fetch("https://api.github.com/repos/elias001011/Zenify/releases/latest", { signal })
-      .then((response) => (response.ok ? response.json() : null))
-      .then((data: { tag_name?: string } | null) => {
-        if (data?.tag_name) setZenVersion(data.tag_name);
-      })
-      .catch(() => undefined);
-
     return () => controller.abort();
   }, []);
 
@@ -188,21 +292,12 @@ function App() {
     });
   }
 
-  function cycleLanguage() {
-    const index = languages.findIndex((option) => option.id === language);
-    setLanguage(languages[(index + 1) % languages.length].id);
-  }
-
   const openGallery = (project: Project, index: number) => setGallery({ project, index });
-  const currentLanguage = languages.find((option) => option.id === language)!;
 
   return (
     <>
-      <Preloader />
-      <Cursor />
-
       <header className={`navbar ${scrolled ? "scrolled" : ""} ${menuOpen ? "menu-open" : ""}`}>
-        <nav className="container navbar-inner" aria-label={copy.navLabel}>
+        <nav className="navbar-inner" aria-label={copy.navLabel}>
           <a className="brand" href="#inicio" onClick={() => setMenuOpen(false)}>
             <span className="brand-avatar">
               <img src={profileImage} alt="" decoding="async" />
@@ -218,33 +313,70 @@ function App() {
 
           <div className="navbar-links">
             {copy.nav.map((item) => (
-              <a key={item.href} href={item.href} className={item.href === "#zenify" ? "is-zen" : ""}>
+              <a key={item.href} href={item.href}>
                 {item.label}
               </a>
             ))}
           </div>
 
           <div className="navbar-actions">
-            <button
-              type="button"
-              className="nav-icon-btn mono lang-btn"
-              onClick={cycleLanguage}
-              aria-label={`${copy.language}: ${currentLanguage.name}`}
-              title={currentLanguage.name}
-            >
-              {currentLanguage.label}
-            </button>
-            <button
-              type="button"
-              className="nav-icon-btn"
-              onClick={() => setTheme((current) => (current === "dark" ? "light" : "dark"))}
-              aria-label={copy.theme}
-            >
-              <span className="theme-icon" aria-hidden="true">
-                <Sun className="icon-sun" />
-                <Moon className="icon-moon" />
-              </span>
-            </button>
+            <div className="palette-menu" ref={paletteRef}>
+              <button
+                type="button"
+                className="palette-trigger"
+                aria-label={copy.paletteAria}
+                aria-expanded={paletteOpen}
+                onClick={() => setPaletteOpen((current) => !current)}
+              >
+                <Palette size={16} />
+                <span className="palette-trigger-label">{activePalette.label}</span>
+                <ChevronDown size={14} className="chevron" />
+              </button>
+
+              <div className={`palette-popover ${paletteOpen ? "is-open" : ""}`} aria-hidden={!paletteOpen}>
+                <span className="popover-label mono">{copy.palette}</span>
+                <div className="palette-options">
+                  {palettes.map((palette) => (
+                    <button
+                      key={palette.id}
+                      type="button"
+                      tabIndex={paletteOpen ? 0 : -1}
+                      className={palette.id === paletteId ? "is-active" : ""}
+                      onClick={() => {
+                        setPaletteId(palette.id);
+                        setPaletteOpen(false);
+                      }}
+                    >
+                      <span className="palette-swatch" style={{ backgroundColor: palette.swatch }} />
+                      <span className="palette-name">
+                        <strong>{palette.label}</strong>
+                        <small>{palette.hint}</small>
+                      </span>
+                      {palette.id === paletteId && <Check size={15} />}
+                    </button>
+                  ))}
+                </div>
+                <span className="popover-label mono">
+                  <Globe2 size={13} /> {copy.language}
+                </span>
+                <div className="language-options">
+                  {languages.map((option) => (
+                    <button
+                      key={option.id}
+                      type="button"
+                      tabIndex={paletteOpen ? 0 : -1}
+                      title={option.name}
+                      aria-pressed={option.id === language}
+                      className={option.id === language ? "is-active" : ""}
+                      onClick={() => setLanguage(option.id)}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
             <a className="btn btn-primary nav-cta" href={`mailto:${profile.email}`}>
               {copy.contact}
             </a>
@@ -266,19 +398,22 @@ function App() {
 
         <div className="mobile-panel" aria-hidden={!menuOpen}>
           <div className="mobile-panel-inner">
-            <div className="container">
-              {copy.nav.map((item, index) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  tabIndex={menuOpen ? 0 : -1}
-                  style={{ "--i": index } as CSSProperties}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  <span className="mono">{String(index + 1).padStart(2, "0")}</span>
-                  {item.label}
-                </a>
-              ))}
+            <div className="mobile-links">
+              {copy.nav.map((item, index) => {
+                const Icon = navIcons[index];
+                return (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    tabIndex={menuOpen ? 0 : -1}
+                    style={{ "--i": index } as CSSProperties}
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    <Icon size={18} />
+                    {item.label}
+                  </a>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -287,14 +422,9 @@ function App() {
 
       <main>
         {/* ============ HERO ============ */}
-        <section className="hero noise" id="inicio">
-          <Starfield />
+        <section className="hero" id="inicio">
           <div className="container hero-grid">
             <div className="hero-copy">
-              <span className="eyebrow mono reveal-line">
-                <span className="eyebrow-dot" />
-                {copy.hero.eyebrow(age)}
-              </span>
               <h1 className="hero-title">
                 <span className="line-mask">
                   <span className="line">Elias J. R.</span>
@@ -303,7 +433,6 @@ function App() {
                   <span className="line">Nunes</span>
                 </span>
               </h1>
-              <p className="hero-sub reveal-line">{copy.hero.lead}</p>
               <div className="hero-actions reveal-line">
                 <a className="btn btn-primary btn-lg" href="#zenify" data-magnetic>
                   {copy.hero.primary}
@@ -326,21 +455,13 @@ function App() {
               </div>
             </div>
 
-            <div className="hero-photo reveal-photo" data-tilt>
-              <div className="hero-photo-frame">
-                <img src={profileImage} alt={copy.hero.avatarAlt} fetchPriority="high" decoding="async" />
-              </div>
-              <span className="hero-photo-tag mono">
-                <span className="eyebrow-dot" /> elias001011
-              </span>
+            <div className="hero-visual reveal-photo">
+              <ParticleShape />
             </div>
           </div>
-          <div className="hero-footer">
-            <span className="hero-scroll-cue mono">
-              {copy.hero.scroll} <i />
-            </span>
-          </div>
         </section>
+
+        <Marquee items={techMarquee} className="tech-marquee" />
 
         {/* ============ MANIFESTO ============ */}
         <section className="manifesto section">
@@ -361,9 +482,6 @@ function App() {
         {/* ============ CONNECTA ============ */}
         <section className="section section-line connecta-section" id="connecta">
           <div className="container">
-            <span className="section-index mono" data-reveal>
-              {copy.connecta.index}
-            </span>
             <div className="connecta-grid">
               <a
                 className="connecta-card"
@@ -394,37 +512,39 @@ function App() {
         </section>
 
         {/* ============ ZENIFY ============ */}
-        <ZenifySection copy={copy} version={zenVersion} />
+        <ZenifySection copy={copy} stats={stats} />
 
         {/* ============ MUSIFY ============ */}
         <section className="section section-line musify-section" id="musify">
           <div className="container">
             <div className="section-heading section-heading-wide">
-              <span className="section-index mono" data-reveal>
-                {copy.musify.index}
-              </span>
               <h2 className="split-reveal" data-reveal>
-                <SplitWords text={copy.musify.title} />
+                <SplitWords text={fill(copy.musify.title, stats)} />
               </h2>
-              <p data-reveal>{copy.musify.lead}</p>
+              <p data-reveal>{fill(copy.musify.lead, stats)}</p>
             </div>
 
             <div className="musify-stats">
-              <Stat value={musify.stats.prs} label={copy.musify.stats[0]} />
-              <Stat value={musify.stats.commits} label={copy.musify.stats[1]} />
-              <Stat value={musify.stats.lines} prefix="+" label={copy.musify.stats[2]} />
+              <Stat value={stats.prs} label={copy.musify.stats[0]} />
+              <Stat value={stats.commits} label={copy.musify.stats[1]} />
+              <Stat value={musify.fallback.lines} prefix="+" label={copy.musify.stats[2]} />
             </div>
 
             <div className="musify-grid">
               <div className="musify-highlights" data-reveal>
                 <span className="works-label mono">{copy.musify.highlightsTitle}</span>
                 <ul>
-                  {copy.musify.highlights.map((item, index) => (
-                    <li key={item}>
-                      <span className="mono">{String(index + 1).padStart(2, "0")}</span>
-                      {item}
-                    </li>
-                  ))}
+                  {copy.musify.highlights.map((item, index) => {
+                    const Icon = highlightIcons[index];
+                    return (
+                      <li key={item} style={{ "--i": index } as CSSProperties}>
+                        <span className="highlight-icon">
+                          <Icon size={17} />
+                        </span>
+                        {item}
+                      </li>
+                    );
+                  })}
                 </ul>
                 <div className="row-actions">
                   <a className="btn btn-primary" href={musify.prs} target="_blank" rel="noreferrer">
@@ -454,8 +574,14 @@ function App() {
                   {commitStatus === "loading" && <p className="terminal-muted">{copy.musify.loading}</p>}
                   {commitStatus === "error" && <p className="terminal-muted">{copy.musify.error}</p>}
                   {commitStatus === "ready" &&
-                    commits.map((commit) => (
-                      <a key={commit.sha} href={commit.html_url} target="_blank" rel="noreferrer">
+                    commits.map((commit, index) => (
+                      <a
+                        key={commit.sha}
+                        href={commit.html_url}
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{ "--i": index } as CSSProperties}
+                      >
                         <span className="sha">{commit.sha.slice(0, 7)}</span>
                         <span className="msg">{commit.commit.message.split("\n")[0]}</span>
                       </a>
@@ -473,9 +599,6 @@ function App() {
         <section className="section projects-section" id="projetos">
           <div className="container">
             <div className="section-heading">
-              <span className="section-index mono" data-reveal>
-                {copy.projects.index}
-              </span>
               <h2 className="split-reveal" data-reveal>
                 <SplitWords text={copy.projects.title} />
               </h2>
@@ -506,44 +629,36 @@ function App() {
               <span className="works-label mono" data-reveal>
                 {copy.projects.moreTitle}
               </span>
-              {(["my-computer", "sync-my-music"] as ProjectId[]).map((id) => {
-                const project = projects[id];
-                return (
-                  <a
-                    key={id}
-                    className="work-row"
-                    href={project.repo}
-                    target="_blank"
-                    rel="noreferrer"
-                    data-reveal
-                  >
-                    <span className="work-title">
-                      {project.title}
-                      {project.images.length === 0 && (
-                        <span className="status-chip mono">{copy.projects.soon}</span>
-                      )}
-                    </span>
-                    <span className="work-sub">{project.subtitle}</span>
-                    <span className="work-arrow">
-                      <ArrowUpRight size={20} />
-                    </span>
-                  </a>
-                );
-              })}
+              <a
+                className="work-row"
+                href={projects["my-computer"].repo}
+                target="_blank"
+                rel="noreferrer"
+                data-reveal
+              >
+                <span className="work-title">{projects["my-computer"].title}</span>
+                <span className="work-sub">{projects["my-computer"].subtitle}</span>
+                <span className="work-arrow">
+                  <ArrowUpRight size={20} />
+                </span>
+              </a>
             </div>
           </div>
         </section>
 
         {/* ============ CONTATO ============ */}
-        <section className="contact-section noise" id="contato">
-          <div className="contact-glow" aria-hidden="true" />
+        <section className="contact-section" id="contato">
           <div className="container contact-inner">
-            <span className="section-index mono" data-reveal>
-              {copy.contactSection.index}
-            </span>
-            <h2 className="contact-title split-reveal" data-reveal>
-              <SplitWords text={copy.contactSection.title} />
-            </h2>
+            <div className="contact-title-wrap">
+              <span className="contact-rings" aria-hidden="true">
+                <i />
+                <i />
+                <i />
+              </span>
+              <h2 className="contact-title split-reveal" data-reveal>
+                <SplitWords text={copy.contactSection.title} />
+              </h2>
+            </div>
             <p data-reveal>{copy.contactSection.text}</p>
             <a className="btn btn-primary btn-lg contact-mail" href={`mailto:${profile.email}`} data-reveal data-magnetic>
               <Mail size={17} />
@@ -565,6 +680,15 @@ function App() {
       </main>
 
       <footer className="site-footer">
+        <div className="footer-marks" aria-label="Connecta Digital e Hostinger Partner">
+          <a href={profile.connectaPortfolio} target="_blank" rel="noreferrer" className="footer-connecta">
+            <img src={connectaWordmark} width="220" height="37" alt="Connecta Digital" loading="lazy" decoding="async" />
+          </a>
+          <span className="footer-marks-divider" aria-hidden="true" />
+          <a className="footer-hostinger" href={HOSTINGER} target="_blank" rel="sponsored noopener noreferrer" aria-label="Hostinger Partner">
+            <img src={hostingerBadge} width="120" height="45" alt="Hostinger Partner" loading="lazy" decoding="async" />
+          </a>
+        </div>
         <div className="container footer-inner mono">
           <span>
             © {new Date().getFullYear()} {profile.name}. {copy.footer.rights}
@@ -590,31 +714,24 @@ function App() {
    ZENIFY — a seção de destaque
    ============================================================ */
 
-const featureIcons = [Sparkles, AudioLines, Disc3, Wifi, Download, Keyboard];
-
-function ZenifySection({ copy, version }: { copy: Copy; version: string }) {
+function ZenifySection({ copy, stats }: { copy: Copy; stats: LiveStats }) {
   const zen = copy.zen;
   return (
     <section className="zen" id="zenify">
-      <div className="zen-bg" aria-hidden="true">
-        <i className="blob b1" />
-        <i className="blob b2" />
-        <i className="blob b3" />
-        <i className="blob b4" />
+      <div className="zen-eq" aria-hidden="true">
+        {Array.from({ length: 48 }, (_, index) => (
+          <i key={index} style={{ "--i": index } as CSSProperties} />
+        ))}
       </div>
 
       <div className="container zen-intro">
-        <span className="section-index mono" data-reveal>
-          {zen.index}
-        </span>
-        <div className="zen-badge" data-reveal>
+        <div data-reveal>
           <ZenIcon />
-          <span className="mono">{zen.kicker}</span>
         </div>
-        <h2 className="zen-title" data-reveal>
+        <h2 className="zen-title" data-reveal aria-label="Zenify">
           {"Zenify".split("").map((letter, index) => (
-            <span key={index} style={{ "--i": index } as CSSProperties}>
-              {letter}
+            <span key={index} style={{ "--i": index } as CSSProperties} aria-hidden="true">
+              <b>{letter}</b>
             </span>
           ))}
         </h2>
@@ -637,7 +754,7 @@ function ZenifySection({ copy, version }: { copy: Copy; version: string }) {
         <div className="zen-meta mono" data-reveal>
           <span className="status-chip zen-chip">
             <span className="eyebrow-dot" />
-            {zen.latest} {version}
+            {zen.latest} {stats.version}
           </span>
           {zen.platforms.map((platform) => (
             <span className="status-chip" key={platform}>
@@ -647,7 +764,7 @@ function ZenifySection({ copy, version }: { copy: Copy; version: string }) {
         </div>
       </div>
 
-      {/* vitrine: a janela do desktop deita e levanta com a rolagem, os celulares flutuam */}
+      {/* vitrine: a janela levanta com a rolagem, os celulares flutuam */}
       <div className="zen-showcase" data-scroll>
         <div className="container zen-showcase-inner">
           <div className="zen-window">
@@ -667,8 +784,30 @@ function ZenifySection({ copy, version }: { copy: Copy; version: string }) {
           <div className="zen-phone phone-right">
             <img src={zenify.mobile[1].src} alt="" loading="lazy" decoding="async" />
           </div>
+          <div className="now-playing mono" aria-hidden="true">
+            <span className="now-playing-cover">
+              <img src={zenify.mobile[4].src} alt="" loading="lazy" decoding="async" />
+            </span>
+            <span className="now-playing-body">
+              <span className="now-playing-label">{zen.nowPlaying}</span>
+              <span className="now-playing-bar">
+                <i />
+              </span>
+            </span>
+            <span className="now-playing-wave">
+              {Array.from({ length: 9 }, (_, index) => (
+                <i key={index} style={{ "--i": index } as CSSProperties} />
+              ))}
+            </span>
+            <span className="now-playing-play">
+              <Play size={13} />
+            </span>
+          </div>
         </div>
       </div>
+
+      <Marquee items={zen.marquee} className="zen-marquee" />
+      <Marquee items={[...zen.marquee].reverse()} className="zen-marquee is-reverse" />
 
       <div className="container">
         <div className="zen-origin">
@@ -680,7 +819,7 @@ function ZenifySection({ copy, version }: { copy: Copy; version: string }) {
               <li key={step.title} style={{ "--i": index } as CSSProperties}>
                 <span className="timeline-date mono">{step.date}</span>
                 <strong>{step.title}</strong>
-                <p>{step.text}</p>
+                <p>{fill(step.text, stats)}</p>
               </li>
             ))}
           </ol>
@@ -693,21 +832,18 @@ function ZenifySection({ copy, version }: { copy: Copy; version: string }) {
           {zen.features.map((feature, index) => {
             const Icon = featureIcons[index];
             return (
-              <article
-                key={feature.title}
-                className={`zen-feature f${index + 1}`}
-                data-reveal
-                data-spotlight
-                style={{ "--i": index } as CSSProperties}
-              >
-                <span className="zen-feature-icon">
-                  <Icon size={20} />
-                </span>
-                <h4>{feature.title}</h4>
-                <p>{feature.text}</p>
-                {index === 1 && <Waveform />}
-                {index === 3 && <SyncDots />}
-              </article>
+              // o wrapper entra na tela; o card de dentro inclina em 3D com o mouse
+              <div key={feature.title} className="zen-feature-wrap" data-reveal style={{ "--i": index } as CSSProperties}>
+                <article className={`zen-feature f${index + 1}`} data-tilt data-spotlight>
+                  <span className="zen-feature-icon">
+                    <Icon size={20} />
+                  </span>
+                  <h4>{feature.title}</h4>
+                  <p>{feature.text}</p>
+                  {index === 1 && <Waveform />}
+                  {index === 3 && <SyncDots />}
+                </article>
+              </div>
             );
           })}
         </div>
@@ -716,7 +852,7 @@ function ZenifySection({ copy, version }: { copy: Copy; version: string }) {
           <figure className="zen-shot" data-reveal>
             <img src={zenify.desktop.player} alt="" loading="lazy" decoding="async" />
           </figure>
-          <figure className="zen-shot" data-reveal>
+          <figure className="zen-shot" data-reveal style={{ "--i": 1 } as CSSProperties}>
             <img src={zenify.desktop.moods} alt="" loading="lazy" decoding="async" />
           </figure>
         </div>
@@ -729,8 +865,8 @@ function ZenifySection({ copy, version }: { copy: Copy; version: string }) {
           </h3>
         </div>
         <div className="zen-phones-track">
-          {zenify.mobile.map((phone) => (
-            <figure key={phone.key} className="zen-phone-card">
+          {zenify.mobile.map((phone, index) => (
+            <figure key={phone.key} className="zen-phone-card" style={{ "--i": index } as CSSProperties}>
               <img src={phone.src} alt={zen.phones[phone.key]} loading="lazy" decoding="async" />
               <figcaption className="mono">{zen.phones[phone.key]}</figcaption>
             </figure>
@@ -748,8 +884,8 @@ function ZenifySection({ copy, version }: { copy: Copy; version: string }) {
             <span>Musify</span>
             <span>Zenify</span>
           </div>
-          {zen.compare.map(([label, before, after]) => (
-            <div className="zen-compare-row" key={label}>
+          {zen.compare.map(([label, before, after], index) => (
+            <div className="zen-compare-row" key={label} style={{ "--i": index } as CSSProperties}>
               <span className="mono">{label}</span>
               <span>{before}</span>
               <span>{after}</span>
@@ -797,6 +933,24 @@ function SyncDots() {
    PEÇAS COMPARTILHADAS
    ============================================================ */
 
+function Marquee({ items, className = "" }: { items: string[]; className?: string }) {
+  // duas cópias lado a lado: a faixa anda metade da largura e recomeça sem emenda
+  const row = items.map((item, index) => (
+    <Fragment key={index}>
+      <span>{item}</span>
+      <i aria-hidden="true">✦</i>
+    </Fragment>
+  ));
+  return (
+    <div className={`marquee ${className}`} aria-hidden="true">
+      <div className="marquee-inner">
+        <div className="marquee-group">{row}</div>
+        <div className="marquee-group">{row}</div>
+      </div>
+    </div>
+  );
+}
+
 function SplitWords({ text }: { text: string }) {
   return (
     <>
@@ -815,6 +969,7 @@ function SplitWords({ text }: { text: string }) {
 function Stat({ value, label, prefix = "" }: { value: number; label: string; prefix?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(0);
+  const started = useRef(false);
 
   useEffect(() => {
     const node = ref.current;
@@ -824,17 +979,29 @@ function Stat({ value, label, prefix = "" }: { value: number; label: string; pre
       return;
     }
     let frame = 0;
+    const run = (from: number) => {
+      const start = performance.now();
+      const tick = (now: number) => {
+        const t = Math.min((now - start) / 1400, 1);
+        setShown(Math.round(from + (value - from) * (1 - Math.pow(1 - t, 3))));
+        if (t < 1) frame = requestAnimationFrame(tick);
+      };
+      frame = requestAnimationFrame(tick);
+    };
+    // se o número muda depois (veio do GitHub), conta a partir do que já mostra
+    if (started.current) {
+      setShown((current) => {
+        run(current);
+        return current;
+      });
+      return () => cancelAnimationFrame(frame);
+    }
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
         observer.disconnect();
-        const start = performance.now();
-        const tick = (now: number) => {
-          const t = Math.min((now - start) / 1400, 1);
-          setShown(Math.round(value * (1 - Math.pow(1 - t, 3))));
-          if (t < 1) frame = requestAnimationFrame(tick);
-        };
-        frame = requestAnimationFrame(tick);
+        started.current = true;
+        run(0);
       },
       { threshold: 0.5 },
     );
@@ -905,7 +1072,6 @@ function ProjectCard({
         <button
           type="button"
           className="project-media-button"
-          data-cursor={copy.projects.view}
           aria-label={`${copy.gallery.open} ${project.title}`}
           onClick={() => onOpen(project, current)}
         >
@@ -1050,196 +1216,6 @@ function MeteorMark() {
       <path d="M13.6 10.4 4 20M11 8.6 5.5 14M15.4 13 10 18.5" />
     </svg>
   );
-}
-
-/* ============ PRELOADER, CURSOR, ESTRELAS ============ */
-
-function Preloader() {
-  const [progress, setProgress] = useState(0);
-  const [done, setDone] = useState(false);
-
-  useEffect(() => {
-    const start = performance.now();
-    let frame = 0;
-    let finished = false;
-
-    const finish = () => {
-      if (finished) return;
-      finished = true;
-      setProgress(100);
-      window.setTimeout(() => {
-        setDone(true);
-        document.body.classList.add("ready");
-        // link direto (/#zenify): a seção só existe depois do React montar
-        const target = window.location.hash && document.getElementById(window.location.hash.slice(1));
-        if (target) target.scrollIntoView({ behavior: "auto" });
-      }, 260);
-    };
-
-    const tick = (now: number) => {
-      const elapsed = now - start;
-      setProgress(Math.min(92, (elapsed / 900) * 92));
-      if (elapsed > 750 && document.readyState === "complete") return finish();
-      if (elapsed > 2200) return finish();
-      frame = requestAnimationFrame(tick);
-    };
-    frame = requestAnimationFrame(tick);
-    // aba em segundo plano não roda requestAnimationFrame: o timer garante a saída
-    const fallback = window.setTimeout(finish, 2400);
-    return () => {
-      cancelAnimationFrame(frame);
-      window.clearTimeout(fallback);
-    };
-  }, []);
-
-  return (
-    <div className={`preloader ${done ? "done" : ""}`} aria-hidden="true">
-      <span className="preloader-word mono">ELIAS</span>
-      <span className="preloader-bar">
-        <i style={{ width: `${progress}%` }} />
-      </span>
-    </div>
-  );
-}
-
-function Cursor() {
-  const dot = useRef<HTMLDivElement>(null);
-  const ring = useRef<HTMLDivElement>(null);
-  const [label, setLabel] = useState("");
-
-  useEffect(() => {
-    const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (!fine.matches || reduced.matches) return;
-
-    document.body.classList.add("has-cursor");
-    let x = -100;
-    let y = -100;
-    let rx = -100;
-    let ry = -100;
-    let frame = 0;
-
-    const loop = () => {
-      rx += (x - rx) * 0.18;
-      ry += (y - ry) * 0.18;
-      if (dot.current) dot.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-      if (ring.current) ring.current.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
-      frame = requestAnimationFrame(loop);
-    };
-
-    const onMove = (event: PointerEvent) => {
-      x = event.clientX;
-      y = event.clientY;
-      document.body.classList.add("cursor-live");
-      const target = event.target as HTMLElement | null;
-      const labelled = target?.closest<HTMLElement>("[data-cursor]");
-      const interactive = target?.closest("a, button");
-      setLabel(labelled?.dataset.cursor ?? "");
-      ring.current?.classList.toggle("is-label", Boolean(labelled));
-      ring.current?.classList.toggle("is-hover", Boolean(interactive) && !labelled);
-    };
-
-    const onLeave = () => document.body.classList.remove("cursor-live");
-
-    frame = requestAnimationFrame(loop);
-    window.addEventListener("pointermove", onMove, { passive: true });
-    document.documentElement.addEventListener("pointerleave", onLeave);
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("pointermove", onMove);
-      document.documentElement.removeEventListener("pointerleave", onLeave);
-      document.body.classList.remove("has-cursor", "cursor-live");
-    };
-  }, []);
-
-  return (
-    <>
-      <div className="cursor-dot" ref={dot} aria-hidden="true" />
-      <div className="cursor-ring" ref={ring} aria-hidden="true">
-        <span className="mono">{label}</span>
-      </div>
-    </>
-  );
-}
-
-function Starfield() {
-  const canvas = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const node = canvas.current;
-    const context = node?.getContext("2d");
-    if (!node || !context) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    type Star = { x: number; y: number; z: number; r: number; t: number };
-    let stars: Star[] = [];
-    let width = 0;
-    let height = 0;
-    let frame = 0;
-    let mouseX = 0;
-    let mouseY = 0;
-    let visible = true;
-
-    const resize = () => {
-      const ratio = Math.min(window.devicePixelRatio || 1, 2);
-      width = node.clientWidth;
-      height = node.clientHeight;
-      node.width = width * ratio;
-      node.height = height * ratio;
-      context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      const amount = Math.round((width * height) / 5200);
-      stars = Array.from({ length: amount }, () => ({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        z: Math.random() * 0.8 + 0.2,
-        r: Math.random() * 1.1 + 0.25,
-        t: Math.random() * Math.PI * 2,
-      }));
-    };
-
-    const draw = (time: number) => {
-      const ink = getComputedStyle(document.documentElement).getPropertyValue("--ink-rgb").trim() || "240,239,236";
-      context.clearRect(0, 0, width, height);
-      for (const star of stars) {
-        const twinkle = reduced ? 1 : 0.55 + Math.sin(time / 900 + star.t) * 0.45;
-        const drift = reduced ? 0 : (time / 60) * star.z * 0.35;
-        const x = (star.x + mouseX * star.z * 18 + width) % width;
-        const y = (star.y - drift + mouseY * star.z * 18 + height * 4) % height;
-        context.fillStyle = `rgba(${ink}, ${0.18 + star.z * 0.6 * twinkle})`;
-        context.beginPath();
-        context.arc(x, y, star.r * star.z, 0, Math.PI * 2);
-        context.fill();
-      }
-    };
-
-    const loop = (time: number) => {
-      if (visible) draw(time);
-      if (!reduced) frame = requestAnimationFrame(loop);
-    };
-
-    const onMove = (event: PointerEvent) => {
-      mouseX = event.clientX / window.innerWidth - 0.5;
-      mouseY = event.clientY / window.innerHeight - 0.5;
-    };
-
-    const observer = new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting;
-    });
-
-    resize();
-    observer.observe(node);
-    frame = requestAnimationFrame(loop);
-    window.addEventListener("resize", resize);
-    window.addEventListener("pointermove", onMove, { passive: true });
-    return () => {
-      cancelAnimationFrame(frame);
-      observer.disconnect();
-      window.removeEventListener("resize", resize);
-      window.removeEventListener("pointermove", onMove);
-    };
-  }, []);
-
-  return <canvas className="hero-canvas" ref={canvas} aria-hidden="true" />;
 }
 
 export default App;

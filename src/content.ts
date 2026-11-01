@@ -54,7 +54,8 @@ export const zenify = {
 export const musify = {
   repo: "https://github.com/gokadzev/Musify",
   prs: "https://github.com/gokadzev/Musify/pulls?q=is%3Apr+author%3Aelias001011+is%3Amerged",
-  stats: { prs: 65, commits: 71, lines: 17 },
+  // valores mínimos conferidos em 31/10/2026; o App troca pelos do GitHub quando responde
+  fallback: { prs: 65, commits: 71, lines: 17, stars: 4 },
 };
 
 export const languages = [
@@ -73,8 +74,7 @@ export type ProjectId =
   | "meteor-landing"
   | "meteor-flutter"
   | "meteor"
-  | "my-computer"
-  | "sync-my-music";
+  | "my-computer";
 
 type ProjectLinks = {
   images: string[];
@@ -121,10 +121,6 @@ export const projectLinks: Record<ProjectId, ProjectLinks> = {
     images: imagesOf("my-computer"),
     repo: "https://github.com/elias001011/my-computer",
   },
-  "sync-my-music": {
-    images: [],
-    repo: "https://github.com/elias001011/sync-my-music",
-  },
 };
 
 export type ProjectText = {
@@ -152,15 +148,12 @@ const pt = {
   contact: "Contato",
   menuOpen: "Abrir menu",
   menuClose: "Fechar menu",
-  theme: "Alternar tema claro e escuro",
-  language: "Trocar idioma",
+  language: "Idioma",
+  palette: "Paleta",
+  paletteAria: "Escolher paleta de cores e idioma",
   hero: {
-    eyebrow: (age: number) => `Sarandi, RS · ${age} anos · Full stack`,
-    lead: "Construo produtos inteiros: interface, backend, apps em Flutter, empacotamento e deploy. Sócio da Connecta e criador do Zenify.",
     primary: "Ver o Zenify",
     secondary: "Falar comigo",
-    scroll: "role",
-    avatarAlt: "Elias J. R. Nunes com seu gato",
   },
   manifesto: [
     ["Gosto de levar uma ideia até o fim: do primeiro esboço"],
@@ -169,16 +162,13 @@ const pt = {
     ["Nos meus projetos, o maior deles é o Zenify.", true],
   ] as LitPart[],
   connecta: {
-    index: "01 — Connecta",
     partner: "Sócio da Connecta BR Digital",
     link: "connectabr.digital/portfolio",
     apiceTag: "Projeto · Ápice",
   },
   zen: {
-    index: "02 — O projeto",
-    kicker: "Meu projeto principal",
     tagline: "Um app de música calmo e moderno.",
-    lead: "O Zenify nasceu de um fork do Musify, o app open source em que eu já contribuía. Virou uma community edition: mantém o código, os recursos e a licença do original, e vai além no desktop, no visual e no sync entre aparelhos.",
+    lead: "Nasceu de um fork do Musify, o app em que eu já contribuía, e foi além no desktop, no visual e no sync entre aparelhos.",
     download: "Baixar o Zenify",
     code: "Código no GitHub",
     latest: "Versão",
@@ -189,7 +179,7 @@ const pt = {
       {
         date: "Mar 2026",
         title: "Contribuidor do Musify",
-        text: "65 PRs mergeados no app original: Time Machine, páginas de artista, mini player flutuante, importação do Spotify.",
+        text: "{prs} PRs mergeados no app original: Time Machine, páginas de artista, mini player flutuante, importação do Spotify.",
       },
       {
         date: "Mai 2026",
@@ -237,6 +227,8 @@ const pt = {
       playlist: "Playlist",
       player: "Player",
     } as Record<string, string>,
+    marquee: ["Moods", "Mix pessoal", "Local Sync", "Letras sincronizadas", "Ondas sonoras", "Fundo dinâmico", "Gerenciador de downloads", "Atalhos remapeáveis", "Time Machine", "Rádios"],
+    nowPlaying: "Tocando agora",
     compareTitle: "Musify × Zenify",
     compare: [
       ["Plataformas", "Android e builds desktop", "Android, Linux e Windows com .deb, instalador e portátil"],
@@ -247,9 +239,8 @@ const pt = {
     ],
   },
   musify: {
-    index: "03 — Open source",
-    title: "Antes do Zenify, 65 PRs no Musify.",
-    lead: "O Musify é um app de streaming de música open source para Android, com mais de 4 mil estrelas no GitHub. Lá eu aprendi o código por dentro, corrigindo e criando recursos que todo mundo usa.",
+    title: "Antes do Zenify, {prs} PRs no Musify.",
+    lead: "App de música open source para Android, com mais de {stars} mil estrelas no GitHub.",
     stats: ["PRs mergeados", "commits", "mil linhas"],
     highlightsTitle: "Algumas contribuições",
     highlights: [
@@ -268,7 +259,6 @@ const pt = {
     repo: "Repositório do Musify",
   },
   projects: {
-    index: "04 — Projetos",
     title: "Outros projetos meus.",
     meteorTitle: "Meteor",
     meteorText: "Um ecossistema de clima com IA: landing, app Android em Flutter e a versão web.",
@@ -276,10 +266,8 @@ const pt = {
     live: "Ao vivo",
     repo: "Código",
     view: "Ver",
-    soon: "Em desenvolvimento",
   },
   contactSection: {
-    index: "05 — Contato",
     title: "Vamos conversar.",
     text: "Para vagas, freelas, parcerias ou feedback nos projetos.",
   },
@@ -311,15 +299,12 @@ const en: Copy = {
   contact: "Contact",
   menuOpen: "Open menu",
   menuClose: "Close menu",
-  theme: "Toggle light and dark theme",
-  language: "Change language",
+  language: "Language",
+  palette: "Palette",
+  paletteAria: "Choose colour palette and language",
   hero: {
-    eyebrow: (age: number) => `Sarandi, Brazil · ${age} years old · Full stack`,
-    lead: "I build whole products: interface, backend, Flutter apps, packaging and deployment. Partner at Connecta and creator of Zenify.",
     primary: "See Zenify",
     secondary: "Contact me",
-    scroll: "scroll",
-    avatarAlt: "Elias J. R. Nunes with his cat",
   },
   manifesto: [
     ["I like taking an idea all the way: from the first sketch"],
@@ -328,16 +313,13 @@ const en: Copy = {
     ["Among my own projects, the biggest is Zenify.", true],
   ],
   connecta: {
-    index: "01 — Connecta",
     partner: "Partner at Connecta BR Digital",
     link: "connectabr.digital/portfolio",
     apiceTag: "Project · Ápice",
   },
   zen: {
-    index: "02 — The project",
-    kicker: "My main project",
     tagline: "A calm, modern music app.",
-    lead: "Zenify started as a fork of Musify, the open-source app I was already contributing to. It became a community edition: it keeps the original's code, features and license, and goes further on desktop, design and syncing between devices.",
+    lead: "Born as a fork of Musify, the app I was already contributing to, and taken further on desktop, design and syncing between devices.",
     download: "Download Zenify",
     code: "Code on GitHub",
     latest: "Version",
@@ -348,7 +330,7 @@ const en: Copy = {
       {
         date: "Mar 2026",
         title: "Musify contributor",
-        text: "65 merged PRs in the original app: Time Machine, artist pages, floating mini player, Spotify import.",
+        text: "{prs} merged PRs in the original app: Time Machine, artist pages, floating mini player, Spotify import.",
       },
       {
         date: "May 2026",
@@ -396,6 +378,8 @@ const en: Copy = {
       playlist: "Playlist",
       player: "Player",
     },
+    marquee: ["Moods", "Personal Mix", "Local Sync", "Synced lyrics", "Sound waves", "Dynamic background", "Download manager", "Remappable shortcuts", "Time Machine", "Radios"],
+    nowPlaying: "Now playing",
     compareTitle: "Musify × Zenify",
     compare: [
       ["Platforms", "Android, desktop builds", "Android, Linux and Windows with .deb, installer and portable"],
@@ -406,9 +390,8 @@ const en: Copy = {
     ],
   },
   musify: {
-    index: "03 — Open source",
-    title: "Before Zenify, 65 PRs in Musify.",
-    lead: "Musify is an open-source music streaming app for Android with over 4,000 stars on GitHub. That's where I learned the codebase inside out, fixing and building features everyone uses.",
+    title: "Before Zenify, {prs} PRs in Musify.",
+    lead: "An open-source music app for Android with over {stars},000 stars on GitHub.",
     stats: ["merged PRs", "commits", "k lines"],
     highlightsTitle: "Some contributions",
     highlights: [
@@ -427,7 +410,6 @@ const en: Copy = {
     repo: "Musify repository",
   },
   projects: {
-    index: "04 — Projects",
     title: "More of my projects.",
     meteorTitle: "Meteor",
     meteorText: "An AI weather ecosystem: landing page, Android app in Flutter and the web version.",
@@ -435,10 +417,8 @@ const en: Copy = {
     live: "Live",
     repo: "Code",
     view: "View",
-    soon: "In development",
   },
   contactSection: {
-    index: "05 — Contact",
     title: "Let's talk.",
     text: "For roles, freelance work, partnerships or feedback on the projects.",
   },
@@ -468,15 +448,12 @@ const es: Copy = {
   contact: "Contacto",
   menuOpen: "Abrir menú",
   menuClose: "Cerrar menú",
-  theme: "Cambiar entre tema claro y oscuro",
-  language: "Cambiar idioma",
+  language: "Idioma",
+  palette: "Paleta",
+  paletteAria: "Elegir paleta de colores e idioma",
   hero: {
-    eyebrow: (age: number) => `Sarandi, Brasil · ${age} años · Full stack`,
-    lead: "Construyo productos completos: interfaz, backend, apps en Flutter, empaquetado y despliegue. Socio de Connecta y creador de Zenify.",
     primary: "Ver Zenify",
     secondary: "Contactarme",
-    scroll: "desliza",
-    avatarAlt: "Elias J. R. Nunes con su gato",
   },
   manifesto: [
     ["Me gusta llevar una idea hasta el final: del primer boceto"],
@@ -485,16 +462,13 @@ const es: Copy = {
     ["En mis proyectos, el más grande es Zenify.", true],
   ],
   connecta: {
-    index: "01 — Connecta",
     partner: "Socio de Connecta BR Digital",
     link: "connectabr.digital/portfolio",
     apiceTag: "Proyecto · Ápice",
   },
   zen: {
-    index: "02 — El proyecto",
-    kicker: "Mi proyecto principal",
     tagline: "Una app de música tranquila y moderna.",
-    lead: "Zenify nació como un fork de Musify, la app open source en la que ya contribuía. Se volvió una community edition: mantiene el código, las funciones y la licencia del original, y va más allá en escritorio, diseño y sincronización entre dispositivos.",
+    lead: "Nació como un fork de Musify, la app en la que ya contribuía, y fue más allá en escritorio, diseño y sincronización entre dispositivos.",
     download: "Descargar Zenify",
     code: "Código en GitHub",
     latest: "Versión",
@@ -505,7 +479,7 @@ const es: Copy = {
       {
         date: "Mar 2026",
         title: "Colaborador de Musify",
-        text: "65 PRs aceptados en la app original: Time Machine, páginas de artista, mini player flotante, importación de Spotify.",
+        text: "{prs} PRs aceptados en la app original: Time Machine, páginas de artista, mini player flotante, importación de Spotify.",
       },
       {
         date: "May 2026",
@@ -553,6 +527,8 @@ const es: Copy = {
       playlist: "Playlist",
       player: "Reproductor",
     },
+    marquee: ["Moods", "Mix personal", "Local Sync", "Letras sincronizadas", "Ondas sonoras", "Fondo dinámico", "Gestor de descargas", "Atajos configurables", "Time Machine", "Radios"],
+    nowPlaying: "Sonando ahora",
     compareTitle: "Musify × Zenify",
     compare: [
       ["Plataformas", "Android y builds de escritorio", "Android, Linux y Windows con .deb, instalador y portable"],
@@ -563,9 +539,8 @@ const es: Copy = {
     ],
   },
   musify: {
-    index: "03 — Open source",
-    title: "Antes de Zenify, 65 PRs en Musify.",
-    lead: "Musify es una app open source de streaming de música para Android, con más de 4 mil estrellas en GitHub. Ahí aprendí el código por dentro, corrigiendo y creando funciones que todos usan.",
+    title: "Antes de Zenify, {prs} PRs en Musify.",
+    lead: "App de música open source para Android, con más de {stars} mil estrellas en GitHub.",
     stats: ["PRs aceptados", "commits", "mil líneas"],
     highlightsTitle: "Algunas contribuciones",
     highlights: [
@@ -584,7 +559,6 @@ const es: Copy = {
     repo: "Repositorio de Musify",
   },
   projects: {
-    index: "04 — Proyectos",
     title: "Otros proyectos míos.",
     meteorTitle: "Meteor",
     meteorText: "Un ecosistema de clima con IA: landing, app Android en Flutter y la versión web.",
@@ -592,10 +566,8 @@ const es: Copy = {
     live: "En vivo",
     repo: "Código",
     view: "Ver",
-    soon: "En desarrollo",
   },
   contactSection: {
-    index: "05 — Contacto",
     title: "Hablemos.",
     text: "Para oportunidades, freelas, alianzas o feedback sobre los proyectos.",
   },
@@ -620,8 +592,8 @@ export const projectText: Record<LanguageId, Record<ProjectId, ProjectText>> = {
       title: "Ápice",
       tag: "Plataforma de estudos",
       subtitle: "Estudos para o ENEM movidos por IA.",
-      description: "Corretor de redação, simulados, radar de temas e um professor IA, com canvas e exportação em PDF.",
-      stack: ["React", "Vite", "tldraw", "jsPDF", "Netlify"],
+      description: "Corretor de redação, simulados, radar de temas e um professor IA, com contas e conquistas.",
+      stack: ["React", "Vite", "Netlify Functions", "Gemini", "Groq"],
     },
     "musify-desktop-port": {
       title: "Musify Desktop Port",
@@ -673,21 +645,14 @@ export const projectText: Record<LanguageId, Record<ProjectId, ProjectText>> = {
       description: "",
       stack: ["Node.js", "CLI", "Ollama"],
     },
-    "sync-my-music": {
-      title: "Sync My Music",
-      tag: "Self-hosted",
-      subtitle: "Central de música com sync de playlists entre serviços e recaps unificados.",
-      description: "",
-      stack: ["Python", "FastAPI", "React", "Docker"],
-    },
   },
   en: {
     apice: {
       title: "Ápice",
       tag: "Study platform",
       subtitle: "AI-powered study for Brazil's ENEM exam.",
-      description: "Essay grader, mock exams, a topic radar and an AI tutor, with a canvas and PDF export.",
-      stack: ["React", "Vite", "tldraw", "jsPDF", "Netlify"],
+      description: "Essay grader, mock exams, a topic radar and an AI tutor, with accounts and achievements.",
+      stack: ["React", "Vite", "Netlify Functions", "Gemini", "Groq"],
     },
     "musify-desktop-port": {
       title: "Musify Desktop Port",
@@ -739,21 +704,14 @@ export const projectText: Record<LanguageId, Record<ProjectId, ProjectText>> = {
       description: "",
       stack: ["Node.js", "CLI", "Ollama"],
     },
-    "sync-my-music": {
-      title: "Sync My Music",
-      tag: "Self-hosted",
-      subtitle: "A music hub with cross-service playlist sync and unified recaps.",
-      description: "",
-      stack: ["Python", "FastAPI", "React", "Docker"],
-    },
   },
   es: {
     apice: {
       title: "Ápice",
       tag: "Plataforma de estudio",
       subtitle: "Estudio para el ENEM impulsado por IA.",
-      description: "Corrector de redacción, simulacros, radar de temas y un profesor IA, con canvas y exportación a PDF.",
-      stack: ["React", "Vite", "tldraw", "jsPDF", "Netlify"],
+      description: "Corrector de redacción, simulacros, radar de temas y un profesor IA, con cuentas y logros.",
+      stack: ["React", "Vite", "Netlify Functions", "Gemini", "Groq"],
     },
     "musify-desktop-port": {
       title: "Musify Desktop Port",
@@ -804,13 +762,6 @@ export const projectText: Record<LanguageId, Record<ProjectId, ProjectText>> = {
       subtitle: "Panel local para conversar con IA y usar herramientas del terminal con aprobación.",
       description: "",
       stack: ["Node.js", "CLI", "Ollama"],
-    },
-    "sync-my-music": {
-      title: "Sync My Music",
-      tag: "Self-hosted",
-      subtitle: "Central de música con sync de playlists entre servicios y resúmenes unificados.",
-      description: "",
-      stack: ["Python", "FastAPI", "React", "Docker"],
     },
   },
 };
