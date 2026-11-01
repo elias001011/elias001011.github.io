@@ -24,9 +24,9 @@ import {
   MonitorSmartphone,
   Palette,
   PictureInPicture2,
+  Play,
   RotateCcw,
   Sparkles,
-  VolumeX,
   Wifi,
   X,
   type LucideIcon,
@@ -49,7 +49,6 @@ import {
 } from "./content";
 import { useScrollMotion } from "./motion";
 import { ParticleShape } from "./ParticleShape";
-import { useZenPlayer } from "./zenPlayer";
 
 const palettes = [
   { id: "green", swatch: "#67d390" },
@@ -718,7 +717,6 @@ function App() {
 
 function ZenifySection({ copy, stats }: { copy: Copy; stats: LiveStats }) {
   const zen = copy.zen;
-  const player = useZenPlayer();
   return (
     <section className="zen" id="zenify">
       <div className="zen-eq" aria-hidden="true">
@@ -787,41 +785,24 @@ function ZenifySection({ copy, stats }: { copy: Copy; stats: LiveStats }) {
           <div className="zen-phone phone-right">
             <img src={zenify.mobile[1].src} alt="" loading="lazy" decoding="async" />
           </div>
-          {/* o "tocando agora" é o player: gruda no pé da tela enquanto a vitrine está visível e sai junto com ela */}
-          <div className={`now-playing mono${player.on ? " is-on" : ""}`}>
+          <div className="now-playing mono" aria-hidden="true">
             <span className="now-playing-cover">
               <img src={zenify.mobile[4].src} alt="" loading="lazy" decoding="async" />
             </span>
             <span className="now-playing-body">
-              <span className="now-playing-label">
-                {zen.nowPlaying}
-                {player.on && player.track && <span className="now-playing-track"> · {player.track.title}</span>}
-              </span>
-              <span className="now-playing-bar" ref={player.barRef}>
+              <span className="now-playing-label">{zen.nowPlaying}</span>
+              <span className="now-playing-bar">
                 <i />
               </span>
             </span>
-            {/* mudo: alto-falante; som ligado: as ondas no lugar dele */}
-            <button
-              type="button"
-              className="now-playing-toggle"
-              onClick={player.toggle}
-              disabled={!player.ready}
-              aria-label={player.on ? zen.soundOff : zen.soundOn}
-            >
-              {player.on ? (
-                <span className="now-playing-wave" aria-hidden="true">
-                  {Array.from({ length: 9 }, (_, index) => (
-                    <i key={index} style={{ "--i": index } as CSSProperties} />
-                  ))}
-                </span>
-              ) : (
-                <span className="now-playing-play" aria-hidden="true">
-                  <VolumeX size={15} />
-                </span>
-              )}
-            </button>
-            <audio ref={player.audioRef} preload="none" muted onEnded={player.onEnded} onTimeUpdate={player.onTime} onError={player.onFail} />
+            <span className="now-playing-wave">
+              {Array.from({ length: 9 }, (_, index) => (
+                <i key={index} style={{ "--i": index } as CSSProperties} />
+              ))}
+            </span>
+            <span className="now-playing-play">
+              <Play size={13} />
+            </span>
           </div>
         </div>
       </div>
