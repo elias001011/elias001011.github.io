@@ -172,6 +172,35 @@ em { font-style: normal; }
 .container { width: min(var(--container), calc(100% - 48px)); margin: 0 auto; }
 .mono { font-family: var(--font-mono); }
 
+/* ============ CURSOR (o mesmo da landing do Meteor) ============ */
+
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  mix-blend-mode: difference;
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.cursor.is-visible { opacity: 1; }
+
+.cursor-ball {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: #fff;
+  transform: translate(-50%, -50%);
+  /* curva com leve passagem do ponto, imitando a mola do framer-motion */
+  transition: width 420ms cubic-bezier(0.34, 1.56, 0.64, 1), height 420ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.cursor-ball.is-hover { width: 64px; height: 64px; }
+
+html.has-cursor, html.has-cursor * { cursor: none !important; }
+
 /* ============ NAVBAR (flutuante) ============ */
 
 .navbar {
@@ -2063,6 +2092,8 @@ body.ready .reveal-photo { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .cursor { display: none; }
+  html.has-cursor, html.has-cursor * { cursor: auto !important; }
   *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; transition-delay: 0ms !important; }
   .zen-window, .zen-phone, .zen-phones-track, .now-playing { transform: none !important; }
   .now-playing { transform: translateX(-50%) !important; }

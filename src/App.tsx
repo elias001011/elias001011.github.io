@@ -296,6 +296,7 @@ function App() {
 
   return (
     <>
+      <Cursor />
       <header className={`navbar ${scrolled ? "scrolled" : ""} ${menuOpen ? "menu-open" : ""}`}>
         <nav className="navbar-inner" aria-label={copy.navLabel}>
           <a className="brand" href="#inicio" onClick={() => setMenuOpen(false)}>
@@ -1196,6 +1197,71 @@ function GalleryModal({
           ))}
         </div>
       </div>
+    </div>
+  );
+}
+
+/* Cursor da landing do Meteor: bola branca com mix-blend-mode difference, que
+   segue o mouse numa mola (mesmos parâmetros do framer-motion de lá: damping 20,
+   stiffness 300, mass 0.5) e cresce sobre o que é clicável. Só no desktop. */
+function Cursor() {
+  const outer = useRef<HTMLDivElement>(null);
+  const ball = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 1024px) and (hover: hover) and (pointer: fine)");
+    if (!desktop.matches) return;
+
+    document.documentElement.classList.add("has-cursor");
+    let tx = -100;
+    let ty = -100;
+    let x = -100;
+    let y = -100;
+    let vx = 0;
+    let vy = 0;
+    let last = performance.now();
+    let frame = 0;
+    const stiffness = 300;
+    const damping = 20;
+    const mass = 0.5;
+
+    const loop = (now: number) => {
+      const dt = Math.min((now - last) / 1000, 1 / 30);
+      last = now;
+      vx += ((-stiffness * (x - tx) - damping * vx) / mass) * dt;
+      vy += ((-stiffness * (y - ty) - damping * vy) / mass) * dt;
+      x += vx * dt;
+      y += vy * dt;
+      if (outer.current) outer.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      frame = requestAnimationFrame(loop);
+    };
+
+    const onMove = (event: MouseEvent) => {
+      tx = event.clientX;
+      ty = event.clientY;
+      outer.current?.classList.add("is-visible");
+      const target = event.target as HTMLElement | null;
+      const hovering = Boolean(
+        target?.closest("a, button, input, textarea, [data-hover], .zen-feature, .particle-shape"),
+      );
+      ball.current?.classList.toggle("is-hover", hovering);
+    };
+    const onLeave = () => outer.current?.classList.remove("is-visible");
+
+    frame = requestAnimationFrame(loop);
+    window.addEventListener("mousemove", onMove, { passive: true });
+    document.body.addEventListener("mouseleave", onLeave);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("mousemove", onMove);
+      document.body.removeEventListener("mouseleave", onLeave);
+      document.documentElement.classList.remove("has-cursor");
+    };
+  }, []);
+
+  return (
+    <div className="cursor" ref={outer} aria-hidden="true">
+      <div className="cursor-ball" ref={ball} />
     </div>
   );
 }
