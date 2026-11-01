@@ -1070,6 +1070,9 @@ function Preloader() {
       window.setTimeout(() => {
         setDone(true);
         document.body.classList.add("ready");
+        // link direto (/#zenify): a seção só existe depois do React montar
+        const target = window.location.hash && document.getElementById(window.location.hash.slice(1));
+        if (target) target.scrollIntoView({ behavior: "auto" });
       }, 260);
     };
 
