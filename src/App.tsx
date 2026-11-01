@@ -49,7 +49,6 @@ import {
 } from "./content";
 import { useScrollMotion } from "./motion";
 import { ParticleShape } from "./ParticleShape";
-import { NowPlayingBar, ZenMusicPanel, useZenPlayer, type ZenPlayer } from "./ZenMusic";
 
 const palettes = [
   { id: "green", label: "Verde", hint: "Connecta", swatch: "#67d390" },
@@ -204,8 +203,6 @@ function App() {
   }, [language]);
 
   useScrollMotion(language);
-
-  const player = useZenPlayer();
 
   // sem tela de carregamento: as entradas do topo começam assim que monta
   useEffect(() => {
@@ -516,7 +513,7 @@ function App() {
         </section>
 
         {/* ============ ZENIFY ============ */}
-        <ZenifySection copy={copy} stats={stats} player={player} />
+        <ZenifySection copy={copy} stats={stats} />
 
         {/* ============ MUSIFY ============ */}
         <section className="section section-line musify-section" id="musify">
@@ -701,8 +698,6 @@ function App() {
         </div>
       </footer>
 
-      <NowPlayingBar player={player} copy={copy} />
-
       {gallery && (
         <GalleryModal
           gallery={gallery}
@@ -720,7 +715,7 @@ function App() {
    ZENIFY — a seção de destaque
    ============================================================ */
 
-function ZenifySection({ copy, stats, player }: { copy: Copy; stats: LiveStats; player: ZenPlayer }) {
+function ZenifySection({ copy, stats }: { copy: Copy; stats: LiveStats }) {
   const zen = copy.zen;
   return (
     <section className="zen" id="zenify">
@@ -816,11 +811,6 @@ function ZenifySection({ copy, stats, player }: { copy: Copy; stats: LiveStats; 
       <Marquee items={[...zen.marquee].reverse()} className="zen-marquee is-reverse" />
 
       <div className="container">
-        <h3 className="zen-subtitle split-reveal" data-reveal>
-          <SplitWords text={zen.player.title} />
-        </h3>
-        <ZenMusicPanel player={player} copy={copy} />
-
         <div className="zen-origin">
           <h3 className="split-reveal" data-reveal>
             <SplitWords text={zen.originTitle} />
