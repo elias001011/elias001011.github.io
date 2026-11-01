@@ -1,908 +1,60 @@
 import {
-  ArrowDown,
   ArrowLeft,
   ArrowRight,
-  BriefcaseBusiness,
-  Building2,
-  CheckCircle2,
-  ChevronDown,
-  Code2,
-  ExternalLink,
+  ArrowUpRight,
+  AudioLines,
+  Download,
   Github,
-  Globe2,
   Images,
   Instagram,
+  Keyboard,
   Linkedin,
   Mail,
-  Menu,
-  Palette,
-  Rocket,
-  ServerCog,
+  Moon,
+  Sparkles,
+  Sun,
+  Wifi,
   X,
+  Disc3,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import {
+  languages,
+  musify,
+  profile,
+  profileImage,
+  projectLinks,
+  projectText,
+  siteCopy,
+  zenify,
+  type Copy,
+  type LanguageId,
+  type ProjectId,
+} from "./content";
+import { useScrollMotion } from "./motion";
 
-const profileImage = new URL("../me.webp", import.meta.url).href;
-
-const profile = {
-  name: "Elias J. R. Nunes",
-  birthDate: new Date(2010, 1, 9),
-  email: "elias.juriatti@outlook.com",
-  github: "https://github.com/elias001011",
-  instagram: "https://www.instagram.com/elias_jrnunes",
-  linkedin:
-    "https://www.linkedin.com/in/elias-nunes-b695ba406?utm_source=share_via&utm_content=profile&utm_medium=member_android",
-  connecta: "https://connectabr.digital/",
-  avatar: profileImage,
-};
-
-const palettes = [
-  { id: "green", label: "Verde", hint: "Connecta", swatch: "#67d390" },
-  { id: "blue", label: "Azul", hint: "Meteor", swatch: "#8bbcff" },
-  { id: "black", label: "Preto", hint: "Clean", swatch: "#f3f3ee" },
-  { id: "graphite", label: "Grafite", hint: "Neutro", swatch: "#bcc6d4" },
-  { id: "meraki", label: "Meraki", hint: "Café", swatch: "#a9c98a" },
-] as const;
-
-const languages = [
-  { id: "pt", label: "PT", name: "Português" },
-  { id: "en", label: "EN", name: "English" },
-  { id: "es", label: "ES", name: "Español" },
-] as const;
-
-type PaletteId = (typeof palettes)[number]["id"];
-type LanguageId = (typeof languages)[number]["id"];
-
-const siteCopy = {
-  pt: {
-    locale: "pt-BR",
-    brandRole: "Portfólio",
-    navLabel: "Navegação principal",
-    nav: [
-      { label: "Início", href: "#inicio" },
-      { label: "Projetos", href: "#projetos" },
-      { label: "Sobre", href: "#sobre" },
-      { label: "Contato", href: "#contato" },
-    ],
-    paletteAria: "Selecionar paleta de cores",
-    language: {
-      aria: "Selecionar idioma",
-      label: "Idioma",
-    },
-    contact: "Contato",
-    menu: {
-      open: "Abrir menu",
-      github: "GitHub",
-    },
-    hero: {
-      status: "",
-      lead: (age: number) =>
-        `Desenvolvedor full stack de ${age} anos, sócio da Connecta e focado em transformar ideias em produtos web completos, do front ao backend serverless.`,
-      primary: "Conhecer projetos",
-      secondary: "Falar comigo",
-      socialLabel: "Links sociais",
-      avatarLabel: "Foto de Elias",
-      avatarAlt: "Elias J. R. Nunes com seu gato",
-    },
-    about: {
-      eyebrow: "Sobre",
-      title: "Simples no visual, direto no que importa.",
-      cardTitle: "Quem eu sou",
-      text: "Eu construo interfaces, landings e produtos web com atenção à experiência, performance, backend serverless e deploy. Minha base passa por React, TypeScript, APIs, Netlify Functions e projetos reais publicados.",
-      bullets: [
-        "Aberto para oportunidades e projetos.",
-        "Projetos solo com app, landing, APIs, funções e deploy.",
-        "Contribuições open-source em app usado por outras pessoas.",
-      ],
-      connectaTitle: "Connecta",
-      connectaText:
-        "A Connecta é uma empresa digital brasileira com CNPJ, criada com foco em sites, sistemas e experiências digitais para negócios locais. Eu faço parte como sócio e desenvolvedor.",
-      connectaLink: "Visitar site da Connecta",
-    },
-    projectsIntro: {
-      eyebrow: "Projetos",
-      title: "Trabalhos publicados, com contexto e link real.",
-      scope: "Na prática",
-      skills: ["Interfaces React", "APIs e Functions", "Deploy real"],
-    },
-    more: {
-      eyebrow: "Em desenvolvimento",
-      title: "Vem mais por aí.",
-      text: "Novos produtos, melhorias nos projetos atuais e mais contribuições open-source devem aparecer por aqui conforme forem ficando prontos.",
-      cta: "Acompanhar no GitHub",
-    },
-    contactSection: {
-      eyebrow: "Contato",
-      title: "Vamos conversar.",
-      text: "Para vagas, freelas, parceria pela Connecta ou feedback nos projetos, esses são os melhores caminhos.",
-    },
-    footer: {
-      rights: "Todos os direitos reservados.",
-      credit: "Desenvolvido por @elias_jrnunes",
-    },
-    projectCard: {
-      openGallery: "Abrir galeria do projeto",
-      screenshotAlt: "Screenshot do projeto",
-      galleryBadgeSingle: "Ver projeto",
-      slideshow: "Slideshow",
-      previousImage: "Imagem anterior",
-      nextImage: "Próxima imagem",
-      showImage: "Mostrar imagem",
-      live: "Site ao vivo",
-      repo: "Repositório",
-    },
-    commitFeed: {
-      heading: "Commits recentes",
-      stats: ["50+ commits", "10000+ linhas", "Open source"],
-      loading: "Carregando atividade recente...",
-      error:
-        "50+ commits confirmados no projeto. O GitHub pode limitar chamadas anônimas.",
-    },
-    gallery: {
-      modalLabel: "Galeria",
-      closeBackdrop: "Fechar galeria",
-      close: "Fechar",
-      previous: "Imagem anterior",
-      next: "Próxima imagem",
-      imageAlt: "imagem",
-      viewImage: "Ver imagem",
-    },
-  },
-  en: {
-    locale: "en",
-    brandRole: "Portfolio",
-    navLabel: "Main navigation",
-    nav: [
-      { label: "Home", href: "#inicio" },
-      { label: "Projects", href: "#projetos" },
-      { label: "About", href: "#sobre" },
-      { label: "Contact", href: "#contato" },
-    ],
-    paletteAria: "Select color palette",
-    language: {
-      aria: "Select language",
-      label: "Language",
-    },
-    contact: "Contact",
-    menu: {
-      open: "Open menu",
-      github: "GitHub",
-    },
-    hero: {
-      status: "",
-      lead: (age: number) =>
-        `${age}-year-old full stack developer, Connecta partner, focused on turning ideas into complete web products from frontend to serverless backend.`,
-      primary: "Explore projects",
-      secondary: "Contact me",
-      socialLabel: "Social links",
-      avatarLabel: "Photo of Elias",
-      avatarAlt: "Elias J. R. Nunes with his cat",
-    },
-    about: {
-      eyebrow: "About",
-      title: "Clean visuals, focused on what matters.",
-      cardTitle: "Who I am",
-      text: "I build interfaces, landing pages and web products with care for experience, performance, serverless backend work and deployment. My foundation includes React, TypeScript, APIs, Netlify Functions and published real-world projects.",
-      bullets: [
-        "Open to roles and projects.",
-        "Solo projects with apps, landing pages, APIs, functions and deployment.",
-        "Open-source contributions to an app used by real people.",
-      ],
-      connectaTitle: "Connecta",
-      connectaText:
-        "Connecta is a registered Brazilian digital company focused on websites, systems and digital experiences for local businesses. I am a partner and developer there.",
-      connectaLink: "Visit Connecta website",
-    },
-    projectsIntro: {
-      eyebrow: "Projects",
-      title: "Published work, with context and real links.",
-      scope: "In practice",
-      skills: ["React interfaces", "APIs and Functions", "Real deployment"],
-    },
-    more: {
-      eyebrow: "In development",
-      title: "More is on the way.",
-      text: "New products, improvements to current projects and more open-source contributions will appear here as they become ready.",
-      cta: "Follow on GitHub",
-    },
-    contactSection: {
-      eyebrow: "Contact",
-      title: "Let's talk.",
-      text: "For roles, freelance work, Connecta partnerships or feedback on the projects, these are the best ways to reach me.",
-    },
-    footer: {
-      rights: "All rights reserved.",
-      credit: "Developed by @elias_jrnunes",
-    },
-    projectCard: {
-      openGallery: "Open project gallery for",
-      screenshotAlt: "Screenshot of",
-      galleryBadgeSingle: "View project",
-      slideshow: "Slideshow",
-      previousImage: "Previous image",
-      nextImage: "Next image",
-      showImage: "Show image",
-      live: "Live site",
-      repo: "Repository",
-    },
-    commitFeed: {
-      heading: "Recent commits",
-      stats: ["50+ commits", "10000+ lines", "Open source"],
-      loading: "Loading recent activity...",
-      error:
-        "50+ commits confirmed in the project. GitHub may rate-limit anonymous requests.",
-    },
-    gallery: {
-      modalLabel: "Gallery",
-      closeBackdrop: "Close gallery",
-      close: "Close",
-      previous: "Previous image",
-      next: "Next image",
-      imageAlt: "image",
-      viewImage: "View image",
-    },
-  },
-  es: {
-    locale: "es",
-    brandRole: "Portafolio",
-    navLabel: "Navegación principal",
-    nav: [
-      { label: "Inicio", href: "#inicio" },
-      { label: "Proyectos", href: "#projetos" },
-      { label: "Sobre mí", href: "#sobre" },
-      { label: "Contacto", href: "#contato" },
-    ],
-    paletteAria: "Seleccionar paleta de colores",
-    language: {
-      aria: "Seleccionar idioma",
-      label: "Idioma",
-    },
-    contact: "Contacto",
-    menu: {
-      open: "Abrir menú",
-      github: "GitHub",
-    },
-    hero: {
-      status: "",
-      lead: (age: number) =>
-        `Desarrollador full stack de ${age} años, socio de Connecta y enfocado en transformar ideas en productos web completos, del frontend al backend serverless.`,
-      primary: "Ver proyectos",
-      secondary: "Contactarme",
-      socialLabel: "Enlaces sociales",
-      avatarLabel: "Foto de Elias",
-      avatarAlt: "Elias J. R. Nunes con su gato",
-    },
-    about: {
-      eyebrow: "Sobre mí",
-      title: "Visual simple, foco en lo importante.",
-      cardTitle: "Quién soy",
-      text: "Construyo interfaces, landing pages y productos web cuidando experiencia, rendimiento, backend serverless y despliegue. Mi base incluye React, TypeScript, APIs, Netlify Functions y proyectos reales publicados.",
-      bullets: [
-        "Abierto a oportunidades y proyectos.",
-        "Proyectos propios con app, landing, APIs, funciones y deploy.",
-        "Contribuciones open-source en una app usada por otras personas.",
-      ],
-      connectaTitle: "Connecta",
-      connectaText:
-        "Connecta es una empresa digital brasileña registrada, enfocada en sitios, sistemas y experiencias digitales para negocios locales. Participo como socio y desarrollador.",
-      connectaLink: "Visitar el sitio de Connecta",
-    },
-    projectsIntro: {
-      eyebrow: "Proyectos",
-      title: "Trabajos publicados, con contexto y enlaces reales.",
-      scope: "En la práctica",
-      skills: ["Interfaces React", "APIs y Functions", "Deploy real"],
-    },
-    more: {
-      eyebrow: "En desarrollo",
-      title: "Hay más en camino.",
-      text: "Nuevos productos, mejoras en los proyectos actuales y más contribuciones open-source aparecerán aquí cuando estén listos.",
-      cta: "Seguir en GitHub",
-    },
-    contactSection: {
-      eyebrow: "Contacto",
-      title: "Hablemos.",
-      text: "Para oportunidades, freelas, alianzas por Connecta o feedback sobre los proyectos, estos son los mejores canales.",
-    },
-    footer: {
-      rights: "Todos los derechos reservados.",
-      credit: "Desarrollado por @elias_jrnunes",
-    },
-    projectCard: {
-      openGallery: "Abrir galería del proyecto",
-      screenshotAlt: "Captura del proyecto",
-      galleryBadgeSingle: "Ver proyecto",
-      slideshow: "Presentación",
-      previousImage: "Imagen anterior",
-      nextImage: "Siguiente imagen",
-      showImage: "Mostrar imagen",
-      live: "Sitio activo",
-      repo: "Repositorio",
-    },
-    commitFeed: {
-      heading: "Commits recientes",
-      stats: ["50+ commits", "10000+ líneas", "Open source"],
-      loading: "Cargando actividad reciente...",
-      error:
-        "50+ commits confirmados en el proyecto. GitHub puede limitar llamadas anónimas.",
-    },
-    gallery: {
-      modalLabel: "Galería",
-      closeBackdrop: "Cerrar galería",
-      close: "Cerrar",
-      previous: "Imagen anterior",
-      next: "Siguiente imagen",
-      imageAlt: "imagen",
-      viewImage: "Ver imagen",
-    },
-  },
-};
-
-type ProjectCardCopy = (typeof siteCopy)["pt"]["projectCard"];
-type CommitFeedCopy = (typeof siteCopy)["pt"]["commitFeed"];
-type GalleryCopy = (typeof siteCopy)["pt"]["gallery"];
-
-const meteorImages = [
-  new URL("../Meteor/image.webp", import.meta.url).href,
-  new URL("../Meteor/image copy.webp", import.meta.url).href,
-  new URL("../Meteor/image copy 2.webp", import.meta.url).href,
-  new URL("../Meteor/image copy 3.webp", import.meta.url).href,
-  new URL("../Meteor/image copy 4.webp", import.meta.url).href,
-  new URL("../Meteor/image copy 5.webp", import.meta.url).href,
-  new URL("../Meteor/image copy 6.webp", import.meta.url).href,
-  new URL("../Meteor/image copy 7.webp", import.meta.url).href,
-  new URL("../Meteor/image copy 8.webp", import.meta.url).href,
-];
-
-const meteorLandingImages = [
-  new URL("../Meteor-landing/image.webp", import.meta.url).href,
-  new URL("../Meteor-landing/image copy.webp", import.meta.url).href,
-  new URL("../Meteor-landing/image copy 2.webp", import.meta.url).href,
-  new URL("../Meteor-landing/image copy 3.webp", import.meta.url).href,
-  new URL("../Meteor-landing/image copy 4.webp", import.meta.url).href,
-  new URL("../Meteor-landing/image copy 5.webp", import.meta.url).href,
-  new URL("../Meteor-landing/image copy 6.webp", import.meta.url).href,
-  new URL("../Meteor-landing/image copy 7.webp", import.meta.url).href,
-];
-
-const apiceImages = [
-  new URL("../Apice/image.webp", import.meta.url).href,
-  new URL("../Apice/image copy.webp", import.meta.url).href,
-  new URL("../Apice/image copy 2.webp", import.meta.url).href,
-  new URL("../Apice/image copy 3.webp", import.meta.url).href,
-  new URL("../Apice/image copy 4.webp", import.meta.url).href,
-  new URL("../Apice/image copy 5.webp", import.meta.url).href,
-  new URL("../Apice/image copy 6.webp", import.meta.url).href,
-  new URL("../Apice/image copy 7.webp", import.meta.url).href,
-  new URL("../Apice/image copy 8.webp", import.meta.url).href,
-  new URL("../Apice/image copy 9.webp", import.meta.url).href,
-  new URL("../Apice/image copy 10.webp", import.meta.url).href,
-  new URL("../Apice/image copy 11.webp", import.meta.url).href,
-];
-
-const myComputerImages = [
-  new URL("../MyComputer/image.webp", import.meta.url).href,
-  new URL("../MyComputer/image copy.webp", import.meta.url).href,
-  new URL("../MyComputer/image copy 2.webp", import.meta.url).href,
-  new URL("../MyComputer/image copy 3.webp", import.meta.url).href,
-  new URL("../MyComputer/image copy 4.webp", import.meta.url).href,
-  new URL("../MyComputer/image copy 5.webp", import.meta.url).href,
-];
-
-const musifyDesktopImages = [
-  new URL("../MusifyDesktop/image.webp", import.meta.url).href,
-  new URL("../MusifyDesktop/image copy.webp", import.meta.url).href,
-  new URL("../MusifyDesktop/image copy 2.webp", import.meta.url).href,
-  new URL("../MusifyDesktop/image copy 3.webp", import.meta.url).href,
-  new URL("../MusifyDesktop/image copy 4.webp", import.meta.url).href,
-  new URL("../MusifyDesktop/image copy 5.webp", import.meta.url).href,
-];
-
-const syncMyMusicImages: string[] = [];
-
-const meteorFlutterImages = [
-  new URL("../MeteorFlutter/18690.webp", import.meta.url).href,
-  new URL("../MeteorFlutter/18691.webp", import.meta.url).href,
-  new URL("../MeteorFlutter/18692.webp", import.meta.url).href,
-  new URL("../MeteorFlutter/18693.webp", import.meta.url).href,
-  new URL("../MeteorFlutter/18694.webp", import.meta.url).href,
-  new URL("../MeteorFlutter/18695.webp", import.meta.url).href,
-  new URL("../MeteorFlutter/18696.webp", import.meta.url).href,
-];
-
-const youtubeMusicExplodeImages = [
-  new URL("../YoutubeMusicExplode/image.webp", import.meta.url).href,
-];
-
-const tec2dImages = [
-  new URL("../Tec2D/image.webp", import.meta.url).href,
-  new URL("../Tec2D/image copy.webp", import.meta.url).href,
-  new URL("../Tec2D/image copy 2.webp", import.meta.url).href,
-  new URL("../Tec2D/image copy 3.webp", import.meta.url).href,
-  new URL("../Tec2D/image copy 4.webp", import.meta.url).href,
-  new URL("../Tec2D/image copy 5.webp", import.meta.url).href,
-  new URL("../Tec2D/image copy 6.webp", import.meta.url).href,
-  new URL("../Tec2D/image copy 7.webp", import.meta.url).href,
-  new URL("../Tec2D/image copy 8.webp", import.meta.url).href,
-  new URL("../Tec2D/image copy 9.webp", import.meta.url).href,
-];
-
-const sepiaReaderImages = [
-  new URL("../SepiaReader/image.webp", import.meta.url).href,
-  new URL("../SepiaReader/image copy.webp", import.meta.url).href,
-  new URL("../SepiaReader/image copy 2.webp", import.meta.url).href,
-  new URL("../SepiaReader/image copy 3.webp", import.meta.url).href,
-  new URL("../SepiaReader/image copy 4.webp", import.meta.url).href,
-  new URL("../SepiaReader/image copy 5.webp", import.meta.url).href,
-  new URL("../SepiaReader/image copy 6.webp", import.meta.url).href,
-];
-
-const projectOrder = [
-  "tec2d",
-  "apice",
-  "my-computer",
-  "musify-desktop-port",
-  "meteor-landing",
-  "meteor-flutter",
-  "meteor",
-  "sepia-reader",
-  "youtube-music-explode-dart",
-  "musify",
-] as const;
-
-const developmentOrder = ["sync-my-music"] as const;
-
-type ProjectId = (typeof projectOrder)[number] | (typeof developmentOrder)[number];
+type Theme = "dark" | "light";
 
 type Project = {
   id: ProjectId;
   title: string;
-  eyebrow: string;
+  tag: string;
   subtitle: string;
   description: string;
-  role: string;
   stack: string[];
-  metrics: string[];
+  liveLabel?: string;
   images: string[];
   live?: string;
-  liveLabel?: string;
   repo?: string;
-  reverse?: boolean;
-  openSource?: boolean;
-  featured?: boolean;
+  phone?: boolean;
 };
 
-type ProjectText = Omit<
-  Project,
-  "id" | "images" | "live" | "repo" | "reverse" | "openSource" | "featured"
->;
-
-const projectAssets: Record<
-  ProjectId,
-  {
-    images: string[];
-    live?: string;
-    repo?: string;
-    reverse?: boolean;
-    openSource?: boolean;
-    featured?: boolean;
-  }
-> = {
-  tec2d: {
-    images: tec2dImages,
-    live: "https://tec2d.com.br",
-    featured: true,
-  },
-  "sepia-reader": {
-    images: sepiaReaderImages,
-    repo: "https://github.com/elias001011/sepia-reader",
-    reverse: true,
-  },
-  apice: {
-    images: apiceImages,
-    live: "https://apice-ai.netlify.app",
-    repo: "https://github.com/elias001011/Apice",
-  },
-  "meteor-landing": {
-    images: meteorLandingImages,
-    live: "https://lp--meteor-ai.netlify.app/",
-    repo: "https://github.com/elias001011/Meteor/tree/LP",
-    reverse: true,
-  },
-  meteor: {
-    images: meteorImages,
-    live: "https://meteor-ai.netlify.app",
-    repo: "https://github.com/elias001011/Meteor",
-  },
-  "my-computer": {
-    images: myComputerImages,
-    repo: "https://github.com/elias001011/my-computer",
-    reverse: true,
-  },
-  "sync-my-music": {
-    images: syncMyMusicImages,
-    repo: "https://github.com/elias001011/sync-my-music",
-    reverse: true,
-  },
-  "meteor-flutter": {
-    images: meteorFlutterImages,
-    repo: "https://github.com/elias001011/Meteor/tree/android",
-    reverse: true,
-  },
-  "musify-desktop-port": {
-    images: musifyDesktopImages,
-    live: "https://github.com/elias001011/Musify-Desktop-Port/releases",
-    repo: "https://github.com/elias001011/Musify-Desktop-Port",
-    reverse: true,
-  },
-  "youtube-music-explode-dart": {
-    images: youtubeMusicExplodeImages,
-    repo: "https://github.com/elias001011/youtube_music_explode_dart",
-  },
-  musify: {
-    images: [],
-    live: "https://gokadzev.github.io/Musify/",
-    repo: "https://github.com/gokadzev/Musify",
-    openSource: true,
-  },
-};
-
-const projectContent: Record<LanguageId, Record<ProjectId, ProjectText>> = {
-  pt: {
-    tec2d: {
-      title: "Tec2D",
-      eyebrow: "Connecta · Cliente real",
-      subtitle: "Assistência técnica Classe A, em produção no ar.",
-      description:
-        "Site institucional e painel administrativo completo para a Tec2D, assistência técnica de celulares e eletrônicos em Sarandi (RS). Projeto real da Connecta, hospedado em VPS próprio, com catálogo, blog com SEO, operação de vendas e gestão financeira.",
-      role: "Full stack: site institucional, painel administrativo, catálogo, blog com SEO e operação de vendas, via Connecta.",
-      stack: ["HTML", "CSS", "JavaScript", "Node.js", "Express", "SEO"],
-      metrics: ["Cliente real", "Em produção", "Parceria Connecta"],
-    },
-    "sepia-reader": {
-      title: "Sépia",
-      eyebrow: "Projeto solo",
-      subtitle: "Leitor, biblioteca e editor de Markdown sem distrações.",
-      description:
-        "App Flutter para ler, ouvir e escrever Markdown: modo leitura com marcadores ancorados ao texto, leitura em voz alta com vozes neurais offline (Piper e Kokoro), editor com atalhos e biblioteca local com pastas e busca. Mesma base para Android, iOS e Web.",
-      role: "Produto solo, Flutter multiplataforma, TTS offline, editor de Markdown e biblioteca local.",
-      stack: ["Flutter", "Dart", "Markdown", "sherpa-onnx", "Material 3"],
-      metrics: ["3 plataformas", "TTS offline", "Editor Markdown"],
-    },
-    meteor: {
-      title: "Meteor",
-      eyebrow: "Projeto solo",
-      subtitle: "Inteligência climática com IA generativa.",
-      description:
-        "PWA de clima em tempo real com assistente contextual, alertas, dados de múltiplas fontes e BFF em Netlify Functions para proteger chaves de API.",
-      role: "Produto, interface, arquitetura full stack e integrações serverless.",
-      stack: ["React", "TypeScript", "Vite", "Tailwind", "Gemini", "Netlify"],
-      metrics: ["PWA", "IA contextual", "BFF seguro"],
-    },
-    apice: {
-      title: "Ápice",
-      eyebrow: "Connecta",
-      subtitle: "Plataforma de estudos para o ENEM 100% movida por IA.",
-      description:
-        "Projeto do ecossistema Connecta criado para apoiar a preparação para o ENEM com recursos inteligentes, geração de conteúdo e fluxos personalizados de estudo.",
-      role: "Desenvolvimento full stack, experiência de estudo, IA e integrações do app.",
-      stack: ["React", "Vite", "tldraw", "jsPDF", "Netlify Identity"],
-      metrics: ["Connecta", "Canvas", "Exportação"],
-    },
-    "meteor-landing": {
-      title: "Meteor Landing Page",
-      eyebrow: "Projeto solo",
-      subtitle: "Apresentação oficial do ecossistema Meteor.",
-      description:
-        "Landing page com narrativa em slides, scroll pinning, galerias e contexto sobre alertas climáticos no Rio Grande do Sul.",
-      role: "Design visual, copy, animações de scroll e implementação completa.",
-      stack: ["React", "TypeScript", "GSAP", "Framer Motion", "Lucide"],
-      metrics: ["8 slides", "ScrollTrigger", "Responsivo"],
-    },
-    "my-computer": {
-      title: "My Computer",
-      eyebrow: "Projeto solo",
-      subtitle: "Painel self-hosted para conversar com IA e usar tools locais.",
-      description:
-        "Aplicação local em Node.js com painel HTML/CSS/JS puro, chats com IA, memória persistente, anexos, múltiplos providers, tools de terminal com aprovação e runtime separado em ~/.my-computer.",
-      role: "Produto, arquitetura local-first, UI do painel, servidor Node/CLI, storage local e integração com providers e tools.",
-      stack: ["Node.js", "JavaScript", "HTML", "CSS", "CLI", "Ollama"],
-      metrics: ["Self-hosted", "Tools aprovadas", "Multi-provider"],
-    },
-    "sync-my-music": {
-      title: "Sync My Music",
-      eyebrow: "Projeto solo",
-      subtitle: "Central de música self-hosted.",
-      description:
-        "Biblioteca canônica de música com sincronização de playlists entre serviços, recaps de escuta unificados, integrações com Musify e Sonora, e dashboard LAN com Docker.",
-      role: "Produto, backend Python/FastAPI, engine de sync, UI React e deploy.",
-      stack: ["Python", "FastAPI", "React", "SQLite", "Docker", "Netlify"],
-      metrics: ["Self-hosted", "N-way sync", "Multi-account"],
-    },
-    "meteor-flutter": {
-      title: "Meteor Flutter",
-      eyebrow: "Projeto solo",
-      subtitle: "App Android nativo do Meteor em Flutter.",
-      description:
-        "Aplicativo Android com Home em cards, mapa, notícias, assistente IA, tema AMOLED preto real, push via FCM e cache local — compartilha o mesmo BFF serverless da web.",
-      role: "Produto mobile, UI Flutter/Material 3, Firebase Auth, App Check, FCM e integração com o BFF.",
-      stack: ["Flutter", "Dart", "Material 3", "Firebase", "FCM", "GitHub Actions"],
-      metrics: ["Android", "Material You", "Push nativo"],
-    },
-    "musify-desktop-port": {
-      title: "Musify Desktop Port",
-      eyebrow: "Port desktop",
-      subtitle: "Port desktop não oficial do Musify para Windows e Linux.",
-      description:
-        "Downstream do gokadzev/Musify que mantém o app upstream o mais intacto possível e adiciona suporte desktop: targets Flutter para Windows/Linux, playback via media_kit, pacotes instaláveis e updater pelas releases deste repo.",
-      role: "Compatibilidade desktop, empacotamento Linux/Windows, workflows de release e guards para APIs Android-only.",
-      stack: ["Flutter", "Dart", "media_kit", "Windows", "Linux", "GitHub Actions"],
-      metrics: ["v10.0.8", "Windows/Linux", "Sync upstream"],
-      liveLabel: "Downloads",
-    },
-    "youtube-music-explode-dart": {
-      title: "youtube_music_explode_dart",
-      eyebrow: "Open source",
-      subtitle: "Client Dart para a API InnerTube do YouTube Music.",
-      description:
-        "Biblioteca Dart minimalista para acessar artistas, discografia, top songs e busca no YouTube Music — usada pelo Musify para páginas de artistas e importação de playlists do Spotify.",
-      role: "API reverse-engineered, matching por word-set, sem scraping de HTML.",
-      stack: ["Dart", "YouTube Music", "InnerTube", "youtube_explode_dart"],
-      metrics: ["WEB_REMIX", "Browse + Search", "Usado pelo Musify"],
-    },
-    musify: {
-      title: "Musify",
-      eyebrow: "Open source",
-      subtitle: "Streaming de música open source para Android.",
-      description:
-        "Mais de 50 commits e 10000+ linhas em um projeto de streaming de música open-source, incluindo correções de playback, fila, offline, acessibilidade e localização pt-BR.",
-      role: "Correções reais em produto usado por outras pessoas, com PRs revisados e mergeados.",
-      stack: ["Flutter", "Dart", "Android", "i18n", "Acessibilidade"],
-      metrics: ["50+ commits", "10000+ linhas", "Projeto usado"],
-    },
-  },
-  en: {
-    tec2d: {
-      title: "Tec2D",
-      eyebrow: "Connecta · Real client",
-      subtitle: "Class-A tech repair shop, live in production.",
-      description:
-        "Institutional site and full admin panel for Tec2D, a phone and electronics repair shop in Sarandi, Brazil. A real Connecta project, self-hosted on its own VPS, with a catalog, SEO blog, sales operations and financial management.",
-      role: "Full stack: institutional site, admin panel, catalog, SEO blog and sales operations, via Connecta.",
-      stack: ["HTML", "CSS", "JavaScript", "Node.js", "Express", "SEO"],
-      metrics: ["Real client", "In production", "Connecta partnership"],
-    },
-    "sepia-reader": {
-      title: "Sépia",
-      eyebrow: "Solo project",
-      subtitle: "Distraction-free Markdown reader, library and editor.",
-      description:
-        "A Flutter app to read, listen to and write Markdown: a reading mode with text-anchored bookmarks, text-to-speech with offline neural voices (Piper and Kokoro), a shortcut-driven editor and a local library with folders and search. Same codebase for Android, iOS and Web.",
-      role: "Solo product, cross-platform Flutter, offline TTS, Markdown editor and local library.",
-      stack: ["Flutter", "Dart", "Markdown", "sherpa-onnx", "Material 3"],
-      metrics: ["3 platforms", "Offline TTS", "Markdown editor"],
-    },
-    meteor: {
-      title: "Meteor",
-      eyebrow: "Solo project",
-      subtitle: "Climate intelligence with generative AI.",
-      description:
-        "Real-time weather PWA with a contextual assistant, alerts, data from multiple sources and a Netlify Functions BFF to protect API keys.",
-      role: "Product, interface, full stack architecture and serverless integrations.",
-      stack: ["React", "TypeScript", "Vite", "Tailwind", "Gemini", "Netlify"],
-      metrics: ["PWA", "Contextual AI", "Secure BFF"],
-    },
-    apice: {
-      title: "Ápice",
-      eyebrow: "Connecta",
-      subtitle: "AI-powered study platform for Brazil's ENEM exam.",
-      description:
-        "A Connecta ecosystem project created to support ENEM preparation with intelligent resources, content generation and personalized study flows.",
-      role: "Full stack development, study experience, AI features and app integrations.",
-      stack: ["React", "Vite", "tldraw", "jsPDF", "Netlify Identity"],
-      metrics: ["Connecta", "Canvas", "Export"],
-    },
-    "meteor-landing": {
-      title: "Meteor Landing Page",
-      eyebrow: "Solo project",
-      subtitle: "Official presentation for the Meteor ecosystem.",
-      description:
-        "Landing page with slide-based storytelling, scroll pinning, galleries and context around climate alerts in Rio Grande do Sul.",
-      role: "Visual design, copy, scroll animations and full implementation.",
-      stack: ["React", "TypeScript", "GSAP", "Framer Motion", "Lucide"],
-      metrics: ["8 slides", "ScrollTrigger", "Responsive"],
-    },
-    "my-computer": {
-      title: "My Computer",
-      eyebrow: "Solo project",
-      subtitle: "Self-hosted panel for AI chats and local tools.",
-      description:
-        "Local Node.js app with a plain HTML/CSS/JS dashboard, AI chats, persistent memory, attachments, multiple providers, approval-based terminal tools and a separate runtime in ~/.my-computer.",
-      role: "Product, local-first architecture, dashboard UI, Node/CLI server, local storage and provider/tool integrations.",
-      stack: ["Node.js", "JavaScript", "HTML", "CSS", "CLI", "Ollama"],
-      metrics: ["Self-hosted", "Approved tools", "Multi-provider"],
-    },
-    "sync-my-music": {
-      title: "Sync My Music",
-      eyebrow: "Solo project",
-      subtitle: "Self-hosted music control center.",
-      description:
-        "Canonical music library with cross-service playlist sync, unified listening recaps, Musify and Sonora integrations, and a LAN dashboard with Docker.",
-      role: "Product, Python/FastAPI backend, sync engine, React UI and deployment.",
-      stack: ["Python", "FastAPI", "React", "SQLite", "Docker", "Netlify"],
-      metrics: ["Self-hosted", "N-way sync", "Multi-account"],
-    },
-    "meteor-flutter": {
-      title: "Meteor Flutter",
-      eyebrow: "Solo project",
-      subtitle: "Native Android Meteor app in Flutter.",
-      description:
-        "Android app with card-based Home, map, news, AI assistant, true-black AMOLED theme, FCM push and local cache — sharing the same serverless BFF as the web.",
-      role: "Mobile product, Flutter/Material 3 UI, Firebase Auth, App Check, FCM and BFF integration.",
-      stack: ["Flutter", "Dart", "Material 3", "Firebase", "FCM", "GitHub Actions"],
-      metrics: ["Android", "Material You", "Native push"],
-    },
-    "musify-desktop-port": {
-      title: "Musify Desktop Port",
-      eyebrow: "Desktop port",
-      subtitle: "Unofficial Musify desktop port for Windows and Linux.",
-      description:
-        "A downstream of gokadzev/Musify that keeps the upstream app as intact as possible while adding desktop support: Flutter targets for Windows/Linux, media_kit playback, installable packages and release-based updates.",
-      role: "Desktop compatibility, Linux/Windows packaging, release workflows and guards for Android-only APIs.",
-      stack: ["Flutter", "Dart", "media_kit", "Windows", "Linux", "GitHub Actions"],
-      metrics: ["v10.0.8", "Windows/Linux", "Upstream sync"],
-      liveLabel: "Downloads",
-    },
-    "youtube-music-explode-dart": {
-      title: "youtube_music_explode_dart",
-      eyebrow: "Open source",
-      subtitle: "Dart client for YouTube Music's InnerTube API.",
-      description:
-        "Minimal Dart library to access artists, discography, top songs and search on YouTube Music — used by Musify for artist pages and Spotify playlist import.",
-      role: "Reverse-engineered API, word-set matching, no HTML scraping.",
-      stack: ["Dart", "YouTube Music", "InnerTube", "youtube_explode_dart"],
-      metrics: ["WEB_REMIX", "Browse + Search", "Used by Musify"],
-    },
-    musify: {
-      title: "Musify",
-      eyebrow: "Open source",
-      subtitle: "Open-source music streaming for Android.",
-      description:
-        "More than 50 commits and 10000+ lines in an open-source music streaming project, including fixes for playback, queue, offline mode, accessibility and Brazilian Portuguese localization.",
-      role: "Real fixes in a product used by other people, with reviewed and merged PRs.",
-      stack: ["Flutter", "Dart", "Android", "i18n", "Accessibility"],
-      metrics: ["50+ commits", "10000+ lines", "Used project"],
-    },
-  },
-  es: {
-    tec2d: {
-      title: "Tec2D",
-      eyebrow: "Connecta · Cliente real",
-      subtitle: "Asistencia técnica Clase A, en producción real.",
-      description:
-        "Sitio institucional y panel administrativo completo para Tec2D, asistencia técnica de celulares y electrónicos en Sarandi (Brasil). Proyecto real de Connecta, alojado en VPS propio, con catálogo, blog con SEO, operación de ventas y gestión financiera.",
-      role: "Full stack: sitio institucional, panel administrativo, catálogo, blog con SEO y operación de ventas, vía Connecta.",
-      stack: ["HTML", "CSS", "JavaScript", "Node.js", "Express", "SEO"],
-      metrics: ["Cliente real", "En producción", "Alianza Connecta"],
-    },
-    "sepia-reader": {
-      title: "Sépia",
-      eyebrow: "Proyecto propio",
-      subtitle: "Lector, biblioteca y editor de Markdown sin distracciones.",
-      description:
-        "App Flutter para leer, escuchar y escribir Markdown: modo lectura con marcadores anclados al texto, lectura en voz alta con voces neuronales offline (Piper y Kokoro), editor con atajos y biblioteca local con carpetas y búsqueda. Misma base para Android, iOS y Web.",
-      role: "Producto propio, Flutter multiplataforma, TTS offline, editor de Markdown y biblioteca local.",
-      stack: ["Flutter", "Dart", "Markdown", "sherpa-onnx", "Material 3"],
-      metrics: ["3 plataformas", "TTS offline", "Editor Markdown"],
-    },
-    meteor: {
-      title: "Meteor",
-      eyebrow: "Proyecto propio",
-      subtitle: "Inteligencia climática con IA generativa.",
-      description:
-        "PWA de clima en tiempo real con asistente contextual, alertas, datos de múltiples fuentes y BFF en Netlify Functions para proteger claves de API.",
-      role: "Producto, interfaz, arquitectura full stack e integraciones serverless.",
-      stack: ["React", "TypeScript", "Vite", "Tailwind", "Gemini", "Netlify"],
-      metrics: ["PWA", "IA contextual", "BFF seguro"],
-    },
-    apice: {
-      title: "Ápice",
-      eyebrow: "Connecta",
-      subtitle: "Plataforma de estudios para ENEM impulsada por IA.",
-      description:
-        "Proyecto del ecosistema Connecta creado para apoyar la preparación para ENEM con recursos inteligentes, generación de contenido y flujos personalizados de estudio.",
-      role: "Desarrollo full stack, experiencia de estudio, IA e integraciones de la app.",
-      stack: ["React", "Vite", "tldraw", "jsPDF", "Netlify Identity"],
-      metrics: ["Connecta", "Canvas", "Exportación"],
-    },
-    "meteor-landing": {
-      title: "Meteor Landing Page",
-      eyebrow: "Proyecto propio",
-      subtitle: "Presentación oficial del ecosistema Meteor.",
-      description:
-        "Landing page con narrativa en slides, scroll pinning, galerías y contexto sobre alertas climáticas en Rio Grande do Sul.",
-      role: "Diseño visual, copy, animaciones de scroll e implementación completa.",
-      stack: ["React", "TypeScript", "GSAP", "Framer Motion", "Lucide"],
-      metrics: ["8 slides", "ScrollTrigger", "Responsivo"],
-    },
-    "my-computer": {
-      title: "My Computer",
-      eyebrow: "Proyecto propio",
-      subtitle: "Panel self-hosted para conversar con IA y usar herramientas locales.",
-      description:
-        "Aplicación local en Node.js con panel HTML/CSS/JS puro, chats con IA, memoria persistente, anexos, múltiples providers, herramientas de terminal con aprobación y runtime separado en ~/.my-computer.",
-      role: "Producto, arquitectura local-first, UI del panel, servidor Node/CLI, storage local e integración con providers y herramientas.",
-      stack: ["Node.js", "JavaScript", "HTML", "CSS", "CLI", "Ollama"],
-      metrics: ["Self-hosted", "Herramientas aprobadas", "Multi-provider"],
-    },
-    "sync-my-music": {
-      title: "Sync My Music",
-      eyebrow: "Proyecto propio",
-      subtitle: "Central de música self-hosted.",
-      description:
-        "Biblioteca canónica de música con sincronización de playlists entre servicios, recaps de escucha unificados, integraciones con Musify y Sonora, y dashboard LAN con Docker.",
-      role: "Producto, backend Python/FastAPI, motor de sync, UI React y despliegue.",
-      stack: ["Python", "FastAPI", "React", "SQLite", "Docker", "Netlify"],
-      metrics: ["Self-hosted", "N-way sync", "Multi-account"],
-    },
-    "meteor-flutter": {
-      title: "Meteor Flutter",
-      eyebrow: "Proyecto propio",
-      subtitle: "App Android nativa de Meteor en Flutter.",
-      description:
-        "App Android con Home en cards, mapa, noticias, asistente IA, tema AMOLED negro real, push vía FCM y caché local — comparte el mismo BFF serverless que la web.",
-      role: "Producto mobile, UI Flutter/Material 3, Firebase Auth, App Check, FCM e integración con el BFF.",
-      stack: ["Flutter", "Dart", "Material 3", "Firebase", "FCM", "GitHub Actions"],
-      metrics: ["Android", "Material You", "Push nativo"],
-    },
-    "musify-desktop-port": {
-      title: "Musify Desktop Port",
-      eyebrow: "Port desktop",
-      subtitle: "Port desktop no oficial de Musify para Windows y Linux.",
-      description:
-        "Downstream de gokadzev/Musify que mantiene la app upstream lo más intacta posible y suma soporte desktop: targets Flutter para Windows/Linux, reproducción con media_kit, paquetes instalables y updater por releases.",
-      role: "Compatibilidad desktop, empaquetado Linux/Windows, workflows de release y protecciones para APIs solo de Android.",
-      stack: ["Flutter", "Dart", "media_kit", "Windows", "Linux", "GitHub Actions"],
-      metrics: ["v10.0.8", "Windows/Linux", "Sync upstream"],
-      liveLabel: "Descargas",
-    },
-    "youtube-music-explode-dart": {
-      title: "youtube_music_explode_dart",
-      eyebrow: "Open source",
-      subtitle: "Client Dart para la API InnerTube de YouTube Music.",
-      description:
-        "Biblioteca Dart minimalista para acceder a artistas, discografía, top songs y búsqueda en YouTube Music — usada por Musify para páginas de artistas e importación de playlists de Spotify.",
-      role: "API reverse-engineered, matching por word-set, sin scraping de HTML.",
-      stack: ["Dart", "YouTube Music", "InnerTube", "youtube_explode_dart"],
-      metrics: ["WEB_REMIX", "Browse + Search", "Usado por Musify"],
-    },
-    musify: {
-      title: "Musify",
-      eyebrow: "Open source",
-      subtitle: "Streaming de música open source para Android.",
-      description:
-        "Más de 50 commits y 10000+ líneas en un proyecto open-source de streaming de música, incluyendo correcciones de playback, cola, modo offline, accesibilidad y localización pt-BR.",
-      role: "Correcciones reales en un producto usado por otras personas, con PRs revisados y mergeados.",
-      stack: ["Flutter", "Dart", "Android", "i18n", "Accesibilidad"],
-      metrics: ["50+ commits", "10000+ líneas", "Proyecto usado"],
-    },
-  },
-};
-
-type GalleryState = {
-  project: Project;
-  index: number;
-};
+type GalleryState = { project: Project; index: number };
 
 type GithubCommit = {
   sha: string;
   html_url: string;
-  commit: {
-    message: string;
-    author?: {
-      date?: string;
-    };
-  };
+  commit: { message: string; author?: { date?: string } };
 };
 
 function calculateAge(birthDate: Date) {
@@ -910,83 +62,87 @@ function calculateAge(birthDate: Date) {
   let age = today.getFullYear() - birthDate.getFullYear();
   const hasBirthdayPassed =
     today.getMonth() > birthDate.getMonth() ||
-    (today.getMonth() === birthDate.getMonth() &&
-      today.getDate() >= birthDate.getDate());
-
+    (today.getMonth() === birthDate.getMonth() && today.getDate() >= birthDate.getDate());
   if (!hasBirthdayPassed) age -= 1;
   return age;
 }
 
+function readStored(key: string) {
+  try {
+    return window.localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function writeStored(key: string, value: string) {
+  try {
+    window.localStorage.setItem(key, value);
+  } catch {
+    /* modo privado: segue sem lembrar */
+  }
+}
+
+function initialLanguage(): LanguageId {
+  const stored = readStored("elias-language");
+  if (languages.some((option) => option.id === stored)) return stored as LanguageId;
+  const browser = navigator.language.slice(0, 2);
+  return languages.some((option) => option.id === browser) ? (browser as LanguageId) : "pt";
+}
+
 function App() {
   const age = useMemo(() => calculateAge(profile.birthDate), []);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [language, setLanguage] = useState<LanguageId>(initialLanguage);
+  const [theme, setTheme] = useState<Theme>(() =>
+    document.documentElement.dataset.theme === "light" ? "light" : "dark",
+  );
   const [menuOpen, setMenuOpen] = useState(false);
-  const [paletteOpen, setPaletteOpen] = useState(false);
-  const [themePulse, setThemePulse] = useState(false);
-  const [paletteId, setPaletteId] = useState<PaletteId>("green");
-  const [language, setLanguage] = useState<LanguageId>("pt");
+  const [scrolled, setScrolled] = useState(false);
   const [gallery, setGallery] = useState<GalleryState | null>(null);
   const [commits, setCommits] = useState<GithubCommit[]>([]);
-  const [commitStatus, setCommitStatus] = useState<"loading" | "ready" | "error">(
-    "loading",
-  );
+  const [commitStatus, setCommitStatus] = useState<"loading" | "ready" | "error">("loading");
+  const [zenVersion, setZenVersion] = useState(zenify.fallbackVersion);
 
   const copy = siteCopy[language];
-  const activePalette = palettes.find((palette) => palette.id === paletteId)!;
 
-  const projects = useMemo<Project[]>(
-    () =>
-      projectOrder.map((id) => ({
-        id,
-        ...projectAssets[id],
-        ...projectContent[language][id],
-      })),
-    [language],
-  );
+  const projects = useMemo(() => {
+    const build = (id: ProjectId): Project => ({ id, ...projectLinks[id], ...projectText[language][id] });
+    return Object.fromEntries(
+      (Object.keys(projectLinks) as ProjectId[]).map((id) => [id, build(id)]),
+    ) as Record<ProjectId, Project>;
+  }, [language]);
 
-  const developmentProjects = useMemo<Project[]>(
-    () =>
-      developmentOrder.map((id) => ({
-        id,
-        ...projectAssets[id],
-        ...projectContent[language][id],
-      })),
-    [language],
-  );
-
-  useEffect(() => {
-    const storedPalette = window.localStorage.getItem("elias-palette") as
-      | PaletteId
-      | null;
-    if (storedPalette && palettes.some((palette) => palette.id === storedPalette)) {
-      setPaletteId(storedPalette);
-    }
-
-    const storedLanguage = window.localStorage.getItem("elias-language") as
-      | LanguageId
-      | null;
-    if (storedLanguage && languages.some((option) => option.id === storedLanguage)) {
-      setLanguage(storedLanguage);
-    }
-  }, []);
-
-  useEffect(() => {
-    document.documentElement.dataset.theme = paletteId;
-    window.localStorage.setItem("elias-palette", paletteId);
-  }, [paletteId]);
+  useScrollMotion(language);
 
   useEffect(() => {
     document.documentElement.lang = copy.locale;
-    window.localStorage.setItem("elias-language", language);
+    writeStored("elias-language", language);
   }, [copy.locale, language]);
 
   useEffect(() => {
-    const controller = new AbortController();
+    document.documentElement.dataset.theme = theme;
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute("content", theme === "light" ? "#f0efec" : "#060607");
+    writeStored("elias-theme", theme);
+  }, [theme]);
 
-    fetch(
-      "https://api.github.com/repos/gokadzev/Musify/commits?author=elias001011&per_page=4",
-      { signal: controller.signal },
-    )
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    document.body.classList.toggle("menu-locked", menuOpen);
+  }, [menuOpen]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const { signal } = controller;
+
+    fetch("https://api.github.com/repos/gokadzev/Musify/commits?author=elias001011&per_page=5", { signal })
       .then((response) => {
         if (!response.ok) throw new Error("GitHub API unavailable");
         return response.json() as Promise<GithubCommit[]>;
@@ -999,404 +155,428 @@ function App() {
         if (error.name !== "AbortError") setCommitStatus("error");
       });
 
+    fetch("https://api.github.com/repos/elias001011/Zenify/releases/latest", { signal })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data: { tag_name?: string } | null) => {
+        if (data?.tag_name) setZenVersion(data.tag_name);
+      })
+      .catch(() => undefined);
+
     return () => controller.abort();
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 18);
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    let frame: number | null = null;
-
-    const clamp = (value: number, min: number, max: number) =>
-      Math.min(Math.max(value, min), max);
-
-    const updateMotion = () => {
-      frame = null;
-      const viewportHeight = window.innerHeight || 1;
-      const viewportCenter = viewportHeight / 2;
-
-      document.querySelectorAll<HTMLElement>(".motion-track").forEach((section) => {
-        const rect = section.getBoundingClientRect();
-        const sectionCenter = rect.top + rect.height / 2;
-        const progress = clamp((viewportCenter - sectionCenter) / viewportHeight, -1.25, 1.25);
-        const distance = Math.abs(progress);
-        const presence = clamp(1 - distance / 1.08, 0, 1);
-
-        section.style.setProperty("--scroll-progress", progress.toFixed(3));
-        section.style.setProperty("--scroll-abs", distance.toFixed(3));
-        section.style.setProperty("--scroll-presence", presence.toFixed(3));
-      });
-    };
-
-    const requestUpdate = () => {
-      if (frame === null) {
-        frame = window.requestAnimationFrame(updateMotion);
-      }
-    };
-
-    updateMotion();
-    window.addEventListener("scroll", requestUpdate, { passive: true });
-    window.addEventListener("resize", requestUpdate);
-    window.addEventListener("load", requestUpdate);
-
-    return () => {
-      if (frame !== null) window.cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", requestUpdate);
-      window.removeEventListener("resize", requestUpdate);
-      window.removeEventListener("load", requestUpdate);
-    };
-  }, []);
-
-  useEffect(() => {
     if (!gallery) return;
-
-    const handleKeyDown = (event: KeyboardEvent) => {
+    const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") setGallery(null);
       if (event.key === "ArrowRight") moveGallery(1);
       if (event.key === "ArrowLeft") moveGallery(-1);
     };
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", handleKeyDown);
-
+    document.body.classList.add("menu-locked");
+    window.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", handleKeyDown);
+      document.body.classList.remove("menu-locked");
+      window.removeEventListener("keydown", onKey);
     };
   }, [gallery]);
-
-  function choosePalette(nextPalette: PaletteId) {
-    setPaletteId(nextPalette);
-    setPaletteOpen(false);
-    setThemePulse(false);
-    window.setTimeout(() => setThemePulse(true), 0);
-    window.setTimeout(() => setThemePulse(false), 520);
-  }
-
-  function chooseLanguage(nextLanguage: LanguageId) {
-    setLanguage(nextLanguage);
-    setMenuOpen(false);
-    setPaletteOpen(false);
-  }
 
   function moveGallery(direction: number) {
     setGallery((current) => {
       if (!current) return current;
       const length = current.project.images.length;
-      return {
-        project: current.project,
-        index: (current.index + direction + length) % length,
-      };
+      return { project: current.project, index: (current.index + direction + length) % length };
     });
   }
 
+  function cycleLanguage() {
+    const index = languages.findIndex((option) => option.id === language);
+    setLanguage(languages[(index + 1) % languages.length].id);
+  }
+
+  const openGallery = (project: Project, index: number) => setGallery({ project, index });
+  const currentLanguage = languages.find((option) => option.id === language)!;
+
   return (
     <>
-      <header className={`site-header ${isScrolled ? "is-scrolled" : ""}`}>
-        <nav className="nav-shell" aria-label={copy.navLabel}>
+      <Preloader />
+      <Cursor />
+
+      <header className={`navbar ${scrolled ? "scrolled" : ""} ${menuOpen ? "menu-open" : ""}`}>
+        <nav className="container navbar-inner" aria-label={copy.navLabel}>
           <a className="brand" href="#inicio" onClick={() => setMenuOpen(false)}>
-            <span className={`brand-mark ${isScrolled ? "is-visible" : ""}`}>
-              <img src={profile.avatar} alt="" decoding="async" />
+            <span className="brand-avatar">
+              <img src={profileImage} alt="" decoding="async" />
             </span>
-            <span>
-              <strong>Elias</strong>
-              <small>{copy.brandRole}</small>
+            <span className="brand-word mono" aria-label="Elias">
+              {"ELIAS".split("").map((letter, index) => (
+                <i key={index} style={{ "--i": index } as CSSProperties}>
+                  {letter}
+                </i>
+              ))}
             </span>
           </a>
 
-          <div className="nav-links">
+          <div className="navbar-links">
             {copy.nav.map((item) => (
-              <a key={item.href} href={item.href}>
+              <a key={item.href} href={item.href} className={item.href === "#zenify" ? "is-zen" : ""}>
                 {item.label}
               </a>
             ))}
           </div>
 
-          <div className="nav-actions">
-            <div className="palette-menu">
-              <button
-                className="icon-button palette-trigger"
-                type="button"
-                aria-label={copy.paletteAria}
-                aria-expanded={paletteOpen}
-                onClick={() => setPaletteOpen((current) => !current)}
-              >
-                <Palette size={18} />
-                <span>{activePalette.label}</span>
-                <ChevronDown size={14} />
-              </button>
-
-              {paletteOpen && (
-                <div className="palette-popover">
-                  <div className="palette-options">
-                    {palettes.map((palette) => (
-                      <button
-                        key={palette.id}
-                        type="button"
-                        className={palette.id === paletteId ? "is-active" : ""}
-                        onClick={() => choosePalette(palette.id)}
-                      >
-                        <span
-                          className="palette-swatch"
-                          style={{ backgroundColor: palette.swatch }}
-                        />
-                        <span>
-                          <strong>{palette.label}</strong>
-                          <small>{palette.hint}</small>
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-
-                  <div className="popover-language" aria-label={copy.language.aria}>
-                    <span className="popover-language-label">
-                      <Globe2 size={14} aria-hidden="true" />
-                      {copy.language.label}
-                    </span>
-                    <div className="popover-language-options">
-                      {languages.map((option) => (
-                        <button
-                          key={option.id}
-                          type="button"
-                          className={option.id === language ? "is-active" : ""}
-                          aria-pressed={option.id === language}
-                          title={option.name}
-                          onClick={() => chooseLanguage(option.id)}
-                        >
-                          {option.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <a className="nav-cta" href={`mailto:${profile.email}`}>
-              <Mail size={16} />
+          <div className="navbar-actions">
+            <button
+              type="button"
+              className="nav-icon-btn mono lang-btn"
+              onClick={cycleLanguage}
+              aria-label={`${copy.language}: ${currentLanguage.name}`}
+              title={currentLanguage.name}
+            >
+              {currentLanguage.label}
+            </button>
+            <button
+              type="button"
+              className="nav-icon-btn"
+              onClick={() => setTheme((current) => (current === "dark" ? "light" : "dark"))}
+              aria-label={copy.theme}
+            >
+              <span className="theme-icon" aria-hidden="true">
+                <Sun className="icon-sun" />
+                <Moon className="icon-moon" />
+              </span>
+            </button>
+            <a className="btn btn-primary nav-cta" href={`mailto:${profile.email}`}>
               {copy.contact}
             </a>
-
             <button
-              className="icon-button mobile-menu-button"
               type="button"
-              aria-label={copy.menu.open}
+              className="nav-icon-btn menu-btn"
+              aria-label={menuOpen ? copy.menuClose : copy.menuOpen}
               aria-expanded={menuOpen}
               onClick={() => setMenuOpen((current) => !current)}
             >
-              {menuOpen ? <X size={19} /> : <Menu size={19} />}
+              <span className="menu-bars" aria-hidden="true">
+                <i />
+                <i />
+                <i />
+              </span>
             </button>
           </div>
         </nav>
 
-        {menuOpen && (
-          <div className="mobile-menu">
-            {copy.nav.map((item) => (
-              <a key={item.href} href={item.href} onClick={() => setMenuOpen(false)}>
-                {item.label}
-              </a>
-            ))}
-            <a href={profile.github} target="_blank" rel="noreferrer">
-              {copy.menu.github} <ExternalLink size={15} />
-            </a>
+        <div className="mobile-panel" aria-hidden={!menuOpen}>
+          <div className="mobile-panel-inner">
+            <div className="container">
+              {copy.nav.map((item, index) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  tabIndex={menuOpen ? 0 : -1}
+                  style={{ "--i": index } as CSSProperties}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <span className="mono">{String(index + 1).padStart(2, "0")}</span>
+                  {item.label}
+                </a>
+              ))}
+            </div>
           </div>
-        )}
+        </div>
+        <span className="scroll-progress" />
       </header>
-      <div className={`theme-wipe ${themePulse ? "is-active" : ""}`} />
 
       <main>
-        <section className="hero snap-section motion-track motion-hero" id="inicio">
-          <div className="hero-grid">
+        {/* ============ HERO ============ */}
+        <section className="hero noise" id="inicio">
+          <Starfield />
+          <div className="container hero-grid">
             <div className="hero-copy">
-              {copy.hero.status && (
-                <span className="status-pill">
-                  <span />
-                  {copy.hero.status}
+              <span className="eyebrow mono reveal-line">
+                <span className="eyebrow-dot" />
+                {copy.hero.eyebrow(age)}
+              </span>
+              <h1 className="hero-title">
+                <span className="line-mask">
+                  <span className="line">Elias J. R.</span>
                 </span>
-              )}
-              <h1>{profile.name}</h1>
-              <p className="hero-lead">{copy.hero.lead(age)}</p>
-
-              <div className="hero-actions">
-                <a className="primary-button" href="#projetos">
-                  <ArrowDown size={18} />
+                <span className="line-mask">
+                  <span className="line">Nunes</span>
+                </span>
+              </h1>
+              <p className="hero-sub reveal-line">{copy.hero.lead}</p>
+              <div className="hero-actions reveal-line">
+                <a className="btn btn-primary btn-lg" href="#zenify" data-magnetic>
                   {copy.hero.primary}
+                  <ArrowRight size={16} />
                 </a>
-                <a className="ghost-button" href={`mailto:${profile.email}`}>
-                  <Mail size={18} />
+                <a className="btn btn-secondary btn-lg" href={`mailto:${profile.email}`} data-magnetic>
                   {copy.hero.secondary}
                 </a>
               </div>
-
-              <div className="social-row" aria-label={copy.hero.socialLabel}>
+              <div className="social-row mono reveal-line">
                 <a href={profile.github} target="_blank" rel="noreferrer">
-                  <Github size={17} />
-                  GitHub
+                  <Github size={15} /> GitHub
                 </a>
                 <a href={profile.linkedin} target="_blank" rel="noreferrer">
-                  <Linkedin size={17} />
-                  LinkedIn
+                  <Linkedin size={15} /> LinkedIn
                 </a>
                 <a href={profile.instagram} target="_blank" rel="noreferrer">
-                  <Instagram size={17} />
-                  Instagram
+                  <Instagram size={15} /> Instagram
                 </a>
               </div>
             </div>
 
-            <div className="hero-visual" aria-label={copy.hero.avatarLabel}>
-              <div className="avatar-frame">
-                <img
-                  src={profile.avatar}
-                  alt={copy.hero.avatarAlt}
-                  fetchPriority="high"
-                  decoding="async"
-                />
+            <div className="hero-photo reveal-photo" data-tilt>
+              <div className="hero-photo-frame">
+                <img src={profileImage} alt={copy.hero.avatarAlt} fetchPriority="high" decoding="async" />
               </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="about-section snap-section motion-track motion-about" id="sobre">
-          <div className="section-heading">
-            <span>{copy.about.eyebrow}</span>
-            <h2>{copy.about.title}</h2>
-          </div>
-
-          <div className="about-grid">
-            <article className="about-panel">
-              <h3>{copy.about.cardTitle}</h3>
-              <p>{copy.about.text}</p>
-              <ul>
-                {copy.about.bullets.map((item) => (
-                  <li key={item}>
-                    <CheckCircle2 size={18} />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </article>
-
-            <article className="connecta-panel">
-              <span className="panel-icon">
-                <Building2 size={22} />
+              <span className="hero-photo-tag mono">
+                <span className="eyebrow-dot" /> elias001011
               </span>
-              <h3>{copy.about.connectaTitle}</h3>
-              <p>{copy.about.connectaText}</p>
-              <a className="text-link" href={profile.connecta} target="_blank" rel="noreferrer">
-                {copy.about.connectaLink}
-                <ExternalLink size={16} />
-              </a>
-            </article>
+            </div>
+          </div>
+          <div className="hero-footer">
+            <span className="hero-scroll-cue mono">
+              {copy.hero.scroll} <i />
+            </span>
           </div>
         </section>
 
-        <section className="projects-intro snap-section motion-track motion-intro" id="projetos">
-          <div className="projects-intro-copy">
-            <span>{copy.projectsIntro.eyebrow}</span>
-            <h2>{copy.projectsIntro.title}</h2>
+        {/* ============ MANIFESTO ============ */}
+        <section className="manifesto section">
+          <div className="container">
+            <p className="manifesto-text" data-scroll-lit>
+              {copy.manifesto.map(([text, strong], index) => {
+                const words = text.split(" ").map((word, wordIndex) => (
+                  <span className="lw" key={wordIndex}>
+                    {word}{" "}
+                  </span>
+                ));
+                return strong ? <em key={index}>{words}</em> : <span key={index}>{words}</span>;
+              })}
+            </p>
           </div>
-          <div className="projects-intro-side">
-            <div className="hero-scope-card" aria-label={copy.projectsIntro.scope}>
-              <span className="scope-kicker">{copy.projectsIntro.scope}</span>
-              <div>
-                <span>
-                  <Code2 size={17} />
-                  {copy.projectsIntro.skills[0]}
+        </section>
+
+        {/* ============ CONNECTA ============ */}
+        <section className="section section-line connecta-section" id="connecta">
+          <div className="container">
+            <span className="section-index mono" data-reveal>
+              {copy.connecta.index}
+            </span>
+            <div className="connecta-grid">
+              <a
+                className="connecta-card"
+                href={profile.connectaPortfolio}
+                target="_blank"
+                rel="noreferrer"
+                data-reveal
+                data-spotlight
+              >
+                <ConnectaLogo />
+                <h2 className="split-reveal" data-reveal>
+                  <SplitWords text={copy.connecta.partner} />
+                </h2>
+                <span className="connecta-link mono">
+                  {copy.connecta.link}
+                  <ArrowUpRight size={16} />
                 </span>
-                <span>
-                  <ServerCog size={17} />
-                  {copy.projectsIntro.skills[1]}
-                </span>
-                <span>
-                  <Rocket size={17} />
-                  {copy.projectsIntro.skills[2]}
-                </span>
+              </a>
+
+              <ProjectCard
+                project={projects.apice}
+                copy={copy}
+                tagOverride={copy.connecta.apiceTag}
+                onOpen={openGallery}
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* ============ ZENIFY ============ */}
+        <ZenifySection copy={copy} version={zenVersion} />
+
+        {/* ============ MUSIFY ============ */}
+        <section className="section section-line musify-section" id="musify">
+          <div className="container">
+            <div className="section-heading section-heading-wide">
+              <span className="section-index mono" data-reveal>
+                {copy.musify.index}
+              </span>
+              <h2 className="split-reveal" data-reveal>
+                <SplitWords text={copy.musify.title} />
+              </h2>
+              <p data-reveal>{copy.musify.lead}</p>
+            </div>
+
+            <div className="musify-stats">
+              <Stat value={musify.stats.prs} label={copy.musify.stats[0]} />
+              <Stat value={musify.stats.commits} label={copy.musify.stats[1]} />
+              <Stat value={musify.stats.lines} prefix="+" label={copy.musify.stats[2]} />
+            </div>
+
+            <div className="musify-grid">
+              <div className="musify-highlights" data-reveal>
+                <span className="works-label mono">{copy.musify.highlightsTitle}</span>
+                <ul>
+                  {copy.musify.highlights.map((item, index) => (
+                    <li key={item}>
+                      <span className="mono">{String(index + 1).padStart(2, "0")}</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <div className="row-actions">
+                  <a className="btn btn-primary" href={musify.prs} target="_blank" rel="noreferrer">
+                    <Github size={16} />
+                    {copy.musify.prs}
+                  </a>
+                  <a className="btn btn-secondary" href={musify.repo} target="_blank" rel="noreferrer">
+                    {copy.musify.repo}
+                    <ArrowUpRight size={15} />
+                  </a>
+                </div>
+              </div>
+
+              <div className="terminal" data-reveal>
+                <div className="terminal-bar mono">
+                  <span className="dots">
+                    <i />
+                    <i />
+                    <i />
+                  </span>
+                  gokadzev/Musify
+                </div>
+                <div className="terminal-body mono">
+                  <p className="terminal-cmd">
+                    <span>$</span> git log --author=elias001011 --oneline
+                  </p>
+                  {commitStatus === "loading" && <p className="terminal-muted">{copy.musify.loading}</p>}
+                  {commitStatus === "error" && <p className="terminal-muted">{copy.musify.error}</p>}
+                  {commitStatus === "ready" &&
+                    commits.map((commit) => (
+                      <a key={commit.sha} href={commit.html_url} target="_blank" rel="noreferrer">
+                        <span className="sha">{commit.sha.slice(0, 7)}</span>
+                        <span className="msg">{commit.commit.message.split("\n")[0]}</span>
+                      </a>
+                    ))}
+                  <p className="terminal-cursor">
+                    <span>$</span> <i />
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        <div className="projects-stack">
-          {projects.map((project, index) => (
-            <ProjectSlide
-              key={project.id}
-              project={project}
-              index={index}
-              copy={copy.projectCard}
-              commitCopy={copy.commitFeed}
-              commits={commits}
-              commitStatus={commitStatus}
-              onOpenGallery={(imageIndex) =>
-                setGallery({ project, index: imageIndex })
-              }
-            />
-          ))}
-        </div>
+        {/* ============ PROJETOS ============ */}
+        <section className="section projects-section" id="projetos">
+          <div className="container">
+            <div className="section-heading">
+              <span className="section-index mono" data-reveal>
+                {copy.projects.index}
+              </span>
+              <h2 className="split-reveal" data-reveal>
+                <SplitWords text={copy.projects.title} />
+              </h2>
+            </div>
 
-        <section className="more-banner snap-section motion-track motion-more">
-          <div className="more-copy">
-            <span>{copy.more.eyebrow}</span>
-            <h2>{copy.more.title}</h2>
-            <p>{copy.more.text}</p>
-            <a className="ghost-button" href={profile.github} target="_blank" rel="noreferrer">
-              <Github size={18} />
-              {copy.more.cta}
-            </a>
+            <div className="project-pair">
+              <ProjectCard project={projects["musify-desktop-port"]} copy={copy} onOpen={openGallery} />
+              <ProjectCard project={projects["youtube-music-explode-dart"]} copy={copy} onOpen={openGallery} />
+            </div>
+
+            <ProjectCard project={projects["sepia-reader"]} copy={copy} onOpen={openGallery} wide />
+
+            <div className="meteor-block">
+              <div className="meteor-heading" data-reveal>
+                <h3>
+                  <MeteorMark /> {copy.projects.meteorTitle}
+                </h3>
+                <p>{copy.projects.meteorText}</p>
+              </div>
+              <div className="project-trio">
+                <ProjectCard project={projects["meteor-landing"]} copy={copy} onOpen={openGallery} />
+                <ProjectCard project={projects["meteor-flutter"]} copy={copy} onOpen={openGallery} />
+                <ProjectCard project={projects.meteor} copy={copy} onOpen={openGallery} />
+              </div>
+            </div>
+
+            <div className="works">
+              <span className="works-label mono" data-reveal>
+                {copy.projects.moreTitle}
+              </span>
+              {(["my-computer", "sync-my-music"] as ProjectId[]).map((id) => {
+                const project = projects[id];
+                return (
+                  <a
+                    key={id}
+                    className="work-row"
+                    href={project.repo}
+                    target="_blank"
+                    rel="noreferrer"
+                    data-reveal
+                  >
+                    <span className="work-title">
+                      {project.title}
+                      {project.images.length === 0 && (
+                        <span className="status-chip mono">{copy.projects.soon}</span>
+                      )}
+                    </span>
+                    <span className="work-sub">{project.subtitle}</span>
+                    <span className="work-arrow">
+                      <ArrowUpRight size={20} />
+                    </span>
+                  </a>
+                );
+              })}
+            </div>
           </div>
-          {developmentProjects.map((project) => (
-            <DevelopmentCard key={project.id} project={project} copy={copy.projectCard} />
-          ))}
         </section>
 
-        <section className="contact-section snap-section motion-track motion-contact" id="contato">
-          <div className="contact-copy">
-            <span>{copy.contactSection.eyebrow}</span>
-            <h2>{copy.contactSection.title}</h2>
-            <p>{copy.contactSection.text}</p>
-          </div>
-
-          <div className="contact-links">
-            <a href={`mailto:${profile.email}`}>
-              <Mail size={20} />
+        {/* ============ CONTATO ============ */}
+        <section className="contact-section noise" id="contato">
+          <div className="contact-glow" aria-hidden="true" />
+          <div className="container contact-inner">
+            <span className="section-index mono" data-reveal>
+              {copy.contactSection.index}
+            </span>
+            <h2 className="contact-title split-reveal" data-reveal>
+              <SplitWords text={copy.contactSection.title} />
+            </h2>
+            <p data-reveal>{copy.contactSection.text}</p>
+            <a className="btn btn-primary btn-lg contact-mail" href={`mailto:${profile.email}`} data-reveal data-magnetic>
+              <Mail size={17} />
               {profile.email}
             </a>
-            <a href={profile.instagram} target="_blank" rel="noreferrer">
-              <Instagram size={20} />
-              @elias_jrnunes
-            </a>
-            <a href={profile.github} target="_blank" rel="noreferrer">
-              <Github size={20} />
-              github.com/elias001011
-            </a>
-            <a href={profile.linkedin} target="_blank" rel="noreferrer">
-              <Linkedin size={20} />
-              LinkedIn
-            </a>
+            <div className="contact-links mono" data-reveal>
+              <a href={profile.github} target="_blank" rel="noreferrer">
+                <Github size={16} /> github.com/elias001011
+              </a>
+              <a href={profile.linkedin} target="_blank" rel="noreferrer">
+                <Linkedin size={16} /> LinkedIn
+              </a>
+              <a href={profile.instagram} target="_blank" rel="noreferrer">
+                <Instagram size={16} /> @elias_jrnunes
+              </a>
+            </div>
           </div>
         </section>
       </main>
 
       <footer className="site-footer">
-        <div>
-          <strong>{profile.name}</strong>
-          <span>{copy.footer.rights}</span>
+        <div className="container footer-inner mono">
+          <span>
+            © {new Date().getFullYear()} {profile.name}. {copy.footer.rights}
+          </span>
+          <a href="#inicio">{copy.footer.top} ↑</a>
         </div>
-        <a href={profile.instagram} target="_blank" rel="noreferrer">
-          {copy.footer.credit}
-        </a>
       </footer>
 
       {gallery && (
         <GalleryModal
           gallery={gallery}
-          copy={copy.gallery}
+          copy={copy}
           onClose={() => setGallery(null)}
           onMove={moveGallery}
           onSelect={(index) => setGallery({ project: gallery.project, index })}
@@ -1406,220 +586,392 @@ function App() {
   );
 }
 
-function ProjectSlide({
-  project,
-  index,
-  copy,
-  commitCopy,
-  commits,
-  commitStatus,
-  onOpenGallery,
-}: {
-  project: Project;
-  index: number;
-  copy: ProjectCardCopy;
-  commitCopy: CommitFeedCopy;
-  commits: GithubCommit[];
-  commitStatus: "loading" | "ready" | "error";
-  onOpenGallery: (imageIndex: number) => void;
-}) {
-  const isReverse = project.reverse;
-  const [currentImage, setCurrentImage] = useState(0);
-  const hasSlideshow = project.images.length > 1;
+/* ============================================================
+   ZENIFY — a seção de destaque
+   ============================================================ */
 
-  useEffect(() => {
-    setCurrentImage(0);
-  }, [project.id]);
+const featureIcons = [Sparkles, AudioLines, Disc3, Wifi, Download, Keyboard];
 
-  useEffect(() => {
-    if (!hasSlideshow) return;
-
-    const interval = window.setInterval(() => {
-      setCurrentImage((current) => (current + 1) % project.images.length);
-    }, 3600);
-
-    return () => window.clearInterval(interval);
-  }, [hasSlideshow, project.images.length]);
-
-  const showPreviousImage = () => {
-    setCurrentImage((current) =>
-      (current - 1 + project.images.length) % project.images.length,
-    );
-  };
-
-  const showNextImage = () => {
-    setCurrentImage((current) => (current + 1) % project.images.length);
-  };
-
+function ZenifySection({ copy, version }: { copy: Copy; version: string }) {
+  const zen = copy.zen;
   return (
-    <section
-      className={`project-slide motion-slide motion-track ${isReverse ? "is-reverse" : ""} ${project.featured ? "is-featured" : ""}`}
-    >
-      <div className="project-layout">
-        {project.openSource ? (
-          <CommitFeed
-            commits={commits}
-            status={commitStatus}
-            copy={commitCopy}
-            variant="panel"
-          />
-        ) : project.images.length > 0 ? (
-          <div className="project-visual">
-            <button
-              type="button"
-              className="project-image-button"
-              onClick={() => onOpenGallery(currentImage)}
-              aria-label={`${copy.openGallery} ${project.title}`}
-            >
-              <img
-                key={project.images[currentImage]}
-                src={project.images[currentImage]}
-                alt={`${copy.screenshotAlt} ${project.title}`}
-                loading="lazy"
-                decoding="async"
-              />
-              <span className="gallery-badge">
-                <Images size={17} />
-                {project.images.length > 1
-                  ? `${currentImage + 1} / ${project.images.length}`
-                  : copy.galleryBadgeSingle}
-              </span>
-            </button>
+    <section className="zen" id="zenify">
+      <div className="zen-bg" aria-hidden="true">
+        <i className="blob b1" />
+        <i className="blob b2" />
+        <i className="blob b3" />
+        <i className="blob b4" />
+      </div>
 
-            {hasSlideshow && (
-              <div className="slideshow-controls" aria-label={`${copy.slideshow} ${project.title}`}>
-                <button type="button" aria-label={copy.previousImage} onClick={showPreviousImage}>
-                  <ArrowLeft size={17} />
-                </button>
-                <div className="slide-dots">
-                  {project.images.map((image, imageIndex) => (
-                    <button
-                      key={image}
-                      type="button"
-                      className={imageIndex === currentImage ? "is-active" : ""}
-                      aria-label={`${copy.showImage} ${imageIndex + 1}`}
-                      onClick={() => setCurrentImage(imageIndex)}
-                    />
-                  ))}
-                </div>
-                <button type="button" aria-label={copy.nextImage} onClick={showNextImage}>
-                  <ArrowRight size={17} />
-                </button>
-              </div>
-            )}
-          </div>
-        ) : null}
-
-        <div className="project-copy">
-          <span className="project-eyebrow">
-            {String(index + 1).padStart(2, "0")} / {project.eyebrow}
+      <div className="container zen-intro">
+        <span className="section-index mono" data-reveal>
+          {zen.index}
+        </span>
+        <div className="zen-badge" data-reveal>
+          <ZenIcon />
+          <span className="mono">{zen.kicker}</span>
+        </div>
+        <h2 className="zen-title" data-reveal>
+          {"Zenify".split("").map((letter, index) => (
+            <span key={index} style={{ "--i": index } as CSSProperties}>
+              {letter}
+            </span>
+          ))}
+        </h2>
+        <p className="zen-tagline split-reveal" data-reveal>
+          <SplitWords text={zen.tagline} />
+        </p>
+        <p className="zen-lead" data-reveal>
+          {zen.lead}
+        </p>
+        <div className="zen-actions" data-reveal>
+          <a className="btn btn-zen btn-lg" href={zenify.download} target="_blank" rel="noreferrer" data-magnetic>
+            <Download size={17} />
+            {zen.download}
+          </a>
+          <a className="btn btn-secondary btn-lg" href={zenify.repo} target="_blank" rel="noreferrer" data-magnetic>
+            <Github size={17} />
+            {zen.code}
+          </a>
+        </div>
+        <div className="zen-meta mono" data-reveal>
+          <span className="status-chip zen-chip">
+            <span className="eyebrow-dot" />
+            {zen.latest} {version}
           </span>
-          <h2>{project.title}</h2>
-          <p className="project-subtitle">{project.subtitle}</p>
-          <p className="project-description">{project.description}</p>
+          {zen.platforms.map((platform) => (
+            <span className="status-chip" key={platform}>
+              {platform}
+            </span>
+          ))}
+        </div>
+      </div>
 
-          <div className="project-role">
-            <BriefcaseBusiness size={18} />
-            <span>{project.role}</span>
+      {/* vitrine: a janela do desktop deita e levanta com a rolagem, os celulares flutuam */}
+      <div className="zen-showcase" data-scroll>
+        <div className="container zen-showcase-inner">
+          <div className="zen-window">
+            <div className="zen-window-bar mono">
+              <span className="dots">
+                <i />
+                <i />
+                <i />
+              </span>
+              Zenify — Linux
+            </div>
+            <img src={zenify.desktop.home} alt={zen.showcaseAlt} loading="lazy" decoding="async" />
           </div>
+          <div className="zen-phone phone-left">
+            <img src={zenify.mobile[4].src} alt="" loading="lazy" decoding="async" />
+          </div>
+          <div className="zen-phone phone-right">
+            <img src={zenify.mobile[1].src} alt="" loading="lazy" decoding="async" />
+          </div>
+        </div>
+      </div>
 
-          <div className="metric-row">
-            {project.metrics.map((metric) => (
-              <span key={metric}>{metric}</span>
+      <div className="container">
+        <div className="zen-origin">
+          <h3 className="split-reveal" data-reveal>
+            <SplitWords text={zen.originTitle} />
+          </h3>
+          <ol className="timeline" data-reveal>
+            {zen.origin.map((step, index) => (
+              <li key={step.title} style={{ "--i": index } as CSSProperties}>
+                <span className="timeline-date mono">{step.date}</span>
+                <strong>{step.title}</strong>
+                <p>{step.text}</p>
+              </li>
             ))}
-          </div>
+          </ol>
+        </div>
 
-          <div className="stack-row">
-            {project.stack.map((tech) => (
-              <span key={tech}>{tech}</span>
-            ))}
-          </div>
+        <h3 className="zen-subtitle split-reveal" data-reveal>
+          <SplitWords text={zen.featuresTitle} />
+        </h3>
+        <div className="zen-features">
+          {zen.features.map((feature, index) => {
+            const Icon = featureIcons[index];
+            return (
+              <article
+                key={feature.title}
+                className={`zen-feature f${index + 1}`}
+                data-reveal
+                data-spotlight
+                style={{ "--i": index } as CSSProperties}
+              >
+                <span className="zen-feature-icon">
+                  <Icon size={20} />
+                </span>
+                <h4>{feature.title}</h4>
+                <p>{feature.text}</p>
+                {index === 1 && <Waveform />}
+                {index === 3 && <SyncDots />}
+              </article>
+            );
+          })}
+        </div>
 
-          <div className="project-actions">
-            {project.live && (
-              <a className="primary-button small" href={project.live} target="_blank" rel="noreferrer">
-                <Globe2 size={17} />
-                {project.liveLabel ?? copy.live}
-              </a>
-            )}
-            {project.repo && (
-              <a className="ghost-button small" href={project.repo} target="_blank" rel="noreferrer">
-                <Github size={17} />
-                {copy.repo}
-              </a>
-            )}
+        <div className="zen-shots">
+          <figure className="zen-shot" data-reveal>
+            <img src={zenify.desktop.player} alt="" loading="lazy" decoding="async" />
+          </figure>
+          <figure className="zen-shot" data-reveal>
+            <img src={zenify.desktop.moods} alt="" loading="lazy" decoding="async" />
+          </figure>
+        </div>
+      </div>
+
+      <div className="zen-phones" data-scroll>
+        <div className="container">
+          <h3 className="zen-subtitle split-reveal" data-reveal>
+            <SplitWords text={zen.phonesTitle} />
+          </h3>
+        </div>
+        <div className="zen-phones-track">
+          {zenify.mobile.map((phone) => (
+            <figure key={phone.key} className="zen-phone-card">
+              <img src={phone.src} alt={zen.phones[phone.key]} loading="lazy" decoding="async" />
+              <figcaption className="mono">{zen.phones[phone.key]}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+
+      <div className="container">
+        <span className="works-label mono zen-compare-label" data-reveal>
+          {zen.compareTitle}
+        </span>
+        <div className="zen-compare" data-reveal>
+          <div className="zen-compare-head mono">
+            <span />
+            <span>Musify</span>
+            <span>Zenify</span>
           </div>
+          {zen.compare.map(([label, before, after]) => (
+            <div className="zen-compare-row" key={label}>
+              <span className="mono">{label}</span>
+              <span>{before}</span>
+              <span>{after}</span>
+            </div>
+          ))}
         </div>
       </div>
     </section>
   );
 }
 
-function DevelopmentCard({
-  project,
-  copy,
-}: {
-  project: Project;
-  copy: ProjectCardCopy;
-}) {
+function ZenIcon() {
   return (
-    <article className="dev-card">
-      <span className="dev-card-eyebrow">{project.eyebrow}</span>
-      <h3>{project.title}</h3>
-      <p>{project.subtitle}</p>
-      <div className="stack-row">
-        {project.stack.map((tech) => (
-          <span key={tech}>{tech}</span>
-        ))}
-      </div>
-      {project.repo && (
-        <a className="ghost-button small" href={project.repo} target="_blank" rel="noreferrer">
-          <Github size={16} />
-          {copy.repo}
-        </a>
-      )}
-    </article>
+    <span className="zen-icon" aria-hidden="true">
+      {[0, 1, 2, 3, 4].map((bar) => (
+        <i key={bar} style={{ "--i": bar } as CSSProperties} />
+      ))}
+    </span>
   );
 }
 
-function CommitFeed({
-  commits,
-  status,
-  copy,
-  variant = "inline",
-}: {
-  commits: GithubCommit[];
-  status: "loading" | "ready" | "error";
-  copy: CommitFeedCopy;
-  variant?: "inline" | "panel";
-}) {
+function Waveform() {
   return (
-    <div className={`commit-feed ${variant === "panel" ? "commit-feed-panel" : ""}`}>
-      <div className="commit-feed-heading">
-        <Github size={16} />
-        <span>{copy.heading}</span>
+    <span className="waveform" aria-hidden="true">
+      {Array.from({ length: 28 }, (_, index) => (
+        <i key={index} style={{ "--i": index } as CSSProperties} />
+      ))}
+    </span>
+  );
+}
+
+function SyncDots() {
+  return (
+    <span className="sync-dots mono" aria-hidden="true">
+      <b>Android</b>
+      <i />
+      <b>Linux</b>
+      <i />
+      <b>Windows</b>
+    </span>
+  );
+}
+
+/* ============================================================
+   PEÇAS COMPARTILHADAS
+   ============================================================ */
+
+function SplitWords({ text }: { text: string }) {
+  return (
+    <>
+      {text.split(" ").map((word, index) => (
+        <Fragment key={index}>
+          {index > 0 && " "}
+          <span className="w">
+            <i style={{ transitionDelay: `${index * 55}ms` }}>{word}</i>
+          </span>
+        </Fragment>
+      ))}
+    </>
+  );
+}
+
+function Stat({ value, label, prefix = "" }: { value: number; label: string; prefix?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [shown, setShown] = useState(0);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setShown(value);
+      return;
+    }
+    let frame = 0;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
+        const start = performance.now();
+        const tick = (now: number) => {
+          const t = Math.min((now - start) / 1400, 1);
+          setShown(Math.round(value * (1 - Math.pow(1 - t, 3))));
+          if (t < 1) frame = requestAnimationFrame(tick);
+        };
+        frame = requestAnimationFrame(tick);
+      },
+      { threshold: 0.5 },
+    );
+    observer.observe(node);
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(frame);
+    };
+  }, [value]);
+
+  return (
+    <div className="stat" ref={ref} data-reveal>
+      <strong>
+        {prefix}
+        {shown}
+      </strong>
+      <span className="mono">{label}</span>
+    </div>
+  );
+}
+
+function ProjectCard({
+  project,
+  copy,
+  onOpen,
+  wide = false,
+  tagOverride,
+}: {
+  project: Project;
+  copy: Copy;
+  onOpen: (project: Project, index: number) => void;
+  wide?: boolean;
+  tagOverride?: string;
+}) {
+  const [current, setCurrent] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const count = project.images.length;
+
+  useEffect(() => {
+    if (count < 2 || paused) return;
+    const interval = window.setInterval(() => setCurrent((index) => (index + 1) % count), 3800);
+    return () => window.clearInterval(interval);
+  }, [count, paused]);
+
+  const host = project.live ? new URL(project.live).host : project.repo ? "github.com" : "";
+
+  return (
+    <article
+      className={`project-card ${wide ? "is-wide" : ""} ${project.phone ? "is-phone" : ""}`}
+      data-reveal
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <div className="project-media">
+        <div className="project-media-bar mono">
+          <span className="dots">
+            <i />
+            <i />
+            <i />
+          </span>
+          <span className="host">{host}</span>
+          {count > 1 && (
+            <span className="counter">
+              {current + 1}/{count}
+            </span>
+          )}
+        </div>
+        <button
+          type="button"
+          className="project-media-button"
+          data-cursor={copy.projects.view}
+          aria-label={`${copy.gallery.open} ${project.title}`}
+          onClick={() => onOpen(project, current)}
+        >
+          {project.images.map((image, index) => (
+            <img
+              key={image}
+              src={image}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              className={
+                index === current
+                  ? "is-active"
+                  : project.phone && index === (current + count - 1) % count
+                    ? "is-prev"
+                    : project.phone && index === (current + 1) % count
+                      ? "is-next"
+                      : ""
+              }
+            />
+          ))}
+          <span className="media-badge mono">
+            <Images size={14} />
+            {count}
+          </span>
+        </button>
+        {count > 1 && (
+          <div className="media-progress" aria-hidden="true">
+            {project.images.map((image, index) => (
+              <i key={image} className={index === current ? "is-active" : index < current ? "is-done" : ""} />
+            ))}
+          </div>
+        )}
       </div>
-      {variant === "panel" && (
-        <div className="commit-feed-stats">
-          {copy.stats.map((stat) => (
-            <span key={stat}>{stat}</span>
+
+      <div className="project-info">
+        <span className="project-tag mono">{tagOverride ?? project.tag}</span>
+        <h3>{project.title}</h3>
+        <p className="project-subtitle">{project.subtitle}</p>
+        {project.description && <p className="project-description">{project.description}</p>}
+        <div className="stack-row mono">
+          {project.stack.map((tech) => (
+            <span key={tech}>{tech}</span>
           ))}
         </div>
-      )}
-
-      {status === "loading" && <p>{copy.loading}</p>}
-      {status === "error" && <p>{copy.error}</p>}
-      {status === "ready" &&
-        commits.map((commit) => {
-          const message = commit.commit.message.split("\n")[0];
-          return (
-            <a key={commit.sha} href={commit.html_url} target="_blank" rel="noreferrer">
-              <span>{message}</span>
-              <small>{commit.sha.slice(0, 7)}</small>
+        <div className="row-actions">
+          {project.live && (
+            <a className="btn btn-primary" href={project.live} target="_blank" rel="noreferrer">
+              {project.liveLabel ?? copy.projects.live}
+              <ArrowUpRight size={15} />
             </a>
-          );
-        })}
-    </div>
+          )}
+          {project.repo && (
+            <a
+              className={`btn ${project.live ? "btn-secondary" : "btn-primary"}`}
+              href={project.repo}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Github size={15} />
+              {copy.projects.repo}
+            </a>
+          )}
+        </div>
+      </div>
+    </article>
   );
 }
 
@@ -1631,7 +983,7 @@ function GalleryModal({
   onSelect,
 }: {
   gallery: GalleryState;
-  copy: GalleryCopy;
+  copy: Copy;
   onClose: () => void;
   onMove: (direction: number) => void;
   onSelect: (index: number) => void;
@@ -1640,42 +992,38 @@ function GalleryModal({
   const image = project.images[index];
 
   return (
-    <div className="gallery-modal" role="dialog" aria-modal="true" aria-label={`${copy.modalLabel} ${project.title}`}>
-      <button className="gallery-backdrop" type="button" aria-label={copy.closeBackdrop} onClick={onClose} />
-      <div className="gallery-panel">
-        <div className="gallery-header">
+    <div className="gallery" role="dialog" aria-modal="true" aria-label={project.title}>
+      <button className="gallery-backdrop" type="button" aria-label={copy.gallery.close} onClick={onClose} />
+      <div className={`gallery-panel ${project.phone ? "is-phone" : ""}`}>
+        <div className="gallery-head">
           <div>
-            <span>{project.eyebrow}</span>
+            <span className="mono">{project.tag}</span>
             <strong>{project.title}</strong>
           </div>
-          <button className="icon-button" type="button" aria-label={copy.close} onClick={onClose}>
-            <X size={20} />
+          <span className="mono gallery-count">
+            {index + 1} / {project.images.length}
+          </span>
+          <button className="nav-icon-btn" type="button" aria-label={copy.gallery.close} onClick={onClose}>
+            <X size={18} />
           </button>
         </div>
-
         <div className="gallery-stage">
-          <button className="gallery-nav previous" type="button" aria-label={copy.previous} onClick={() => onMove(-1)}>
-            <ArrowLeft size={20} />
+          <button className="gallery-nav prev" type="button" aria-label={copy.gallery.previous} onClick={() => onMove(-1)}>
+            <ArrowLeft size={18} />
           </button>
-          <img
-            key={image}
-            src={image}
-            alt={`${project.title} - ${copy.imageAlt} ${index + 1}`}
-            decoding="async"
-          />
-          <button className="gallery-nav next" type="button" aria-label={copy.next} onClick={() => onMove(1)}>
-            <ArrowRight size={20} />
+          <img key={image} src={image} alt={`${project.title} — ${copy.gallery.image} ${index + 1}`} decoding="async" />
+          <button className="gallery-nav next" type="button" aria-label={copy.gallery.next} onClick={() => onMove(1)}>
+            <ArrowRight size={18} />
           </button>
         </div>
-
         <div className="gallery-thumbs">
           {project.images.map((thumb, thumbIndex) => (
             <button
               key={thumb}
               type="button"
               className={thumbIndex === index ? "is-active" : ""}
+              aria-label={`${copy.gallery.image} ${thumbIndex + 1}`}
               onClick={() => onSelect(thumbIndex)}
-              aria-label={`${copy.viewImage} ${thumbIndex + 1}`}
             >
               <img src={thumb} alt="" loading="lazy" decoding="async" />
             </button>
@@ -1684,6 +1032,211 @@ function GalleryModal({
       </div>
     </div>
   );
+}
+
+function ConnectaLogo() {
+  return (
+    <svg className="connecta-logo" viewBox="0 0 215.31 189.81" aria-label="Connecta" role="img">
+      <path d="M32.34,157.47h55.71l32.34,32.34H16.38c-9.05,0-16.38-7.33-16.38-16.38V16.43C0,7.35,7.35,0,16.43,0h55.27l32.34,32.34,56.6,56.59v45.37L58.68,32.34h-26.34v125.14Z" />
+      <path d="M215.31,16.52v156.81c0,9.1-7.38,16.48-16.48,16.48h-58.6l-32.34-32.34-53.07-53.07v-45.9l95.96,95.96,2.77,3.01h29.56V32.34h-59.24L91.55,0h107.24c9.12,0,16.52,7.4,16.52,16.52Z" />
+    </svg>
+  );
+}
+
+function MeteorMark() {
+  return (
+    <svg className="meteor-mark" viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="16" cy="8" r="3.2" />
+      <path d="M13.6 10.4 4 20M11 8.6 5.5 14M15.4 13 10 18.5" />
+    </svg>
+  );
+}
+
+/* ============ PRELOADER, CURSOR, ESTRELAS ============ */
+
+function Preloader() {
+  const [progress, setProgress] = useState(0);
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    const start = performance.now();
+    let frame = 0;
+    let finished = false;
+
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      setProgress(100);
+      window.setTimeout(() => {
+        setDone(true);
+        document.body.classList.add("ready");
+      }, 260);
+    };
+
+    const tick = (now: number) => {
+      const elapsed = now - start;
+      setProgress(Math.min(92, (elapsed / 900) * 92));
+      if (elapsed > 750 && document.readyState === "complete") return finish();
+      if (elapsed > 2200) return finish();
+      frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    // aba em segundo plano não roda requestAnimationFrame: o timer garante a saída
+    const fallback = window.setTimeout(finish, 2400);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.clearTimeout(fallback);
+    };
+  }, []);
+
+  return (
+    <div className={`preloader ${done ? "done" : ""}`} aria-hidden="true">
+      <span className="preloader-word mono">ELIAS</span>
+      <span className="preloader-bar">
+        <i style={{ width: `${progress}%` }} />
+      </span>
+    </div>
+  );
+}
+
+function Cursor() {
+  const dot = useRef<HTMLDivElement>(null);
+  const ring = useRef<HTMLDivElement>(null);
+  const [label, setLabel] = useState("");
+
+  useEffect(() => {
+    const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!fine.matches || reduced.matches) return;
+
+    document.body.classList.add("has-cursor");
+    let x = -100;
+    let y = -100;
+    let rx = -100;
+    let ry = -100;
+    let frame = 0;
+
+    const loop = () => {
+      rx += (x - rx) * 0.18;
+      ry += (y - ry) * 0.18;
+      if (dot.current) dot.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      if (ring.current) ring.current.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
+      frame = requestAnimationFrame(loop);
+    };
+
+    const onMove = (event: PointerEvent) => {
+      x = event.clientX;
+      y = event.clientY;
+      document.body.classList.add("cursor-live");
+      const target = event.target as HTMLElement | null;
+      const labelled = target?.closest<HTMLElement>("[data-cursor]");
+      const interactive = target?.closest("a, button");
+      setLabel(labelled?.dataset.cursor ?? "");
+      ring.current?.classList.toggle("is-label", Boolean(labelled));
+      ring.current?.classList.toggle("is-hover", Boolean(interactive) && !labelled);
+    };
+
+    const onLeave = () => document.body.classList.remove("cursor-live");
+
+    frame = requestAnimationFrame(loop);
+    window.addEventListener("pointermove", onMove, { passive: true });
+    document.documentElement.addEventListener("pointerleave", onLeave);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("pointermove", onMove);
+      document.documentElement.removeEventListener("pointerleave", onLeave);
+      document.body.classList.remove("has-cursor", "cursor-live");
+    };
+  }, []);
+
+  return (
+    <>
+      <div className="cursor-dot" ref={dot} aria-hidden="true" />
+      <div className="cursor-ring" ref={ring} aria-hidden="true">
+        <span className="mono">{label}</span>
+      </div>
+    </>
+  );
+}
+
+function Starfield() {
+  const canvas = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const node = canvas.current;
+    const context = node?.getContext("2d");
+    if (!node || !context) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    type Star = { x: number; y: number; z: number; r: number; t: number };
+    let stars: Star[] = [];
+    let width = 0;
+    let height = 0;
+    let frame = 0;
+    let mouseX = 0;
+    let mouseY = 0;
+    let visible = true;
+
+    const resize = () => {
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      width = node.clientWidth;
+      height = node.clientHeight;
+      node.width = width * ratio;
+      node.height = height * ratio;
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      const amount = Math.round((width * height) / 5200);
+      stars = Array.from({ length: amount }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        z: Math.random() * 0.8 + 0.2,
+        r: Math.random() * 1.1 + 0.25,
+        t: Math.random() * Math.PI * 2,
+      }));
+    };
+
+    const draw = (time: number) => {
+      const ink = getComputedStyle(document.documentElement).getPropertyValue("--ink-rgb").trim() || "240,239,236";
+      context.clearRect(0, 0, width, height);
+      for (const star of stars) {
+        const twinkle = reduced ? 1 : 0.55 + Math.sin(time / 900 + star.t) * 0.45;
+        const drift = reduced ? 0 : (time / 60) * star.z * 0.35;
+        const x = (star.x + mouseX * star.z * 18 + width) % width;
+        const y = (star.y - drift + mouseY * star.z * 18 + height * 4) % height;
+        context.fillStyle = `rgba(${ink}, ${0.18 + star.z * 0.6 * twinkle})`;
+        context.beginPath();
+        context.arc(x, y, star.r * star.z, 0, Math.PI * 2);
+        context.fill();
+      }
+    };
+
+    const loop = (time: number) => {
+      if (visible) draw(time);
+      if (!reduced) frame = requestAnimationFrame(loop);
+    };
+
+    const onMove = (event: PointerEvent) => {
+      mouseX = event.clientX / window.innerWidth - 0.5;
+      mouseY = event.clientY / window.innerHeight - 0.5;
+    };
+
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+    });
+
+    resize();
+    observer.observe(node);
+    frame = requestAnimationFrame(loop);
+    window.addEventListener("resize", resize);
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+      window.removeEventListener("resize", resize);
+      window.removeEventListener("pointermove", onMove);
+    };
+  }, []);
+
+  return <canvas className="hero-canvas" ref={canvas} aria-hidden="true" />;
 }
 
 export default App;
