@@ -151,6 +151,13 @@ const pt = {
   language: "Idioma",
   palette: "Paleta",
   paletteAria: "Escolher paleta de cores e idioma",
+  paletteNames: {
+    green: { label: "Verde", hint: "Connecta" },
+    blue: { label: "Azul", hint: "Meteor" },
+    black: { label: "Preto", hint: "Limpo" },
+    graphite: { label: "Grafite", hint: "Neutro" },
+    cafeteria: { label: "Cafeteria", hint: "Quente" },
+  } as Record<string, { label: string; hint: string }>,
   hero: {
     primary: "Ver o Zenify",
     secondary: "Falar comigo",
@@ -304,6 +311,13 @@ const en: Copy = {
   language: "Language",
   palette: "Palette",
   paletteAria: "Choose colour palette and language",
+  paletteNames: {
+    green: { label: "Green", hint: "Connecta" },
+    blue: { label: "Blue", hint: "Meteor" },
+    black: { label: "Black", hint: "Clean" },
+    graphite: { label: "Graphite", hint: "Neutral" },
+    cafeteria: { label: "Cafeteria", hint: "Warm" },
+  },
   hero: {
     primary: "See Zenify",
     secondary: "Contact me",
@@ -455,6 +469,13 @@ const es: Copy = {
   language: "Idioma",
   palette: "Paleta",
   paletteAria: "Elegir paleta de colores e idioma",
+  paletteNames: {
+    green: { label: "Verde", hint: "Connecta" },
+    blue: { label: "Azul", hint: "Meteor" },
+    black: { label: "Negro", hint: "Limpio" },
+    graphite: { label: "Grafito", hint: "Neutro" },
+    cafeteria: { label: "Cafetería", hint: "Cálido" },
+  },
   hero: {
     primary: "Ver Zenify",
     secondary: "Contactarme",

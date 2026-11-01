@@ -52,11 +52,11 @@ import { ParticleShape } from "./ParticleShape";
 import { useZenPlayer } from "./zenPlayer";
 
 const palettes = [
-  { id: "green", label: "Verde", hint: "Connecta", swatch: "#67d390" },
-  { id: "blue", label: "Azul", hint: "Meteor", swatch: "#8bbcff" },
-  { id: "black", label: "Preto", hint: "Clean", swatch: "#f3f3ee" },
-  { id: "graphite", label: "Grafite", hint: "Neutro", swatch: "#bcc6d4" },
-  { id: "cafeteria", label: "Cafeteria", hint: "Quente", swatch: "#a9c98a" },
+  { id: "green", swatch: "#67d390" },
+  { id: "blue", swatch: "#8bbcff" },
+  { id: "black", swatch: "#f3f3ee" },
+  { id: "graphite", swatch: "#bcc6d4" },
+  { id: "cafeteria", swatch: "#a9c98a" },
 ] as const;
 
 type PaletteId = (typeof palettes)[number]["id"];
@@ -331,7 +331,7 @@ function App() {
                 onClick={() => setPaletteOpen((current) => !current)}
               >
                 <Palette size={16} />
-                <span className="palette-trigger-label">{activePalette.label}</span>
+                <span className="palette-trigger-label">{copy.paletteNames[activePalette.id].label}</span>
                 <ChevronDown size={14} className="chevron" />
               </button>
 
@@ -351,8 +351,8 @@ function App() {
                     >
                       <span className="palette-swatch" style={{ backgroundColor: palette.swatch }} />
                       <span className="palette-name">
-                        <strong>{palette.label}</strong>
-                        <small>{palette.hint}</small>
+                        <strong>{copy.paletteNames[palette.id].label}</strong>
+                        <small>{copy.paletteNames[palette.id].hint}</small>
                       </span>
                       {palette.id === paletteId && <Check size={15} />}
                     </button>
