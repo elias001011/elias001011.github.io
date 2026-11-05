@@ -1,0 +1,48 @@
+# Zenify
+
+> Zenify é um player de música gratuito e de código aberto para Android, Linux e Windows. É um fork do Musify, com suporte de desktop completo, uma interface nova e sincronização entre aparelhos pela rede local. Não tem anúncios nem assinatura. Mantido por Elias (GitHub: elias001011).
+
+## O que é
+
+- Versão modificada do Musify (projeto de Valeri Gokadze, licença GPL-3.0). O Zenify mantém o código, os recursos e a licença do Musify e vai além nos pontos listados abaixo.
+- Mantido por Elias desde outubro de 2026. No README do projeto, o nome aparece como Elias Juriatti.
+- Não hospeda nem distribui músicas: as faixas são lidas do YouTube e do YouTube Music e, quando baixadas, ficam no próprio aparelho.
+- iOS não é suportado.
+
+## Recursos principais
+
+- Interface: ilha flutuante, dock e trilho no desktop; fundo dinâmico nas cores dos álbuns (opcional).
+- Player: letras e fila ao lado da capa, ondas sonoras que acompanham a música e barra de ações flutuante.
+- Moods, Mix pessoal e playlists feitas para você, com ajuste de gosto, gêneros excluídos e artistas bloqueados.
+- Local Sync: sincroniza curtidas, playlists, histórico, retrospectiva, buscas e rádios entre Android, Linux e Windows pelo Wi-Fi, com PIN e criptografia. Sem conta e sem servidor.
+- Downloads: uma fila só, três por vez, com progresso, falhas explicadas e nova tentativa.
+- Retrospectiva mensal com minutos ouvidos, artistas e músicas mais tocadas.
+- Letras sincronizadas, modo offline, rádios, importação de playlists do Spotify, exportação de playlists em CSV, equalizador, atalhos remapeáveis e atualizador embutido.
+- Interface em 21 idiomas, herdados do Musify; os recursos novos estão traduzidos para inglês e português.
+
+## Como baixar
+
+- Última versão estável: https://github.com/elias001011/Zenify/releases/latest (versão 0.2.5 em 03/11/2026)
+- Android: Zenify-arm64-v8a.apk (a maioria dos celulares) ou Zenify.apk (funciona em todos)
+- Linux: Zenify-linux-x64.deb (Debian e Ubuntu) ou Zenify-linux-x64.tar.gz (outras distribuições)
+- Windows: Zenify-windows-x64-setup.exe (instalador) ou Zenify-windows-x64-portable.zip (sem instalação)
+- Cada versão traz SHA256SUMS.txt para conferir os arquivos.
+- Pré-releases existem para testes; o atualizador do app não as oferece.
+
+## Links
+
+- Código-fonte: https://github.com/elias001011/Zenify
+- README (instalação, recursos e estrutura do repositório): https://github.com/elias001011/Zenify#readme
+- Todas as versões e notas de lançamento: https://github.com/elias001011/Zenify/releases
+- Musify, projeto de origem: https://github.com/gokadzev/Musify
+- Site do autor: https://elias001011.github.io/
+
+## Licença
+
+- GNU General Public License v3.0 (GPL-3.0), a mesma licença do Musify. Texto completo: https://github.com/elias001011/Zenify/blob/master/LICENSE
+
+## Sobre o autor
+
+- Elias, desenvolvedor de Zenify. Sócio da Connecta BR Digital (https://connectabr.digital/portfolio/).
+- Contribuiu com o Musify antes de criar o Zenify, com pull requests mergeados no projeto original.
+- Projetos e contatos: https://elias001011.github.io/

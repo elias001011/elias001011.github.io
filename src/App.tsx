@@ -851,10 +851,10 @@ function ZenifySection({ copy, stats }: { copy: Copy; stats: LiveStats }) {
 
         <div className="zen-shots">
           <figure className="zen-shot" data-reveal>
-            <img src={zenify.desktop.player} alt="" loading="lazy" decoding="async" />
+            <img src={zenify.desktop.player} alt={zen.shotAlts.player} loading="lazy" decoding="async" />
           </figure>
           <figure className="zen-shot" data-reveal style={{ "--i": 1 } as CSSProperties}>
-            <img src={zenify.desktop.moods} alt="" loading="lazy" decoding="async" />
+            <img src={zenify.desktop.moods} alt={zen.shotAlts.moods} loading="lazy" decoding="async" />
           </figure>
         </div>
       </div>

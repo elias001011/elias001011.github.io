@@ -34,7 +34,7 @@ export const profile = {
 export const zenify = {
   repo: "https://github.com/elias001011/Zenify",
   download: "https://github.com/elias001011/Zenify/releases/latest",
-  fallbackVersion: "v0.2.0",
+  fallbackVersion: "v0.2.5",
   desktop: {
     home: shot("zenify", "desktop-home"),
     moods: shot("zenify", "desktop-moods"),
@@ -180,7 +180,11 @@ const pt = {
     code: "Código no GitHub",
     latest: "Versão",
     platforms: ["Android", "Linux", "Windows"],
-    showcaseAlt: "Tela inicial do Zenify no desktop",
+    showcaseAlt: "Tela inicial do Zenify no desktop Linux, com playlists sugeridas e favoritos",
+    shotAlts: {
+      player: "Player do Zenify no desktop, com letras sincronizadas ao lado da capa",
+      moods: "Moods do Zenify no desktop: humores para escolher e playlists feitas para você",
+    },
     originTitle: "De contribuidor a criador.",
     origin: [
       {
@@ -338,7 +342,11 @@ const en: Copy = {
     code: "Code on GitHub",
     latest: "Version",
     platforms: ["Android", "Linux", "Windows"],
-    showcaseAlt: "Zenify home screen on desktop",
+    showcaseAlt: "Zenify home screen on desktop Linux, with suggested playlists and favourites",
+    shotAlts: {
+      player: "Zenify player on desktop, with synced lyrics beside the cover",
+      moods: "Zenify moods on desktop: moods to pick from and playlists made for you",
+    },
     originTitle: "From contributor to creator.",
     origin: [
       {
@@ -494,7 +502,11 @@ const es: Copy = {
     code: "Código en GitHub",
     latest: "Versión",
     platforms: ["Android", "Linux", "Windows"],
-    showcaseAlt: "Pantalla de inicio de Zenify en escritorio",
+    showcaseAlt: "Pantalla de inicio de Zenify en escritorio Linux, con playlists sugeridas y favoritos",
+    shotAlts: {
+      player: "Reproductor de Zenify en escritorio, con letras sincronizadas junto a la portada",
+      moods: "Moods de Zenify en escritorio: estados de ánimo para elegir y playlists hechas para ti",
+    },
     originTitle: "De colaborador a creador.",
     origin: [
       {
