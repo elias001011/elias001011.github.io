@@ -90,7 +90,7 @@ type LiveStats = {
 };
 
 const navIcons: LucideIcon[] = [House, Building2, AudioLines, LayoutGrid, Mail];
-const highlightIcons: LucideIcon[] = [History, MicVocal, PictureInPicture2, ListMusic, MonitorSmartphone, RotateCcw, Accessibility];
+const highlightIcons: LucideIcon[] = [History, MicVocal, PictureInPicture2, ListMusic, MonitorSmartphone, RotateCcw, Accessibility, Wifi];
 const featureIcons: LucideIcon[] = [Sparkles, AudioLines, Disc3, Wifi, Download, Keyboard];
 const techMarquee = ["Flutter", "Dart", "React", "TypeScript", "Node.js", "Netlify Functions", "Firebase", "Android", "Linux", "Windows", "GitHub Actions", "Python", "media_kit", "Vite"];
 
@@ -780,14 +780,14 @@ function ZenifySection({ copy, stats }: { copy: Copy; stats: LiveStats }) {
             <img src={zenify.desktop.home} alt={zen.showcaseAlt} loading="lazy" decoding="async" />
           </div>
           <div className="zen-phone phone-left">
-            <img src={zenify.mobile[4].src} alt="" loading="lazy" decoding="async" />
+            <img src={zenify.mobile[1].src} alt="" loading="lazy" decoding="async" />
           </div>
           <div className="zen-phone phone-right">
-            <img src={zenify.mobile[1].src} alt="" loading="lazy" decoding="async" />
+            <img src={zenify.mobile[2].src} alt="" loading="lazy" decoding="async" />
           </div>
           <div className="now-playing mono" aria-hidden="true">
             <span className="now-playing-cover">
-              <img src={zenify.mobile[4].src} alt="" loading="lazy" decoding="async" />
+              <img src={zenify.mobile[1].src} alt="" loading="lazy" decoding="async" />
             </span>
             <span className="now-playing-body">
               <span className="now-playing-label">{zen.nowPlaying}</span>
@@ -854,7 +854,7 @@ function ZenifySection({ copy, stats }: { copy: Copy; stats: LiveStats }) {
             <img src={zenify.desktop.player} alt={zen.shotAlts.player} loading="lazy" decoding="async" />
           </figure>
           <figure className="zen-shot" data-reveal style={{ "--i": 1 } as CSSProperties}>
-            <img src={zenify.desktop.moods} alt={zen.shotAlts.moods} loading="lazy" decoding="async" />
+            <img src={zenify.desktop.sync} alt={zen.shotAlts.sync} loading="lazy" decoding="async" />
           </figure>
         </div>
       </div>
