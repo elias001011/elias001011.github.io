@@ -45,5 +45,5 @@
 
 - Elias, desenvolvedor de Zenify. Sócio da Connecta BR Digital (https://connectabr.digital/portfolio/).
 - Contribuiu com o Musify antes de criar o Zenify, com pull requests mergeados no projeto original.
-- O Local Sync (sincronização entre aparelhos pela rede local), criado no Zenify, foi enviado ao Musify como o PR #1005 e mesclado no projeto original em 07/11/2026.
+- O Local Sync (sincronização entre aparelhos pela rede local), criado no Musify Desktop Port e trazido para o Zenify, foi enviado ao Musify como o PR #1005 e mesclado no projeto original em 07/11/2026.
 - Projetos e contatos: https://elias001011.github.io/
