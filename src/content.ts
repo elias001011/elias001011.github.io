@@ -34,7 +34,7 @@ export const profile = {
 export const zenify = {
   repo: "https://github.com/elias001011/Zenify",
   download: "https://github.com/elias001011/Zenify/releases/latest",
-  fallbackVersion: "v0.3.1",
+  fallbackVersion: "v0.3.0",
   desktop: {
     home: shot("zenify", "desktop-home"),
     player: shot("zenify", "desktop-player-lyrics"),
