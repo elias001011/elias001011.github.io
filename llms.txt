@@ -14,7 +14,7 @@
 - Interface: ilha flutuante, dock e trilho no desktop; fundo dinâmico nas cores dos álbuns (opcional).
 - Player: letras e fila ao lado da capa, ondas sonoras que acompanham a música e barra de ações flutuante.
 - Moods, Mix pessoal e playlists feitas para você, com ajuste de gosto, gêneros excluídos e artistas bloqueados.
-- Local Sync: sincroniza curtidas, playlists, histórico, retrospectiva, buscas e rádios entre Android, Linux e Windows pelo Wi-Fi, com PIN e criptografia. Sem conta e sem servidor.
+- Local Sync: sincroniza curtidas, playlists, histórico, retrospectiva, buscas e rádios entre Android, Linux e Windows pelo Wi-Fi, com PIN e criptografia. Sem conta e sem servidor. Desligado, nada fica rodando; só com dados móveis, não procura aparelhos.
 - Downloads: uma fila só, três por vez, com progresso, falhas explicadas e nova tentativa.
 - Retrospectiva mensal com minutos ouvidos, artistas e músicas mais tocadas.
 - Letras sincronizadas, modo offline, rádios, importação de playlists do Spotify, exportação de playlists em CSV, equalizador, atalhos remapeáveis e atualizador embutido.
@@ -22,7 +22,7 @@
 
 ## Como baixar
 
-- Última versão estável: https://github.com/elias001011/Zenify/releases/latest (versão 0.3.0 em 07/11/2026)
+- Última versão estável: https://github.com/elias001011/Zenify/releases/latest (versão 0.3.1 em 11/11/2026)
 - Android: Zenify-arm64-v8a.apk (a maioria dos celulares) ou Zenify.apk (funciona em todos)
 - Linux: Zenify-linux-x64.deb (Debian e Ubuntu) ou Zenify-linux-x64.tar.gz (outras distribuições)
 - Windows: Zenify-windows-x64-setup.exe (instalador) ou Zenify-windows-x64-portable.zip (sem instalação)
@@ -45,5 +45,5 @@
 
 - Elias, desenvolvedor de Zenify. Sócio da Connecta BR Digital (https://connectabr.digital/portfolio/).
 - Contribuiu com o Musify antes de criar o Zenify, com pull requests mergeados no projeto original.
-- O Local Sync (sincronização entre aparelhos pela rede local), criado no Zenify, foi enviado ao Musify como o PR #1005 e mesclado no projeto original em 07/11/2026.
+- O Local Sync (sincronização entre aparelhos pela rede local), criado no Musify Desktop Port e trazido para o Zenify, foi enviado ao Musify como o PR #1005 e mesclado no projeto original em 07/11/2026.
 - Projetos e contatos: https://elias001011.github.io/
