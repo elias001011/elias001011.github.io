@@ -22,7 +22,7 @@
 
 ## Como baixar
 
-- Última versão estável: https://github.com/elias001011/Zenify/releases/latest (versão 0.3.0 em 07/11/2026)
+- Última versão estável: https://github.com/elias001011/Zenify/releases/latest (versão 0.3.1 em 11/11/2026)
 - Android: Zenify-arm64-v8a.apk (a maioria dos celulares) ou Zenify.apk (funciona em todos)
 - Linux: Zenify-linux-x64.deb (Debian e Ubuntu) ou Zenify-linux-x64.tar.gz (outras distribuições)
 - Windows: Zenify-windows-x64-setup.exe (instalador) ou Zenify-windows-x64-portable.zip (sem instalação)
