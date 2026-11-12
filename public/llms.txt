@@ -14,7 +14,7 @@
 - Interface: ilha flutuante, dock e trilho no desktop; fundo dinâmico nas cores dos álbuns (opcional).
 - Player: letras e fila ao lado da capa, ondas sonoras que acompanham a música e barra de ações flutuante.
 - Moods, Mix pessoal e playlists feitas para você, com ajuste de gosto, gêneros excluídos e artistas bloqueados.
-- Local Sync: sincroniza curtidas, playlists, histórico, retrospectiva, buscas e rádios entre Android, Linux e Windows pelo Wi-Fi, com PIN e criptografia. Sem conta e sem servidor.
+- Local Sync: sincroniza curtidas, playlists, histórico, retrospectiva, buscas e rádios entre Android, Linux e Windows pelo Wi-Fi, com PIN e criptografia. Sem conta e sem servidor. Desligado, nada fica rodando; só com dados móveis, não procura aparelhos.
 - Downloads: uma fila só, três por vez, com progresso, falhas explicadas e nova tentativa.
 - Retrospectiva mensal com minutos ouvidos, artistas e músicas mais tocadas.
 - Letras sincronizadas, modo offline, rádios, importação de playlists do Spotify, exportação de playlists em CSV, equalizador, atalhos remapeáveis e atualizador embutido.

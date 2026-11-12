@@ -216,7 +216,7 @@ const pt = {
       },
       {
         title: "Local Sync",
-        text: "Android, Linux e Windows sincronizados pelo Wi-Fi, com PIN e criptografia. Sem conta e sem servidor.",
+        text: "Android, Linux e Windows sincronizados pelo Wi-Fi, com PIN e criptografia. Sem conta e sem servidor; desligado, nada fica rodando.",
       },
       {
         title: "Downloads de verdade",
@@ -377,7 +377,7 @@ const en: Copy = {
       },
       {
         title: "Local Sync",
-        text: "Android, Linux and Windows in sync over Wi-Fi, with a PIN and encryption. No account, no server.",
+        text: "Android, Linux and Windows in sync over Wi-Fi, with a PIN and encryption. No account, no server; turned off, nothing runs.",
       },
       {
         title: "Real downloads",
