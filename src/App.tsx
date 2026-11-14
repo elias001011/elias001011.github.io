@@ -323,16 +323,9 @@ function App() {
       <Cursor />
       <header className={`navbar ${scrolled ? "scrolled" : ""} ${menuOpen ? "menu-open" : ""}`}>
         <nav className="navbar-inner" aria-label={copy.navLabel}>
-          <a className="brand" href="#inicio" onClick={() => setMenuOpen(false)}>
+          <a className="brand" href="#inicio" aria-label="Elias" onClick={() => setMenuOpen(false)}>
             <span className="brand-avatar">
               <img src={profileImage} alt="" decoding="async" />
-            </span>
-            <span className="brand-word mono" aria-label="Elias">
-              {"ELIAS".split("").map((letter, index) => (
-                <i key={index} style={{ "--i": index } as CSSProperties}>
-                  {letter}
-                </i>
-              ))}
             </span>
           </a>
 
