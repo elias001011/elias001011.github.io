@@ -22,7 +22,6 @@ import {
   Mail,
   MicVocal,
   MonitorSmartphone,
-  Palette,
   PictureInPicture2,
   Play,
   RotateCcw,
@@ -48,17 +47,9 @@ import {
   type ProjectId,
 } from "./content";
 import { useScrollMotion } from "./motion";
-import { ParticleShape } from "./ParticleShape";
-
-const palettes = [
-  { id: "green", swatch: "#67d390" },
-  { id: "blue", swatch: "#8bbcff" },
-  { id: "black", swatch: "#f3f3ee" },
-  { id: "graphite", swatch: "#bcc6d4" },
-  { id: "cafeteria", swatch: "#a9c98a" },
-] as const;
-
-type PaletteId = (typeof palettes)[number]["id"];
+import { RoomScene, type Theme } from "@/components/hero/RoomScene";
+import { stackIcons } from "@/components/hero/stack-icons";
+import { ToolDock, ToolDockTile, type ToolDockItem } from "@/components/ui/techstack";
 
 type Project = {
   id: ProjectId;
@@ -94,6 +85,18 @@ const highlightIcons: LucideIcon[] = [History, MicVocal, PictureInPicture2, List
 const featureIcons: LucideIcon[] = [Sparkles, AudioLines, Disc3, Wifi, Download, Keyboard];
 const techMarquee = ["Flutter", "Dart", "React", "TypeScript", "Node.js", "Netlify Functions", "Firebase", "Android", "Linux", "Windows", "GitHub Actions", "Python", "media_kit", "Vite"];
 
+// as stacks do dock: marcas em cópia local, cada uma no seu azulejo
+const stackItems: ToolDockItem[] = stackIcons.map(({ label, path, tile, ink }) => ({
+  label,
+  icon: (
+    <ToolDockTile style={{ backgroundColor: tile, color: ink }}>
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d={path} />
+      </svg>
+    </ToolDockTile>
+  ),
+}));
+
 const HOSTINGER = "https://www.hostinger.com/br?REFERRALCODE=HNWPKDASIGKR";
 
 function readStored(key: string) {
@@ -119,10 +122,19 @@ function initialLanguage(): LanguageId {
   return languages.some((option) => option.id === browser) ? (browser as LanguageId) : "pt";
 }
 
+const palettes = ["green", "blue", "black", "graphite", "cafeteria"] as const;
+type PaletteId = (typeof palettes)[number];
+
 function initialPalette(): PaletteId {
   // "meraki" era o nome antigo da paleta Cafeteria
   const stored = readStored("elias-palette")?.replace("meraki", "cafeteria");
-  return palettes.some((palette) => palette.id === stored) ? (stored as PaletteId) : "green";
+  return palettes.includes(stored as PaletteId) ? (stored as PaletteId) : "green";
+}
+
+function initialTheme(): Theme {
+  const stored = readStored("elias-theme");
+  if (stored === "light" || stored === "dark") return stored;
+  return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
 }
 
 const fill = (text: string, stats: LiveStats) =>
@@ -182,18 +194,22 @@ function useLiveStats() {
 
 function App() {
   const [language, setLanguage] = useState<LanguageId>(initialLanguage);
+  const [theme, setTheme] = useState<Theme>(initialTheme);
   const [paletteId, setPaletteId] = useState<PaletteId>(initialPalette);
-  const [paletteOpen, setPaletteOpen] = useState(false);
+  // luz e cortina são da cena: não mexem no tema nem uma na outra
+  const [lampOn, setLampOn] = useState(() => readStored("elias-lamp") !== "off");
+  const [curtainClosed, setCurtainClosed] = useState(() => readStored("elias-curtain") === "closed");
+  const [langOpen, setLangOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [gallery, setGallery] = useState<GalleryState | null>(null);
   const [commits, setCommits] = useState<GithubCommit[]>([]);
   const [commitStatus, setCommitStatus] = useState<"loading" | "ready" | "error">("loading");
-  const paletteRef = useRef<HTMLDivElement>(null);
+  const langRef = useRef<HTMLDivElement>(null);
   const stats = useLiveStats();
 
   const copy = siteCopy[language];
-  const activePalette = palettes.find((palette) => palette.id === paletteId) ?? palettes[0];
+  const activeLanguage = languages.find((option) => option.id === language) ?? languages[0];
 
   const projects = useMemo(() => {
     const build = (id: ProjectId): Project => ({ id, ...projectLinks[id], ...projectText[language][id] });
@@ -221,9 +237,17 @@ function App() {
   }, [copy.locale, language]);
 
   useEffect(() => {
-    document.documentElement.dataset.theme = paletteId;
+    const root = document.documentElement;
+    root.dataset.theme = theme;
+    root.dataset.palette = paletteId;
+    const fundo = getComputedStyle(root).getPropertyValue("--void").trim();
+    if (fundo) document.querySelector('meta[name="theme-color"]')?.setAttribute("content", fundo);
+    writeStored("elias-theme", theme);
     writeStored("elias-palette", paletteId);
-  }, [paletteId]);
+  }, [theme, paletteId]);
+
+  useEffect(() => writeStored("elias-lamp", lampOn ? "on" : "off"), [lampOn]);
+  useEffect(() => writeStored("elias-curtain", curtainClosed ? "closed" : "open"), [curtainClosed]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -237,18 +261,18 @@ function App() {
   }, [menuOpen]);
 
   useEffect(() => {
-    if (!paletteOpen) return;
+    if (!langOpen) return;
     const onPointer = (event: PointerEvent) => {
-      if (!paletteRef.current?.contains(event.target as Node)) setPaletteOpen(false);
+      if (!langRef.current?.contains(event.target as Node)) setLangOpen(false);
     };
-    const onKey = (event: KeyboardEvent) => event.key === "Escape" && setPaletteOpen(false);
+    const onKey = (event: KeyboardEvent) => event.key === "Escape" && setLangOpen(false);
     document.addEventListener("pointerdown", onPointer);
     document.addEventListener("keydown", onKey);
     return () => {
       document.removeEventListener("pointerdown", onPointer);
       document.removeEventListener("keydown", onKey);
     };
-  }, [paletteOpen]);
+  }, [langOpen]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -321,42 +345,20 @@ function App() {
           </div>
 
           <div className="navbar-actions">
-            <div className="palette-menu" ref={paletteRef}>
+            <div className="palette-menu" ref={langRef}>
               <button
                 type="button"
                 className="palette-trigger"
-                aria-label={copy.paletteAria}
-                aria-expanded={paletteOpen}
-                onClick={() => setPaletteOpen((current) => !current)}
+                aria-label={copy.language}
+                aria-expanded={langOpen}
+                onClick={() => setLangOpen((current) => !current)}
               >
-                <Palette size={16} />
-                <span className="palette-trigger-label">{copy.paletteNames[activePalette.id].label}</span>
+                <Globe2 size={16} />
+                <span className="palette-trigger-label">{activeLanguage.label}</span>
                 <ChevronDown size={14} className="chevron" />
               </button>
 
-              <div className={`palette-popover ${paletteOpen ? "is-open" : ""}`} aria-hidden={!paletteOpen}>
-                <span className="popover-label mono">{copy.palette}</span>
-                <div className="palette-options">
-                  {palettes.map((palette) => (
-                    <button
-                      key={palette.id}
-                      type="button"
-                      tabIndex={paletteOpen ? 0 : -1}
-                      className={palette.id === paletteId ? "is-active" : ""}
-                      onClick={() => {
-                        setPaletteId(palette.id);
-                        setPaletteOpen(false);
-                      }}
-                    >
-                      <span className="palette-swatch" style={{ backgroundColor: palette.swatch }} />
-                      <span className="palette-name">
-                        <strong>{copy.paletteNames[palette.id].label}</strong>
-                        <small>{copy.paletteNames[palette.id].hint}</small>
-                      </span>
-                      {palette.id === paletteId && <Check size={15} />}
-                    </button>
-                  ))}
-                </div>
+              <div className={`palette-popover ${langOpen ? "is-open" : ""}`} aria-hidden={!langOpen}>
                 <span className="popover-label mono">
                   <Globe2 size={13} /> {copy.language}
                 </span>
@@ -365,11 +367,14 @@ function App() {
                     <button
                       key={option.id}
                       type="button"
-                      tabIndex={paletteOpen ? 0 : -1}
+                      tabIndex={langOpen ? 0 : -1}
                       title={option.name}
                       aria-pressed={option.id === language}
                       className={option.id === language ? "is-active" : ""}
-                      onClick={() => setLanguage(option.id)}
+                      onClick={() => {
+                        setLanguage(option.id);
+                        setLangOpen(false);
+                      }}
                     >
                       {option.label}
                     </button>
@@ -418,49 +423,35 @@ function App() {
             </div>
           </div>
         </div>
-        <span className="scroll-progress" />
       </header>
 
       <main>
         {/* ============ HERO ============ */}
-        <section className="hero" id="inicio">
-          <div className="container hero-grid">
-            <div className="hero-copy">
-              <h1 className="hero-title">
-                <span className="line-mask">
-                  <span className="line">Elias J. R.</span>
-                </span>
-                <span className="line-mask">
-                  <span className="line">Nunes</span>
-                </span>
-              </h1>
-              <div className="hero-actions reveal-line">
-                <a className="btn btn-primary btn-lg" href="#zenify" data-magnetic>
-                  {copy.hero.primary}
-                  <ArrowRight size={16} />
-                </a>
-                <a className="btn btn-secondary btn-lg" href={`mailto:${profile.email}`} data-magnetic>
-                  {copy.hero.secondary}
-                </a>
-              </div>
-              <div className="social-row mono reveal-line">
-                <a href={profile.github} target="_blank" rel="noreferrer">
-                  <Github size={15} /> GitHub
-                </a>
-                <a href={profile.linkedin} target="_blank" rel="noreferrer">
-                  <Linkedin size={15} /> LinkedIn
-                </a>
-                <a href={profile.instagram} target="_blank" rel="noreferrer">
-                  <Instagram size={15} /> Instagram
-                </a>
-              </div>
-            </div>
-
-            <div className="hero-visual reveal-photo">
-              <ParticleShape />
-            </div>
+        <RoomScene
+          theme={theme}
+          onToggleTheme={() => setTheme((current) => (current === "dark" ? "light" : "dark"))}
+          lampOn={lampOn}
+          onToggleLamp={() => setLampOn((current) => !current)}
+          curtainClosed={curtainClosed}
+          onToggleCurtain={() => setCurtainClosed((current) => !current)}
+          paletteIndex={palettes.indexOf(paletteId)}
+          paletteLabel={`${copy.palette}: ${copy.paletteNames[paletteId].label}`}
+          onNextPalette={() => setPaletteId((current) => palettes[(palettes.indexOf(current) + 1) % palettes.length])}
+          labels={copy.scene}
+        >
+          <h1 className="hero-name">elias001011</h1>
+          <p className="hero-hint mono">{copy.scene.hint}</p>
+          <div className="hero-buttons">
+            <a className="btn btn-primary btn-lg" href="#zenify">
+              {copy.hero.primary}
+              <ArrowRight size={16} />
+            </a>
+            <a className="btn btn-secondary btn-lg" href="#contato">
+              {copy.hero.secondary}
+            </a>
           </div>
-        </section>
+          <ToolDock items={stackItems} label={copy.scene.stack} size={54} delay={1.75} />
+        </RoomScene>
 
         <Marquee items={techMarquee} className="tech-marquee" />
 
