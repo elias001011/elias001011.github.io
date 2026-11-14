@@ -206,6 +206,7 @@ function App() {
   const [commits, setCommits] = useState<GithubCommit[]>([]);
   const [commitStatus, setCommitStatus] = useState<"loading" | "ready" | "error">("loading");
   const langRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const stats = useLiveStats();
 
   const copy = siteCopy[language];
@@ -257,7 +258,28 @@ function App() {
   }, []);
 
   useEffect(() => {
-    document.body.classList.toggle("menu-locked", menuOpen);
+    document.body.classList.toggle("menu-locked", menuOpen || gallery !== null);
+    return () => document.body.classList.remove("menu-locked");
+  }, [menuOpen, gallery]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const desktop = window.matchMedia("(min-width: 901px)");
+    const onResize = () => {
+      if (desktop.matches) setMenuOpen(false);
+    };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setMenuOpen(false);
+      menuButtonRef.current?.focus();
+    };
+    onResize();
+    desktop.addEventListener("change", onResize);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      desktop.removeEventListener("change", onResize);
+      window.removeEventListener("keydown", onKey);
+    };
   }, [menuOpen]);
 
   useEffect(() => {
@@ -300,10 +322,8 @@ function App() {
       if (event.key === "ArrowRight") moveGallery(1);
       if (event.key === "ArrowLeft") moveGallery(-1);
     };
-    document.body.classList.add("menu-locked");
     window.addEventListener("keydown", onKey);
     return () => {
-      document.body.classList.remove("menu-locked");
       window.removeEventListener("keydown", onKey);
     };
   }, [gallery]);
@@ -326,6 +346,13 @@ function App() {
           <a className="brand" href="#inicio" aria-label="Elias" onClick={() => setMenuOpen(false)}>
             <span className="brand-avatar">
               <img src={profileImage} alt="" decoding="async" />
+            </span>
+            <span className="brand-word mono" aria-hidden="true">
+              {"ELIAS".split("").map((letter, index) => (
+                <i key={index} style={{ "--i": index } as CSSProperties}>
+                  {letter}
+                </i>
+              ))}
             </span>
           </a>
 
@@ -382,8 +409,10 @@ function App() {
             <button
               type="button"
               className="nav-icon-btn menu-btn"
+              ref={menuButtonRef}
               aria-label={menuOpen ? copy.menuClose : copy.menuOpen}
               aria-expanded={menuOpen}
+              aria-controls="mobile-menu"
               onClick={() => setMenuOpen((current) => !current)}
             >
               <span className="menu-bars" aria-hidden="true">
@@ -395,7 +424,7 @@ function App() {
           </div>
         </nav>
 
-        <div className="mobile-panel" aria-hidden={!menuOpen}>
+        <div className="mobile-panel" id="mobile-menu" aria-hidden={!menuOpen} inert={!menuOpen}>
           <div className="mobile-panel-inner">
             <div className="mobile-links">
               {copy.nav.map((item, index) => {
@@ -418,7 +447,7 @@ function App() {
         </div>
       </header>
 
-      <main>
+      <main inert={menuOpen}>
         {/* ============ HERO ============ */}
         <RoomScene
           theme={theme}
@@ -664,7 +693,7 @@ function App() {
         </section>
       </main>
 
-      <footer className="site-footer">
+      <footer className="site-footer" inert={menuOpen}>
         <div className="footer-marks" aria-label="Connecta Digital e Hostinger Partner">
           <a href={profile.connectaPortfolio} target="_blank" rel="noreferrer" className="footer-connecta">
             <img src={connectaWordmark} width="220" height="37" alt="Connecta Digital" loading="lazy" decoding="async" />
@@ -1026,7 +1055,7 @@ function ProjectCard({
   const count = project.images.length;
 
   useEffect(() => {
-    if (count < 2 || paused) return;
+    if (count < 2 || paused || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const interval = window.setInterval(() => setCurrent((index) => (index + 1) % count), 3800);
     return () => window.clearInterval(interval);
   }, [count, paused]);
@@ -1039,6 +1068,10 @@ function ProjectCard({
       data-reveal
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
+      onFocusCapture={() => setPaused(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) setPaused(false);
+      }}
     >
       <div className="project-media">
         <div className="project-media-bar mono">
@@ -1141,9 +1174,30 @@ function GalleryModal({
 }) {
   const { project, index } = gallery;
   const image = project.images[index];
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const dialog = dialogRef.current;
+    dialog?.showModal();
+    closeButtonRef.current?.focus();
+    return () => {
+      dialog?.close();
+      opener?.focus({ preventScroll: true });
+    };
+  }, []);
 
   return (
-    <div className="gallery" role="dialog" aria-modal="true" aria-label={project.title}>
+    <dialog
+      className="gallery"
+      ref={dialogRef}
+      aria-label={project.title}
+      onCancel={(event) => {
+        event.preventDefault();
+        onClose();
+      }}
+    >
       <button className="gallery-backdrop" type="button" aria-label={copy.gallery.close} onClick={onClose} />
       <div className={`gallery-panel ${project.phone ? "is-phone" : ""}`}>
         <div className="gallery-head">
@@ -1154,7 +1208,7 @@ function GalleryModal({
           <span className="mono gallery-count">
             {index + 1} / {project.images.length}
           </span>
-          <button className="nav-icon-btn" type="button" aria-label={copy.gallery.close} onClick={onClose}>
+          <button className="nav-icon-btn" type="button" aria-label={copy.gallery.close} onClick={onClose} ref={closeButtonRef}>
             <X size={18} />
           </button>
         </div>
@@ -1181,7 +1235,7 @@ function GalleryModal({
           ))}
         </div>
       </div>
-    </div>
+    </dialog>
   );
 }
 
