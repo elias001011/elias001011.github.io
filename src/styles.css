@@ -523,7 +523,6 @@ body.ready .navbar-inner { animation: nav-drop 680ms var(--ease) both; }
 
 .hero {
   position: relative;
-  min-height: 100svh;
   isolation: isolate;
   overflow: hidden;
   background: var(--c-wall, var(--void));
@@ -565,7 +564,7 @@ body.ready .navbar-inner { animation: nav-drop 680ms var(--ease) both; }
 }
 
 @media (min-width: 960px) {
-  .hero { height: 100svh; min-height: 560px; }
+  .hero { height: min(100svh, 62vw + 120px, 1040px); min-height: 560px; }
 
   .hero-content {
     position: absolute;

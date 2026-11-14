@@ -57,8 +57,8 @@ function computeLayout(w: number, h: number, side: boolean): Layout {
     const s = Math.min(h / BASE_H, (w - free) / (RIGHT_EDGE - CLUSTER_LEFT + 200));
     const H = h / s;
     const extra = H - BASE_H;
-    const ceilY = Math.min(140 + extra * 0.35, H * 0.2);
-    const floorH = Math.min(64 + extra * 0.3, H * 0.24);
+    const ceilY = Math.min(140 + extra * 0.35, 270);
+    const floorH = Math.min(64 + extra * 0.3, 230);
     return { side, s, W: w / s, H, ceilY, floorY: H - floorH, k: 1 };
   }
   // empilhado: a parede esquerda encolhe e o conteúdo sobe para cima dos móveis
