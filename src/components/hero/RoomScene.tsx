@@ -1,3 +1,4 @@
+import { flushSync } from "react-dom";
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 
 export type Theme = "light" | "dark";
@@ -275,13 +276,21 @@ export function RoomScene({ theme, onToggleTheme, lampOn, onToggleLamp, curtainC
     const node = ref.current;
     if (!node) return;
     const query = window.matchMedia(SIDE_QUERY);
-    const measure = () => {
+    let last = "";
+    // o CSS já mudou a altura do hero: o desenho tem que acompanhar antes da próxima pintura
+    const measure = (sync: boolean) => {
       const w = node.clientWidth;
       const h = node.clientHeight;
-      if (w > 0 && h > 0) setLayout(computeLayout(w, h, query.matches));
+      if (w <= 0 || h <= 0) return;
+      const key = `${w}x${h}${query.matches}`;
+      if (key === last) return;
+      last = key;
+      const next = computeLayout(w, h, query.matches);
+      if (sync) flushSync(() => setLayout(next));
+      else setLayout(next);
     };
-    measure();
-    const observer = new ResizeObserver(measure);
+    measure(false);
+    const observer = new ResizeObserver(() => measure(true));
     observer.observe(node);
     return () => observer.disconnect();
   }, []);
