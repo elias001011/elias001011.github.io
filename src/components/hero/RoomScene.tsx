@@ -13,6 +13,7 @@ export type SceneLabels = {
   door: string;
   bed: string;
   robot: string;
+  phones: string;
 };
 
 type Props = {
@@ -182,30 +183,44 @@ function curlyPath(cx: number, cy: number, r: number, lobes: number) {
 }
 
 type Leaf = { x: number; y: number; rot: number; size: number; alt: boolean };
+type Pt = [number, number];
 
-function leavesAlong(p0: number[], p1: number[], p2: number[], count: number, seed: number): Leaf[] {
-  return Array.from({ length: count }, (_, i) => {
-    const t = (i + 0.6) / count;
-    const x = (1 - t) ** 2 * p0[0] + 2 * (1 - t) * t * p1[0] + t ** 2 * p2[0];
-    const y = (1 - t) ** 2 * p0[1] + 2 * (1 - t) * t * p1[1] + t ** 2 * p2[1];
-    const side = (i + seed) % 2 === 0 ? 1 : -1;
-    return { x: x + side * 7, y, rot: side * (38 + ((i * 53 + seed * 17) % 30)), size: 0.85 + ((i * 29 + seed * 7) % 5) * 0.07, alt: (i + seed) % 3 === 0 };
+const cubic = ([p0, p1, p2, p3]: Pt[], t: number): Pt => {
+  const u = 1 - t;
+  return [
+    u ** 3 * p0[0] + 3 * u * u * t * p1[0] + 3 * u * t * t * p2[0] + t ** 3 * p3[0],
+    u ** 3 * p0[1] + 3 * u * u * t * p1[1] + 3 * u * t * t * p2[1] + t ** 3 * p3[1],
+  ];
+};
+
+// cipós que caem pela frente da prateleira: só ganham folhas abaixo dela
+const SHELF_FRONT = 282;
+const VINES: { pts: Pt[]; n: number; flip: number }[] = [
+  { pts: [[1238, 232], [1196, 262], [1228, 330], [1214, 380]], n: 7, flip: 0 },
+  { pts: [[1244, 236], [1226, 270], [1250, 300], [1238, 338]], n: 5, flip: 1 },
+  { pts: [[1264, 234], [1292, 262], [1274, 310], [1282, 354]], n: 5, flip: 0 },
+];
+
+// as folhas nascem no ponto do caule e apontam para baixo, alternando os lados
+const VINE_LEAVES: Leaf[] = VINES.flatMap(({ pts, n, flip }) => {
+  let from = 0;
+  while (from < 1 && cubic(pts, from)[1] < SHELF_FRONT + 6) from += 0.01;
+  return Array.from({ length: n }, (_, i) => {
+    const t = from + ((0.97 - from) * (i + 0.5)) / n;
+    const [x, y] = cubic(pts, t);
+    const side = (i + flip) % 2 === 0 ? 1 : -1;
+    return { x, y, rot: side * 128, size: 0.62, alt: i % 3 === 1 };
   });
-}
+});
 
-const VINES = [
-  { d: [[1250, 226], [1196, 262], [1204, 372]], n: 9, seed: 1 },
-  { d: [[1254, 228], [1226, 300], [1242, 388]], n: 9, seed: 2 },
-  { d: [[1262, 226], [1284, 262], [1272, 318]], n: 5, seed: 3 },
-];
+// copa: folhas em leque saindo do centro do vaso
+const CROWN: Leaf[] = [
+  [-68, 0.95], [-44, 1.15], [-20, 1.3], [4, 1.4], [28, 1.28], [52, 1.12], [72, 0.92],
+  [-32, 0.85], [-8, 0.95], [18, 0.9], [42, 0.8],
+].map(([rot, size], i) => ({ x: 1251 + (i % 3 - 1) * 2, y: 224, rot, size, alt: i > 6 || i % 2 === 1 }));
 
-const LEAVES: Leaf[] = [
-  ...VINES.flatMap((vine) => leavesAlong(vine.d[0], vine.d[1], vine.d[2], vine.n, vine.seed)),
-  // a copa, em cima do vaso
-  ...[[1238, 208, -50], [1250, 198, -12], [1264, 202, 24], [1276, 212, 58], [1228, 220, -78], [1257, 212, 6], [1244, 216, -30]].map(
-    ([x, y, rot], i) => ({ x, y, rot, size: 1.05, alt: i % 2 === 0 }),
-  ),
-];
+// folha com a base na origem, apontando para cima
+const LEAF = "M0 0C9 -7 9 -24 0 -32C-9 -24 -9 -7 0 0Z";
 
 const HAIR = curlyPath(1350, 449, 62, 15);
 
@@ -263,6 +278,7 @@ export function RoomScene({ theme, onToggleTheme, lampOn, onToggleLamp, curtainC
   const [doorOpen, setDoorOpen] = useState(false);
   const [bedMessy, setBedMessy] = useState(false);
   const [robotUp, setRobotUp] = useState(false);
+  const [phonesNeck, setPhonesNeck] = useState(false);
 
   useLayoutEffect(() => {
     const node = ref.current;
@@ -340,6 +356,7 @@ export function RoomScene({ theme, onToggleTheme, lampOn, onToggleLamp, curtainC
       data-door={doorOpen ? "open" : "closed"}
       data-bed={bedMessy ? "messy" : "tidy"}
       data-robot={robotUp ? "up" : "down"}
+      data-phones={phonesNeck ? "neck" : "head"}
       data-ready={layout ? "" : undefined}
     >
       {layout && <Drawing layout={layout} uid={uid} boot={boot} paletteIndex={paletteIndex} />}
@@ -407,6 +424,7 @@ export function RoomScene({ theme, onToggleTheme, lampOn, onToggleLamp, curtainC
               setPcOn((current) => !current);
             }}
           />
+          <button type="button" className="scene-hit" style={box(1272 + dx, 372 + fy, 156, 178, 44)} aria-label={labels.phones} aria-pressed={phonesNeck} title={labels.phones} onClick={() => setPhonesNeck((current) => !current)} />
           <button type="button" className="scene-hit" style={box(1300 + dx, 724 + fy, 297, 73, 44)} aria-label={labels.bed} aria-pressed={bedMessy} title={labels.bed} onClick={() => setBedMessy((current) => !current)} />
           <button
             type="button"
@@ -626,20 +644,11 @@ function Drawing({ layout, uid, boot, paletteIndex }: { layout: Layout; uid: str
 
         {/* prateleira */}
         <rect x="1212" y="279" width="270" height="9" fill="#000" opacity="0.07" />
-        <g fill="none" stroke={v("vine")} strokeWidth="2">
-          {VINES.map((vine) => (
-            <path key={vine.seed} d={`M${vine.d[0].join(" ")}Q${vine.d[1].join(" ")} ${vine.d[2].join(" ")}`} />
-          ))}
-        </g>
-        <path d="M1236 222h30l-4 33h-22z" fill={v("pot")} stroke={v("line")} strokeWidth="1.5" strokeLinejoin="round" />
-        {LEAVES.map((leaf, i) => (
-          <path
-            key={i}
-            d="M0 -9C6 -6 6 5 0 10C-6 5 -6 -6 0 -9Z"
-            transform={`translate(${leaf.x.toFixed(1)} ${leaf.y.toFixed(1)}) rotate(${leaf.rot}) scale(${leaf.size.toFixed(2)})`}
-            fill={leaf.alt ? v("leaf2") : v("leaf")}
-          />
+        {CROWN.map((leaf, i) => (
+          <path key={i} d={LEAF} transform={`translate(${leaf.x} ${leaf.y}) rotate(${leaf.rot}) scale(${leaf.size})`} fill={leaf.alt ? v("leaf2") : v("leaf")} />
         ))}
+        <path d="M1236 224h30l-4 31h-22z" fill={v("pot")} stroke={v("line")} strokeWidth="1.5" strokeLinejoin="round" />
+        <rect x="1233" y="219" width="36" height="7" rx="2.5" fill={v("pot")} stroke={v("line")} strokeWidth="1.5" strokeLinejoin="round" />
         {/* cinco livros, cinco paletas: o escolhido fica puxado para cima */}
         <g stroke={v("line")} strokeWidth="1.5" strokeLinejoin="round">
           {(
@@ -670,6 +679,15 @@ function Drawing({ layout, uid, boot, paletteIndex }: { layout: Layout; uid: str
         </g>
         <rect x="1204" y="255" width="281" height="24" rx="1.5" fill={v("shelf")} stroke={v("line")} strokeWidth="2" />
         <rect x="1205" y="256" width="279" height="7" fill={v("shelfTop")} />
+        {/* cipós pendurados: por cima da prateleira, para cair pela frente dela */}
+        <g fill="none" stroke={v("vine")} strokeWidth="2.2" strokeLinecap="round">
+          {VINES.map(({ pts }, i) => (
+            <path key={i} d={`M${pts[0].join(" ")}C${pts[1].join(" ")} ${pts[2].join(" ")} ${pts[3].join(" ")}`} />
+          ))}
+        </g>
+        {VINE_LEAVES.map((leaf, i) => (
+          <path key={i} d={LEAF} transform={`translate(${leaf.x.toFixed(1)} ${leaf.y.toFixed(1)}) rotate(${leaf.rot}) scale(${leaf.size})`} fill={leaf.alt ? v("leaf2") : v("leaf")} />
+        ))}
 
         {/* mesa e computador */}
         <ellipse className="screen-glow" cx="1292" cy="500" rx="330" ry="240" fill={url("screen-glow")} />
@@ -726,11 +744,11 @@ function Drawing({ layout, uid, boot, paletteIndex }: { layout: Layout; uid: str
             <path key={d} d={d} />
           ))}
         </g>
-        {/* fones */}
-        <path d="M1286 452Q1284 376 1350 376Q1416 376 1414 452" fill="none" stroke={v("line")} strokeWidth="10" strokeLinecap="round" />
-        <path d="M1286 452Q1284 376 1350 376Q1416 376 1414 452" fill="none" stroke={v("phones")} strokeWidth="6" strokeLinecap="round" />
-        <rect x="1274" y="440" width="20" height="46" rx="9" fill={v("phones")} stroke={v("line")} strokeWidth="2" />
-        <rect x="1406" y="440" width="20" height="46" rx="9" fill={v("phones")} stroke={v("line")} strokeWidth="2" />
+        {/* fones: na cabeça ou no pescoço */}
+        <path className="phones-band" d="M1286 452Q1284 376 1350 376Q1416 376 1414 452" fill="none" stroke={v("line")} strokeWidth="10" strokeLinecap="round" />
+        <path className="phones-band" d="M1286 452Q1284 376 1350 376Q1416 376 1414 452" fill="none" stroke={v("phones")} strokeWidth="6" strokeLinecap="round" />
+        <rect className="phones-cup phones-cup-l" x="1274" y="440" width="20" height="46" rx="9" fill={v("phones")} stroke={v("line")} strokeWidth="2" />
+        <rect className="phones-cup phones-cup-r" x="1406" y="440" width="20" height="46" rx="9" fill={v("phones")} stroke={v("line")} strokeWidth="2" />
 
         {/* cadeira */}
         <rect x="1343" y="716" width="14" height="50" fill={v("chair")} />

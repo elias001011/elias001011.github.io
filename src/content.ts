@@ -171,6 +171,7 @@ const pt = {
     door: "Porta aberta",
     bed: "Cama desarrumada",
     robot: "Braço do robô levantado",
+    phones: "Fone no pescoço",
   },
   manifesto: [
     ["Gosto de levar uma ideia até o fim: do primeiro esboço"],
@@ -345,6 +346,7 @@ const en: Copy = {
     door: "Door open",
     bed: "Bed unmade",
     robot: "Robot arm raised",
+    phones: "Headphones around the neck",
   },
   manifesto: [
     ["I like taking an idea all the way: from the first sketch"],
@@ -517,6 +519,7 @@ const es: Copy = {
     door: "Puerta abierta",
     bed: "Cama deshecha",
     robot: "Brazo del robot levantado",
+    phones: "Auriculares en el cuello",
   },
   manifesto: [
     ["Me gusta llevar una idea hasta el final: del primer boceto"],

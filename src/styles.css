@@ -554,9 +554,14 @@ body.ready .navbar-inner { animation: nav-drop 680ms var(--ease) both; }
 
 .hero-buttons { display: flex; flex-wrap: wrap; gap: 12px; margin-top: clamp(20px, 6cqw, 32px); }
 
+.hero-social { display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: 22px; font-size: 0.78rem; }
+.hero-social a { display: inline-flex; align-items: center; gap: 7px; color: var(--light-55); transition: color 160ms ease; }
+.hero-social a:hover { color: var(--accent); }
+
 /* só o computador abre a página; o texto chega depois, sem depender de script */
-.hero-name, .hero-hint, .hero-buttons { animation: hero-rise 900ms var(--ease) 1500ms both; }
+.hero-name, .hero-hint, .hero-buttons, .hero-social { animation: hero-rise 900ms var(--ease) 1500ms both; }
 .hero-buttons { animation-delay: 1620ms; }
+.hero-social { animation-delay: 1720ms; }
 
 @keyframes hero-rise {
   from { opacity: 0; transform: translateY(14px); }
@@ -636,6 +641,14 @@ body.ready .navbar-inner { animation: nav-drop 680ms var(--ease) both; }
 .room .robot-arm { transition: transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1), fill var(--scene-t) ease; }
 [data-robot="up"] .robot-arm { transform: rotate(155deg); }
 
+.phones-cup { transform-box: fill-box; transform-origin: center; }
+.room .phones-cup { transition: transform 560ms cubic-bezier(0.34, 1.45, 0.5, 1), fill var(--scene-t) ease, stroke var(--scene-t) ease; }
+.room .phones-band { transition: transform 460ms cubic-bezier(0.5, 0, 0.3, 1), opacity 300ms ease, stroke var(--scene-t) ease; }
+[data-phones="neck"] .phones-cup-l { transform: translate(25px, 68px) rotate(-16deg); }
+[data-phones="neck"] .phones-cup-r { transform: translate(-25px, 68px) rotate(16deg); }
+[data-phones="neck"] .phones-band { transform: translateY(78px) scaleY(0.4); opacity: 0; }
+.phones-band { transform-box: fill-box; transform-origin: 50% 100%; }
+
 .pencil-a { transform-origin: 1097px 552px; }
 .pencil-b { transform-origin: 1104px 552px; }
 .pencil-c { transform-origin: 1112px 552px; }
@@ -669,7 +682,7 @@ body.ready .navbar-inner { animation: nav-drop 680ms var(--ease) both; }
 /* ---- dock de tecnologias ---- */
 
 .tool-dock { display: flex; width: 100%; container-type: inline-size; }
-.tool-dock-inner { position: relative; width: fit-content; padding-top: calc(var(--tool-dock-size) * var(--tool-dock-rise) + 2.75rem); }
+.tool-dock-inner { position: relative; width: fit-content; padding-top: calc(var(--tool-dock-size) * var(--tool-dock-rise)); }
 
 .tool-dock-tooltip {
   position: absolute;
@@ -677,9 +690,11 @@ body.ready .navbar-inner { animation: nav-drop 680ms var(--ease) both; }
   left: 0;
   z-index: 50;
   padding: 4px 10px;
+  border: 1px solid rgb(127 127 127 / 0.28);
   border-radius: 6px;
   background: var(--light);
   color: var(--void);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.12);
   font-size: 13px;
   font-weight: 500;
   line-height: 1.4;
@@ -691,7 +706,7 @@ body.ready .navbar-inner { animation: nav-drop 680ms var(--ease) both; }
 
 .tool-dock-tooltip[data-state="open"] { opacity: 1; }
 .tool-dock-tooltip.is-gliding { transition: translate 300ms cubic-bezier(0.22, 1, 0.36, 1), opacity 300ms cubic-bezier(0.22, 1, 0.36, 1); }
-.tool-dock-tooltip-tip { position: absolute; bottom: -4px; left: 50%; width: 9px; height: 9px; margin-left: -4.5px; border-bottom-right-radius: 2px; background: inherit; transform: rotate(45deg); }
+.tool-dock-tooltip-tip { position: absolute; bottom: -5px; border-right: 1px solid rgb(127 127 127 / 0.28); border-bottom: 1px solid rgb(127 127 127 / 0.28); left: 50%; width: 9px; height: 9px; margin-left: -4.5px; border-bottom-right-radius: 2px; background: inherit; transform: rotate(45deg); }
 
 .tool-dock-rail { position: relative; display: flex; width: fit-content; touch-action: pan-y; }
 .tool-dock-item { position: relative; display: flex; pointer-events: none; }

@@ -472,6 +472,17 @@ function App() {
               {copy.hero.secondary}
             </a>
           </div>
+          <div className="hero-social mono">
+            <a href={profile.github} target="_blank" rel="noreferrer">
+              <Github size={15} /> GitHub
+            </a>
+            <a href={profile.linkedin} target="_blank" rel="noreferrer">
+              <Linkedin size={15} /> LinkedIn
+            </a>
+            <a href={profile.instagram} target="_blank" rel="noreferrer">
+              <Instagram size={15} /> Instagram
+            </a>
+          </div>
           <ToolDock items={stackItems} label={copy.scene.stack} size={54} delay={1.75} />
         </RoomScene>
 

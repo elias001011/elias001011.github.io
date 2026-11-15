@@ -54,12 +54,14 @@ function swellAt({ centers, width }: Layout, k: number, x: number) {
 }
 
 const deal: Variants = {
-  hidden: { opacity: 0, y: 12, scale: 0.94 },
+  hidden: { opacity: 0, y: 12, scale: 0.94, filter: "blur(3px)" },
   shown: ({ index, still, delay }: { index: number; still: boolean; delay: number }) => ({
     opacity: 1,
     y: 0,
     scale: 1,
+    filter: "blur(0px)",
     transition: still ? { duration: 0 } : { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: delay + index * 0.04 },
+    transitionEnd: { filter: "none" },
   }),
 };
 
