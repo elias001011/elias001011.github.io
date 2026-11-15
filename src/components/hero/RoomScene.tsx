@@ -13,7 +13,6 @@ export type SceneLabels = {
   door: string;
   bed: string;
   robot: string;
-  phones: string;
 };
 
 type Props = {
@@ -269,7 +268,6 @@ export function RoomScene({ theme, onToggleTheme, lampOn, onToggleLamp, curtainC
   const [doorOpen, setDoorOpen] = useState(false);
   const [bedMessy, setBedMessy] = useState(false);
   const [robotUp, setRobotUp] = useState(false);
-  const [phonesNeck, setPhonesNeck] = useState(false);
 
   useLayoutEffect(() => {
     const node = ref.current;
@@ -347,7 +345,6 @@ export function RoomScene({ theme, onToggleTheme, lampOn, onToggleLamp, curtainC
       data-door={doorOpen ? "open" : "closed"}
       data-bed={bedMessy ? "messy" : "tidy"}
       data-robot={robotUp ? "up" : "down"}
-      data-phones={phonesNeck ? "neck" : "head"}
       data-ready={layout ? "" : undefined}
     >
       {layout && <Drawing layout={layout} uid={uid} boot={boot} paletteIndex={paletteIndex} />}
@@ -415,7 +412,6 @@ export function RoomScene({ theme, onToggleTheme, lampOn, onToggleLamp, curtainC
               setPcOn((current) => !current);
             }}
           />
-          <button type="button" className="scene-hit" style={box(1272 + dx, 372 + fy, 156, 178, 44)} aria-label={labels.phones} aria-pressed={phonesNeck} title={labels.phones} onClick={() => setPhonesNeck((current) => !current)} />
           <button type="button" className="scene-hit" style={box(1300 + dx, 724 + fy, 297, 73, 44)} aria-label={labels.bed} aria-pressed={bedMessy} title={labels.bed} onClick={() => setBedMessy((current) => !current)} />
           <button
             type="button"
@@ -735,13 +731,11 @@ function Drawing({ layout, uid, boot, paletteIndex }: { layout: Layout; uid: str
             <path key={d} d={d} />
           ))}
         </g>
-        {/* fones: na cabeça ou no pescoço */}
-        <path className="phones-band" d="M1286 452Q1284 376 1350 376Q1416 376 1414 452" fill="none" stroke={v("line")} strokeWidth="10" strokeLinecap="round" />
-        <path className="phones-band" d="M1286 452Q1284 376 1350 376Q1416 376 1414 452" fill="none" stroke={v("phones")} strokeWidth="6" strokeLinecap="round" />
-        <path className="phones-neck" d="M1309 496Q1311 540 1350 540Q1389 540 1391 496" fill="none" stroke={v("line")} strokeWidth="10" strokeLinecap="round" />
-        <path className="phones-neck" d="M1309 496Q1311 540 1350 540Q1389 540 1391 496" fill="none" stroke={v("phones")} strokeWidth="6" strokeLinecap="round" />
-        <rect className="phones-cup phones-cup-l" x="1274" y="440" width="20" height="46" rx="9" fill={v("phones")} stroke={v("line")} strokeWidth="2" />
-        <rect className="phones-cup phones-cup-r" x="1406" y="440" width="20" height="46" rx="9" fill={v("phones")} stroke={v("line")} strokeWidth="2" />
+        {/* fones */}
+        <path d="M1286 452Q1284 376 1350 376Q1416 376 1414 452" fill="none" stroke={v("line")} strokeWidth="10" strokeLinecap="round" />
+        <path d="M1286 452Q1284 376 1350 376Q1416 376 1414 452" fill="none" stroke={v("phones")} strokeWidth="6" strokeLinecap="round" />
+        <rect x="1274" y="440" width="20" height="46" rx="9" fill={v("phones")} stroke={v("line")} strokeWidth="2" />
+        <rect x="1406" y="440" width="20" height="46" rx="9" fill={v("phones")} stroke={v("line")} strokeWidth="2" />
 
         {/* cadeira */}
         <rect x="1343" y="716" width="14" height="50" fill={v("chair")} />
