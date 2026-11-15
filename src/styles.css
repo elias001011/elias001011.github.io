@@ -645,9 +645,12 @@ body.ready .navbar-inner { animation: nav-drop 680ms var(--ease) both; }
 .phones-cup { transform-box: fill-box; transform-origin: center; }
 .room .phones-cup { transition: transform 560ms cubic-bezier(0.34, 1.45, 0.5, 1), fill var(--scene-t) ease, stroke var(--scene-t) ease; }
 .room .phones-band { transition: transform 460ms cubic-bezier(0.5, 0, 0.3, 1), opacity 300ms ease, stroke var(--scene-t) ease; }
-[data-phones="neck"] .phones-cup-l { transform: translate(25px, 68px) rotate(18deg); }
-[data-phones="neck"] .phones-cup-r { transform: translate(-25px, 68px) rotate(-18deg); }
-[data-phones="neck"] .phones-band { transform: translateY(64px); opacity: 0; }
+.phones-neck { opacity: 0; }
+.room .phones-neck { transition: opacity 320ms ease 160ms, stroke var(--scene-t) ease; }
+[data-phones="neck"] .phones-cup-l { transform: translate(25px, 50px); }
+[data-phones="neck"] .phones-cup-r { transform: translate(-25px, 50px); }
+[data-phones="neck"] .phones-band { transform: translateY(46px); opacity: 0; }
+[data-phones="neck"] .phones-neck { opacity: 1; }
 
 .pencil-a { transform-origin: 1097px 552px; }
 .pencil-b { transform-origin: 1104px 552px; }

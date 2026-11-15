@@ -184,35 +184,34 @@ function curlyPath(cx: number, cy: number, r: number, lobes: number) {
 
 type Leaf = { x: number; y: number; rot: number; size: number; alt: boolean };
 
-// cada folha nasce no próprio caule (base na origem), apontando para fora e para cima
-function leavesAlong(p0: number[], p1: number[], p2: number[], count: number, seed: number): Leaf[] {
-  return Array.from({ length: count }, (_, i) => {
-    const t = (i + 0.6) / count;
-    const x = (1 - t) ** 2 * p0[0] + 2 * (1 - t) * t * p1[0] + t ** 2 * p2[0];
-    const y = (1 - t) ** 2 * p0[1] + 2 * (1 - t) * t * p1[1] + t ** 2 * p2[1];
-    const side = (i + seed) % 2 === 0 ? 1 : -1;
-    return { x, y, rot: side * (42 + ((i * 53 + seed * 17) % 22)), size: 0.85 + ((i * 29 + seed * 7) % 5) * 0.07, alt: (i + seed) % 3 === 0 };
-  });
-}
-
-// três cipós saem de trás da prateleira, simétricos em torno do vaso (centro em 1251)
+// cipós nascem nas bordas do vaso e descem pela frente da prateleira
 const VINES = [
-  { d: [[1240, 226], [1212, 262], [1222, 366]], n: 8, seed: 1 },
-  { d: [[1252, 228], [1238, 300], [1248, 386]], n: 9, seed: 2 },
-  { d: [[1262, 226], [1284, 262], [1274, 322]], n: 6, seed: 3 },
+  { d: [[1238, 230], [1196, 246], [1214, 300], [1204, 376]], n: 8, seed: 1 },
+  { d: [[1254, 252], [1254, 278], [1262, 310], [1256, 346]], n: 4, seed: 2 },
+  { d: [[1264, 230], [1304, 246], [1290, 290], [1300, 340]], n: 6, seed: 3 },
 ];
 
-// a parte de cima fica atrás da prateleira (até y 288): só as folhas de baixo aparecem
-const VINE_LEAVES: Leaf[] = VINES.flatMap((vine) => leavesAlong(vine.d[0], vine.d[1], vine.d[2], vine.n, vine.seed)).filter((leaf) => leaf.y > 294);
+const bezier = ([p0, p1, p2, p3]: number[][], t: number) => {
+  const u = 1 - t;
+  return [0, 1].map((k) => u ** 3 * p0[k] + 3 * u * u * t * p1[k] + 3 * u * t * t * p2[k] + t ** 3 * p3[k]);
+};
+
+// folhas só abaixo da prateleira (ela termina em y 279), cada uma presa ao caule
+const VINE_LEAVES: Leaf[] = VINES.flatMap((vine) =>
+  Array.from({ length: vine.n }, (_, i) => {
+    const t = 0.5 + ((i + 0.5) / vine.n) * 0.48;
+    const [x, y] = bezier(vine.d, t);
+    const side = (i + vine.seed) % 2 === 0 ? 1 : -1;
+    return { x, y, rot: side * (46 + ((i * 53 + vine.seed * 17) % 22)), size: 1 + ((i * 29 + vine.seed * 7) % 4) * 0.08, alt: (i + vine.seed) % 3 === 0 };
+  }),
+).filter((leaf) => leaf.y > 286);
 const LEAF_AT_BASE = "M0 0C6 -3 6 -14 0 -19C-6 -14 -6 -3 0 0Z";
 
-// a copa, em cima do vaso
-const CROWN: Leaf[] = [[1238, 208, -50], [1250, 198, -12], [1264, 202, 24], [1276, 212, 58], [1228, 220, -78], [1257, 212, 6], [1244, 216, -30]].map(
-  ([x, y, rot], i) => ({ x, y, rot, size: 1.05, alt: i % 2 === 0 }),
-);
-
-// folha, centrada na origem
-const LEAF = "M0 -9C6 -6 6 5 0 10C-6 5 -6 -6 0 -9Z";
+// a copa: duas camadas de folhas em leque, saindo do meio do vaso
+const CROWN: Leaf[] = [
+  [-72, 1.25], [-48, 1.5], [-22, 1.7], [4, 1.8], [30, 1.65], [54, 1.45], [76, 1.2],
+  [-60, 0.95], [-34, 1.1], [-10, 1.15], [16, 1.15], [42, 1.05], [64, 0.9],
+].map(([rot, size], i) => ({ x: 1251 + (i % 2 ? 3 : -3), y: 226, rot, size, alt: i > 6 ? i % 2 === 0 : i % 2 === 1 }));
 
 const HAIR = curlyPath(1350, 449, 62, 15);
 
@@ -636,18 +635,10 @@ function Drawing({ layout, uid, boot, paletteIndex }: { layout: Layout; uid: str
 
         {/* prateleira */}
         <rect x="1212" y="279" width="270" height="9" fill="#000" opacity="0.07" />
-        <g fill="none" stroke={v("vine")} strokeWidth="2">
-          {VINES.map((vine) => (
-            <path key={vine.seed} d={`M${vine.d[0].join(" ")}Q${vine.d[1].join(" ")} ${vine.d[2].join(" ")}`} />
-          ))}
-        </g>
-        <path d="M1236 222h30l-4 33h-22z" fill={v("pot")} stroke={v("line")} strokeWidth="1.5" strokeLinejoin="round" />
         {CROWN.map((leaf, i) => (
-          <path key={i} d={LEAF} transform={`translate(${leaf.x.toFixed(1)} ${leaf.y.toFixed(1)}) rotate(${leaf.rot}) scale(${leaf.size.toFixed(2)})`} fill={leaf.alt ? v("leaf2") : v("leaf")} />
+          <path key={i} d={LEAF_AT_BASE} transform={`translate(${leaf.x} ${leaf.y}) rotate(${leaf.rot}) scale(${leaf.size})`} fill={leaf.alt ? v("leaf2") : v("leaf")} />
         ))}
-        {VINE_LEAVES.map((leaf, i) => (
-          <path key={`v${i}`} d={LEAF_AT_BASE} transform={`translate(${leaf.x.toFixed(1)} ${leaf.y.toFixed(1)}) rotate(${leaf.rot}) scale(${leaf.size.toFixed(2)})`} fill={leaf.alt ? v("leaf2") : v("leaf")} />
-        ))}
+        <path d="M1236 222h30l-4 33h-22z" fill={v("pot")} stroke={v("line")} strokeWidth="1.5" strokeLinejoin="round" />
         {/* cinco livros, cinco paletas: o escolhido fica puxado para cima */}
         <g stroke={v("line")} strokeWidth="1.5" strokeLinejoin="round">
           {(
@@ -678,6 +669,15 @@ function Drawing({ layout, uid, boot, paletteIndex }: { layout: Layout; uid: str
         </g>
         <rect x="1204" y="255" width="281" height="24" rx="1.5" fill={v("shelf")} stroke={v("line")} strokeWidth="2" />
         <rect x="1205" y="256" width="279" height="7" fill={v("shelfTop")} />
+        {/* cipós: por cima da prateleira, descendo do vaso pela frente dela */}
+        <g fill="none" stroke={v("vine")} strokeWidth="2.2" strokeLinecap="round">
+          {VINES.map((vine) => (
+            <path key={vine.seed} d={`M${vine.d[0].join(" ")}C${vine.d[1].join(" ")} ${vine.d[2].join(" ")} ${vine.d[3].join(" ")}`} />
+          ))}
+        </g>
+        {VINE_LEAVES.map((leaf, i) => (
+          <path key={`v${i}`} d={LEAF_AT_BASE} transform={`translate(${leaf.x.toFixed(1)} ${leaf.y.toFixed(1)}) rotate(${leaf.rot}) scale(${leaf.size.toFixed(2)})`} fill={leaf.alt ? v("leaf2") : v("leaf")} />
+        ))}
 
         {/* mesa e computador */}
         <ellipse className="screen-glow" cx="1292" cy="500" rx="330" ry="240" fill={url("screen-glow")} />
@@ -737,6 +737,8 @@ function Drawing({ layout, uid, boot, paletteIndex }: { layout: Layout; uid: str
         {/* fones: na cabeça ou no pescoço */}
         <path className="phones-band" d="M1286 452Q1284 376 1350 376Q1416 376 1414 452" fill="none" stroke={v("line")} strokeWidth="10" strokeLinecap="round" />
         <path className="phones-band" d="M1286 452Q1284 376 1350 376Q1416 376 1414 452" fill="none" stroke={v("phones")} strokeWidth="6" strokeLinecap="round" />
+        <path className="phones-neck" d="M1309 496Q1311 540 1350 540Q1389 540 1391 496" fill="none" stroke={v("line")} strokeWidth="10" strokeLinecap="round" />
+        <path className="phones-neck" d="M1309 496Q1311 540 1350 540Q1389 540 1391 496" fill="none" stroke={v("phones")} strokeWidth="6" strokeLinecap="round" />
         <rect className="phones-cup phones-cup-l" x="1274" y="440" width="20" height="46" rx="9" fill={v("phones")} stroke={v("line")} strokeWidth="2" />
         <rect className="phones-cup phones-cup-r" x="1406" y="440" width="20" height="46" rx="9" fill={v("phones")} stroke={v("line")} strokeWidth="2" />
 
