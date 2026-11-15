@@ -538,6 +538,7 @@ body.ready .navbar-inner { animation: nav-drop 680ms var(--ease) both; }
   display: flex;
   flex-direction: column;
   container-type: inline-size;
+  --hero-gap: clamp(18px, 5cqw, 22px);
   padding: calc(var(--pad-top, 30vw) + 22px) 16px var(--pad-bottom, 64vw) var(--wall-x, 72px);
 }
 
@@ -552,9 +553,9 @@ body.ready .navbar-inner { animation: nav-drop 680ms var(--ease) both; }
 
 .hero-hint { margin-top: 12px; font-size: 0.72rem; letter-spacing: 0.06em; color: var(--light-55); transition: color 700ms ease; }
 
-.hero-buttons { display: flex; flex-wrap: wrap; gap: 12px; margin-top: clamp(20px, 6cqw, 32px); }
+.hero-buttons { display: flex; flex-wrap: wrap; gap: 12px; margin-top: var(--hero-gap); }
 
-.hero-social { display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: 22px; font-size: 0.78rem; }
+.hero-social { display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: var(--hero-gap); font-size: 0.78rem; }
 .hero-social a { display: inline-flex; align-items: center; gap: 7px; color: var(--light-55); transition: color 160ms ease; }
 .hero-social a:hover { color: var(--accent); }
 
@@ -681,7 +682,7 @@ body.ready .navbar-inner { animation: nav-drop 680ms var(--ease) both; }
 /* ---- dock de tecnologias ---- */
 
 .tool-dock { display: flex; width: 100%; container-type: inline-size; }
-.tool-dock-inner { position: relative; width: fit-content; padding-top: 25px; margin-left: 3px; }
+.tool-dock-inner { position: relative; width: fit-content; padding-top: calc(var(--hero-gap) + 2px); margin-left: 3px; }
 
 .tool-dock-tooltip {
   position: absolute;

@@ -184,13 +184,14 @@ function curlyPath(cx: number, cy: number, r: number, lobes: number) {
 
 type Leaf = { x: number; y: number; rot: number; size: number; alt: boolean };
 
+// cada folha nasce no próprio caule (base na origem), apontando para fora e para cima
 function leavesAlong(p0: number[], p1: number[], p2: number[], count: number, seed: number): Leaf[] {
   return Array.from({ length: count }, (_, i) => {
     const t = (i + 0.6) / count;
     const x = (1 - t) ** 2 * p0[0] + 2 * (1 - t) * t * p1[0] + t ** 2 * p2[0];
     const y = (1 - t) ** 2 * p0[1] + 2 * (1 - t) * t * p1[1] + t ** 2 * p2[1];
     const side = (i + seed) % 2 === 0 ? 1 : -1;
-    return { x: x + side * 7, y, rot: side * (38 + ((i * 53 + seed * 17) % 30)), size: 0.85 + ((i * 29 + seed * 7) % 5) * 0.07, alt: (i + seed) % 3 === 0 };
+    return { x, y, rot: side * (42 + ((i * 53 + seed * 17) % 22)), size: 0.85 + ((i * 29 + seed * 7) % 5) * 0.07, alt: (i + seed) % 3 === 0 };
   });
 }
 
@@ -198,11 +199,12 @@ function leavesAlong(p0: number[], p1: number[], p2: number[], count: number, se
 const VINES = [
   { d: [[1240, 226], [1212, 262], [1222, 366]], n: 8, seed: 1 },
   { d: [[1252, 228], [1238, 300], [1248, 386]], n: 9, seed: 2 },
-  { d: [[1262, 226], [1290, 262], [1280, 322]], n: 6, seed: 3 },
+  { d: [[1262, 226], [1284, 262], [1274, 322]], n: 6, seed: 3 },
 ];
 
 // a parte de cima fica atrás da prateleira (até y 288): só as folhas de baixo aparecem
 const VINE_LEAVES: Leaf[] = VINES.flatMap((vine) => leavesAlong(vine.d[0], vine.d[1], vine.d[2], vine.n, vine.seed)).filter((leaf) => leaf.y > 294);
+const LEAF_AT_BASE = "M0 0C6 -3 6 -14 0 -19C-6 -14 -6 -3 0 0Z";
 
 // a copa, em cima do vaso
 const CROWN: Leaf[] = [[1238, 208, -50], [1250, 198, -12], [1264, 202, 24], [1276, 212, 58], [1228, 220, -78], [1257, 212, 6], [1244, 216, -30]].map(
@@ -640,8 +642,11 @@ function Drawing({ layout, uid, boot, paletteIndex }: { layout: Layout; uid: str
           ))}
         </g>
         <path d="M1236 222h30l-4 33h-22z" fill={v("pot")} stroke={v("line")} strokeWidth="1.5" strokeLinejoin="round" />
-        {[...CROWN, ...VINE_LEAVES].map((leaf, i) => (
+        {CROWN.map((leaf, i) => (
           <path key={i} d={LEAF} transform={`translate(${leaf.x.toFixed(1)} ${leaf.y.toFixed(1)}) rotate(${leaf.rot}) scale(${leaf.size.toFixed(2)})`} fill={leaf.alt ? v("leaf2") : v("leaf")} />
+        ))}
+        {VINE_LEAVES.map((leaf, i) => (
+          <path key={`v${i}`} d={LEAF_AT_BASE} transform={`translate(${leaf.x.toFixed(1)} ${leaf.y.toFixed(1)}) rotate(${leaf.rot}) scale(${leaf.size.toFixed(2)})`} fill={leaf.alt ? v("leaf2") : v("leaf")} />
         ))}
         {/* cinco livros, cinco paletas: o escolhido fica puxado para cima */}
         <g stroke={v("line")} strokeWidth="1.5" strokeLinejoin="round">
