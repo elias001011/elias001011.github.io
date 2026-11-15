@@ -184,11 +184,11 @@ function curlyPath(cx: number, cy: number, r: number, lobes: number) {
 
 type Leaf = { x: number; y: number; rot: number; size: number; alt: boolean };
 
-// cipós nascem nas bordas do vaso e descem pela frente da prateleira
+// cipós nascem no meio da copa, passam por cima do vaso e descem pela frente da prateleira
 const VINES = [
-  { d: [[1238, 230], [1196, 246], [1214, 300], [1204, 376]], n: 8, seed: 1 },
-  { d: [[1254, 252], [1254, 278], [1262, 310], [1256, 346]], n: 4, seed: 2 },
-  { d: [[1264, 230], [1304, 246], [1290, 290], [1300, 340]], n: 6, seed: 3 },
+  { d: [[1244, 212], [1196, 218], [1214, 300], [1204, 376]], n: 8, seed: 1 },
+  { d: [[1254, 214], [1258, 252], [1264, 300], [1256, 346]], n: 4, seed: 2 },
+  { d: [[1258, 212], [1306, 218], [1290, 290], [1300, 340]], n: 6, seed: 3 },
 ];
 
 const bezier = ([p0, p1, p2, p3]: number[][], t: number) => {
@@ -635,9 +635,6 @@ function Drawing({ layout, uid, boot, paletteIndex }: { layout: Layout; uid: str
 
         {/* prateleira */}
         <rect x="1212" y="279" width="270" height="9" fill="#000" opacity="0.07" />
-        {CROWN.map((leaf, i) => (
-          <path key={i} d={LEAF_AT_BASE} transform={`translate(${leaf.x} ${leaf.y}) rotate(${leaf.rot}) scale(${leaf.size})`} fill={leaf.alt ? v("leaf2") : v("leaf")} />
-        ))}
         <path d="M1236 222h30l-4 33h-22z" fill={v("pot")} stroke={v("line")} strokeWidth="1.5" strokeLinejoin="round" />
         {/* cinco livros, cinco paletas: o escolhido fica puxado para cima */}
         <g stroke={v("line")} strokeWidth="1.5" strokeLinejoin="round">
@@ -677,6 +674,10 @@ function Drawing({ layout, uid, boot, paletteIndex }: { layout: Layout; uid: str
         </g>
         {VINE_LEAVES.map((leaf, i) => (
           <path key={`v${i}`} d={LEAF_AT_BASE} transform={`translate(${leaf.x.toFixed(1)} ${leaf.y.toFixed(1)}) rotate(${leaf.rot}) scale(${leaf.size.toFixed(2)})`} fill={leaf.alt ? v("leaf2") : v("leaf")} />
+        ))}
+        {/* a copa por cima, escondendo o começo dos cipós */}
+        {CROWN.map((leaf, i) => (
+          <path key={i} d={LEAF_AT_BASE} transform={`translate(${leaf.x} ${leaf.y}) rotate(${leaf.rot}) scale(${leaf.size})`} fill={leaf.alt ? v("leaf2") : v("leaf")} />
         ))}
 
         {/* mesa e computador */}
