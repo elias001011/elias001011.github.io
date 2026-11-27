@@ -1,5 +1,5 @@
 import { Download, Maximize2 } from "lucide-react";
-import { useState, type CSSProperties, type PointerEvent } from "react";
+import { useState, type CSSProperties } from "react";
 import { zenify, type LanguageId } from "../content";
 import { zenifyCopy } from "./zenify-copy";
 import "./zenify.css";
@@ -8,13 +8,6 @@ const views = ["player", "lyrics", "queue", "home", "recap", "sync"] as const;
 type View = (typeof views)[number];
 type Screenshot = { src: string; alt: string; height?: number };
 
-function reflectPointer(event: PointerEvent<HTMLElement>) {
-  if (event.pointerType !== "mouse") return;
-  const art = event.currentTarget;
-  const bounds = art.getBoundingClientRect();
-  art.style.setProperty("--reflection-x", `${event.clientX - bounds.left}px`);
-  art.style.setProperty("--reflection-y", `${event.clientY - bounds.top}px`);
-}
 
 export function ZenifyCase({ language, openLabel, onExpand }: {
   language: LanguageId;
@@ -40,7 +33,7 @@ export function ZenifyCase({ language, openLabel, onExpand }: {
             <a className="zen-source" href={zenify.repo}>{copy.code}</a>
           </div>
         </header>
-        <figure className="zen-art" id="zen-preview" data-format={compact ? "compact" : "wide"} style={artStyle} onPointerMove={reflectPointer}>
+        <figure className="zen-art" id="zen-preview" data-format={compact ? "compact" : "wide"} style={artStyle}>
           <div className="zen-record" aria-hidden="true"><i /></div>
           <button className="zen-screen" type="button" aria-label={openLabel + " · " + label} onClick={() => onExpand(shot, label)}>
             <img key={shot.src} src={shot.src} alt={alt} width={compact ? 389 : 1600} height={compact?.height ?? 874} loading="lazy" decoding="async" />

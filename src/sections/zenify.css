@@ -31,7 +31,7 @@
 }
 .zen-record i { display: grid; place-items:center; width: 30%; aspect-ratio:1; border-radius:50%; background: #9dbcd0; border: 4px solid #10181e; }
 .zen-record i::after { content:''; width:9%; aspect-ratio:1; border-radius:50%; background:var(--paper); box-shadow:0 1px 2px #0008 inset; }
-.zen-screen { position:relative; display:block; justify-self:start; border:3px solid #25282c; overflow:hidden; border-radius:12px; background:#171819; box-shadow:0 20px 28px -10px #12203077; }
+.zen-screen { position:relative; display:block; justify-self:start; }
 .zen-art[data-format="compact"] .zen-screen { width:clamp(145px, 15vw, 205px); margin-left:15%; transform: rotate(-6deg); }
 .zen-art[data-format="wide"] .zen-screen { width:86%; transform: rotate(-2deg); }
 .zen-screen img { width:100%; height:auto; }
@@ -52,9 +52,6 @@
 @media (prefers-reduced-motion:no-preference) {
   .zen-record { rotate:var(--record-angle); transition:rotate .9s var(--ease); }
   .zen-art:focus-within .zen-record { rotate:calc(var(--record-angle) + 12deg); }
-  .zen-screen { transition:scale .32s var(--ease), box-shadow .32s var(--ease); }
-  .zen-screen:focus-visible { scale:1.035; }
-  .zen-screen:active { scale:.985; }
   .zen-screen img { animation:zen-print .4s var(--ease) both; }
   .zen-screen span { transition:transform .32s var(--ease); }
   .zen-screen:focus-visible span { transform:scale(1.15); }
@@ -65,16 +62,8 @@
   @keyframes zen-print { from {opacity:.48; transform:translateY(6px) scale(1.025)} }
 }
 @media (prefers-reduced-motion:no-preference) and (hover:hover) and (pointer:fine) {
-  .zen-art::before {
-    content:""; position:absolute; inset:0; pointer-events:none;
-    background:radial-gradient(220px circle at var(--reflection-x, 50%) var(--reflection-y, 50%), #ffffff80, transparent);
-    opacity:0; transition:opacity .36s var(--ease);
-  }
-  .zen-art:hover::before { opacity:1; }
   .zen-art:hover .zen-record { rotate:calc(var(--record-angle) + 12deg); }
-  .zen-screen:hover { scale:1.035; box-shadow:0 26px 32px -10px #12203080; }
   .zen-screen:hover span { transform:scale(1.15); }
-  .zen-screen:active { scale:.985; }
 }
 @media (hover:hover) and (pointer:fine) {
   .zen-views button:hover { background:#ffffff50; }
