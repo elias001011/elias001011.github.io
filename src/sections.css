@@ -643,3 +643,19 @@ body.ready .navbar { animation: nav-drop 680ms var(--ease) both; }
 @media (min-width: 721px) and (max-width: 1020px) {
   .navbar.scrolled, .navbar.menu-open { width: min(440px, calc(100% - 40px)); }
 }
+
+/* PRs: a janela abre embaixo do botão, com cabeçalho de terminal */
+.prs-window { margin-top: 14px; overflow: hidden; border: 1px solid var(--edge); border-radius: var(--radius); background: var(--void-2); }
+.prs-window .terminal-bar { border-bottom: 1px solid var(--edge); }
+.prs-body { padding-top: 6px; font-size: 0.76rem; }
+.prs-item { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: baseline; gap: 10px; padding: 8px 14px; color: var(--light-85); transition: background-color 160ms ease; }
+.prs-item:hover { background: var(--light-05); }
+.prs-number { color: var(--accent); }
+.prs-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.prs-date { color: var(--light-38); font-size: 0.66rem; white-space: nowrap; }
+.prs-all { display: flex; align-items: center; gap: 5px; padding: 10px 14px; margin-top: 6px; border-top: 1px solid var(--edge); color: var(--light-70); font-size: 0.7rem; }
+.prs-all:hover { color: var(--accent); }
+@media (max-width: 720px) {
+  .prs-date { display: none; }
+  .prs-item { grid-template-columns: auto minmax(0, 1fr); }
+}

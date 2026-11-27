@@ -61,6 +61,7 @@ type Project = {
 type GalleryMedia = Pick<Project, "title" | "tag" | "images" | "phone"> & { imageAlts?: string[] };
 type ProjectPreview = GalleryMedia & Pick<Project, "live" | "repo">;
 type GalleryState = { project: GalleryMedia; index: number };
+type GithubPull = { number: number; title: string; html_url: string; closed_at?: string };
 
 const navIcons: Record<string, LucideIcon> = {
   "#sobre": User,
@@ -100,6 +101,17 @@ function writeStored(key: string, value: string) {
   }
 }
 
+const PRS_CACHE = "elias-gh-prs";
+
+function readPrsCache(): GithubPull[] | null {
+  try {
+    const cached = JSON.parse(readStored(PRS_CACHE) ?? "null") as { at: number; pulls: GithubPull[] } | null;
+    return cached && Date.now() - cached.at < 30 * 60 * 1000 ? cached.pulls : null;
+  } catch {
+    return null;
+  }
+}
+
 function initialLanguage(): LanguageId {
   const stored = readStored("elias-language");
   if (languages.some((option) => option.id === stored)) return stored as LanguageId;
@@ -133,11 +145,15 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [gallery, setGallery] = useState<GalleryState | null>(null);
+  const [prsOpen, setPrsOpen] = useState(false);
+  const [pulls, setPulls] = useState<GithubPull[]>([]);
+  const [prsStatus, setPrsStatus] = useState<"idle" | "loading" | "ready" | "error">("idle");
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const [activeSection, setActiveSection] = useState("");
 
   const copy = siteCopy[language];
   const sc = sectionCopy[language];
+  const prDate = new Intl.DateTimeFormat(copy.locale, { month: "short", year: "numeric" });
   const toggleTheme = () => setTheme((current) => (current === "dark" ? "light" : "dark"));
 
   const projects = useMemo(() => {
@@ -244,6 +260,31 @@ function App() {
         window.location.href = `mailto:${profile.email}`;
       },
     );
+  };
+
+  const loadPrs = () => {
+    const cached = readPrsCache();
+    if (cached) {
+      setPulls(cached);
+      setPrsStatus("ready");
+      return;
+    }
+    setPrsStatus("loading");
+    fetch("https://api.github.com/search/issues?q=repo:gokadzev/Musify+author:elias001011+is:pr+is:merged&per_page=6&sort=created&order=desc")
+      .then((response) => (response.ok ? response.json() : Promise.reject(response.status)))
+      .then((data: { items?: GithubPull[] }) => {
+        const items = data.items ?? [];
+        setPulls(items);
+        setPrsStatus("ready");
+        writeStored(PRS_CACHE, JSON.stringify({ at: Date.now(), pulls: items }));
+      })
+      .catch(() => setPrsStatus("error"));
+  };
+
+  const togglePrs = () => {
+    const open = !prsOpen;
+    setPrsOpen(open);
+    if (open && prsStatus === "idle") loadPrs();
   };
 
   return (
@@ -538,10 +579,40 @@ function App() {
             <div className="oss-note">
               <p>{sc.upstream}</p>
               <div className="row-actions">
-                <a className="btn btn-secondary" href={musify.prs}>{copy.musify.prs}</a>
+                <button type="button" className="btn btn-secondary" aria-expanded={prsOpen} aria-controls="prs-window" onClick={togglePrs}>
+                  {copy.musify.prs}
+                </button>
                 <a className="btn btn-secondary" href={zenify.upstreamSync}>Local Sync</a>
               </div>
             </div>
+            {prsOpen && (
+              <div className="prs-window" id="prs-window" role="region" aria-label={copy.musify.prsTitle}>
+                <div className="terminal-bar mono">
+                  <span className="dots"><i /><i /><i /></span>
+                  gokadzev/Musify · {copy.musify.prsTitle}
+                </div>
+                <div className="prs-body mono">
+                  {prsStatus === "loading" && <p className="terminal-muted">{copy.musify.prsLoading}</p>}
+                  {prsStatus === "error" && <p className="terminal-muted">{copy.musify.prsError}</p>}
+                  {prsStatus === "ready" &&
+                    (pulls.length > 0 ? (
+                      pulls.map((pull) => (
+                        <a key={pull.number} className="prs-item" href={pull.html_url} target="_blank" rel="noreferrer">
+                          <span className="prs-number">#{pull.number}</span>
+                          <span className="prs-title">{pull.title}</span>
+                          {pull.closed_at && <span className="prs-date">{prDate.format(new Date(pull.closed_at))}</span>}
+                        </a>
+                      ))
+                    ) : (
+                      <p className="terminal-muted">{copy.musify.prsError}</p>
+                    ))}
+                  <a className="prs-all" href={musify.prs} target="_blank" rel="noreferrer">
+                    {copy.musify.prsAll}
+                    <ArrowUpRight size={13} />
+                  </a>
+                </div>
+              </div>
+            )}
           </div>
         </section>
 

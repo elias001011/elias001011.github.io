@@ -331,6 +331,11 @@ em { font-style: normal; }
   }
 }
 
+/* No celular o quarto ocupa a tela toda; min-height evita cortar os botões. */
+@media (max-width: 959px) {
+  .hero { min-height: 100vh; min-height: 100svh; }
+}
+
 @media (max-width: 420px) {
   .hero-buttons { gap: 8px; }
   .hero-buttons .btn { flex: 1 1 auto; padding-inline: 16px; }

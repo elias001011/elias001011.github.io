@@ -9,7 +9,7 @@ const csp = [
   "style-src 'self'",
   "img-src 'self' data:",
   "font-src 'self'",
-  "connect-src 'self'",
+  "connect-src 'self' https://api.github.com https://github-contributions-api.jogruber.de",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
