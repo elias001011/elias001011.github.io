@@ -18,6 +18,8 @@ function shot(folder: string, name: string) {
   return shots[`./assets/projects/${folder}/${name}.webp`];
 }
 
+export const realEstateImages = imagesOf("imobiliaria");
+
 export const profileImage = new URL("../me.webp", import.meta.url).href;
 
 export const profile = {
@@ -27,25 +29,27 @@ export const profile = {
   github: "https://github.com/elias001011",
   instagram: "https://www.instagram.com/elias_jrnunes",
   linkedin:
-    "https://www.linkedin.com/in/elias-nunes-b695ba406?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+    "https://www.linkedin.com/in/elias-nunes-b695ba406",
   connectaPortfolio: "https://connectabr.digital/portfolio/",
 };
 
 export const zenify = {
   repo: "https://github.com/elias001011/Zenify",
   download: "https://github.com/elias001011/Zenify/releases/latest",
-  fallbackVersion: "v0.3.0",
+  fallbackVersion: "v0.3.4",
+  upstreamSync: "https://github.com/gokadzev/Musify/pull/1005",
   desktop: {
     home: shot("zenify", "desktop-home"),
-    player: shot("zenify", "desktop-player-lyrics"),
+    player: shot("zenify", "desktop-player"),
+    lyrics: shot("zenify", "desktop-player-lyrics"),
+    queue: shot("zenify", "desktop-queue"),
     sync: shot("zenify", "desktop-local-sync"),
-    library: shot("zenify", "desktop-library"),
+    recap: shot("zenify", "desktop-recap"),
   },
-  mobile: [
-    { key: "playlist", src: shot("zenify", "narrow-playlist") },
-    { key: "player", src: shot("zenify", "narrow-player") },
-    { key: "lyrics", src: shot("zenify", "narrow-lyrics") },
-  ],
+  compact: {
+    player: { src: shot("zenify", "narrow-player"), height: 791 },
+    lyrics: { src: shot("zenify", "narrow-lyrics"), height: 761 },
+  },
 };
 
 export const musify = {
@@ -83,6 +87,7 @@ type ProjectLinks = {
 export const projectLinks: Record<ProjectId, ProjectLinks> = {
   apice: {
     images: imagesOf("apice"),
+    live: "https://apice-ai.netlify.app",
     repo: "https://github.com/elias001011/Apice",
   },
   "musify-desktop-port": {
@@ -183,80 +188,6 @@ const pt = {
     partner: "Sócio da Connecta BR Digital",
     link: "connectabr.digital/portfolio",
     apiceTag: "Projeto · Ápice",
-  },
-  zen: {
-    tagline: "Um app de música calmo e moderno.",
-    lead: "Nasceu de um fork do Musify, o app em que eu já contribuía, e foi além no desktop, no visual e no sync entre aparelhos.",
-    download: "Baixar o Zenify",
-    code: "Código no GitHub",
-    latest: "Versão",
-    platforms: ["Android", "Linux", "Windows"],
-    showcaseAlt: "Tela inicial do Zenify no desktop Linux, com playlists sugeridas e favoritos",
-    shotAlts: {
-      player: "Player do Zenify no desktop, com letras sincronizadas ao lado da capa",
-      sync: "Local Sync do Zenify no desktop: o que sincronizar e os aparelhos pareados na mesma rede",
-    },
-    originTitle: "De contribuidor a criador.",
-    origin: [
-      {
-        date: "Mar 2026",
-        title: "Contribuidor do Musify",
-        text: "{prs} PRs mergeados no app original: Time Machine, páginas de artista, mini player flutuante, importação do Spotify.",
-      },
-      {
-        date: "Mai 2026",
-        title: "Musify Desktop Port",
-        text: "Onde o suporte a Windows e Linux, o Local Sync e o empacotamento nasceram e foram testados.",
-      },
-      {
-        date: "Out 2026",
-        title: "Zenify",
-        text: "Fork com identidade própria, releases para três plataformas e updater embutido.",
-      },
-    ],
-    featuresTitle: "O que o Zenify faz diferente.",
-    features: [
-      {
-        title: "Visual novo",
-        text: "Ilha flutuante, dock e trilho no desktop. Sólido, translúcido ou desfocado, com um fundo dinâmico nas cores dos seus álbuns.",
-      },
-      {
-        title: "Player novo",
-        text: "Letras e fila ao lado da capa, ondas sonoras que seguem a música e uma barra de ações flutuante.",
-      },
-      {
-        title: "Moods e Mix",
-        text: "Mix pessoal, moods e playlists feitas para você, com ajuste de gosto, gêneros excluídos e artistas bloqueados.",
-      },
-      {
-        title: "Local Sync",
-        text: "Android, Linux e Windows sincronizados pelo Wi-Fi, com PIN e criptografia. Sem conta e sem servidor; desligado, nada fica rodando.",
-      },
-      {
-        title: "Downloads de verdade",
-        text: "Uma fila só, três por vez, com progresso, falhas explicadas e tentar de novo.",
-      },
-      {
-        title: "Desktop de primeira",
-        text: "Escala da interface, barra de título nas cores do app, atalhos remapeáveis e pasta de downloads.",
-      },
-    ],
-    phonesTitle: "Do desktop ao celular, o mesmo player.",
-    phones: {
-      playlist: "Playlist",
-      player: "Player",
-      lyrics: "Letras",
-    } as Record<string, string>,
-    marquee: ["Moods", "Mix pessoal", "Local Sync", "Letras sincronizadas", "Ondas sonoras", "Fundo dinâmico", "Gerenciador de downloads", "Atalhos remapeáveis", "Time Machine", "Rádios"],
-    nowPlaying: "Tocando agora",
-    compareTitle: "Musify × Zenify",
-    compare: [
-      ["Plataformas", "Android e builds desktop", "Android, Linux e Windows com .deb, instalador e portátil"],
-      ["Interface", "App bars e navegação inferior", "Ilha flutuante, dock e trilho; fundo dinâmico"],
-      ["Player", "Cartão que vira para as letras", "Letras e fila integradas, ondas sonoras"],
-      ["Aparelhos", "Backup e restauração", "Local Sync pelo Wi-Fi entre os três sistemas"],
-      ["Biblioteca", "Seções", "Filtros, busca própria e seleção múltipla"],
-    ],
   },
   musify: {
     title: "Antes do Zenify, {prs} PRs no Musify.",
@@ -359,80 +290,6 @@ const en: Copy = {
     link: "connectabr.digital/portfolio",
     apiceTag: "Project · Ápice",
   },
-  zen: {
-    tagline: "A calm, modern music app.",
-    lead: "Born as a fork of Musify, the app I was already contributing to, and taken further on desktop, design and syncing between devices.",
-    download: "Download Zenify",
-    code: "Code on GitHub",
-    latest: "Version",
-    platforms: ["Android", "Linux", "Windows"],
-    showcaseAlt: "Zenify home screen on desktop Linux, with suggested playlists and favourites",
-    shotAlts: {
-      player: "Zenify player on desktop, with synced lyrics beside the cover",
-      sync: "Zenify Local Sync on desktop: what to sync and the devices paired on the same network",
-    },
-    originTitle: "From contributor to creator.",
-    origin: [
-      {
-        date: "Mar 2026",
-        title: "Musify contributor",
-        text: "{prs} merged PRs in the original app: Time Machine, artist pages, floating mini player, Spotify import.",
-      },
-      {
-        date: "May 2026",
-        title: "Musify Desktop Port",
-        text: "Where Windows and Linux support, Local Sync and packaging were first built and tested.",
-      },
-      {
-        date: "Oct 2026",
-        title: "Zenify",
-        text: "A fork with its own identity, releases for three platforms and a built-in updater.",
-      },
-    ],
-    featuresTitle: "What Zenify does differently.",
-    features: [
-      {
-        title: "A new look",
-        text: "Floating island, dock and desktop rail. Solid, translucent or blurred, with a dynamic background in your albums' colours.",
-      },
-      {
-        title: "A new player",
-        text: "Lyrics and queue beside the artwork, sound waves that follow the music and a floating action bar.",
-      },
-      {
-        title: "Moods and Mix",
-        text: "A personal Mix, moods and playlists made for you, with taste tuning, excluded genres and blocked artists.",
-      },
-      {
-        title: "Local Sync",
-        text: "Android, Linux and Windows in sync over Wi-Fi, with a PIN and encryption. No account, no server; turned off, nothing runs.",
-      },
-      {
-        title: "Real downloads",
-        text: "One queue, three at a time, with progress, explained failures and retry.",
-      },
-      {
-        title: "First-class desktop",
-        text: "Interface scale, a title bar in the app's colours, remappable shortcuts and a downloads folder.",
-      },
-    ],
-    phonesTitle: "From desktop to phone, the same player.",
-    phones: {
-      playlist: "Playlist",
-      player: "Player",
-      lyrics: "Lyrics",
-    },
-    marquee: ["Moods", "Personal Mix", "Local Sync", "Synced lyrics", "Sound waves", "Dynamic background", "Download manager", "Remappable shortcuts", "Time Machine", "Radios"],
-    nowPlaying: "Now playing",
-    compareTitle: "Musify × Zenify",
-    compare: [
-      ["Platforms", "Android, desktop builds", "Android, Linux and Windows with .deb, installer and portable"],
-      ["Interface", "App bars and bottom navigation", "Floating island, dock and rail; dynamic background"],
-      ["Player", "Flip card with lyrics", "Integrated lyrics and queue, sound waves"],
-      ["Devices", "Backup and restore", "Local Sync over Wi-Fi across all three systems"],
-      ["Library", "Sections", "Filters, its own search and multi-selection"],
-    ],
-  },
   musify: {
     title: "Before Zenify, {prs} PRs in Musify.",
     lead: "An open-source music app for Android with over {stars},000 stars on GitHub.",
@@ -531,80 +388,6 @@ const es: Copy = {
     partner: "Socio de Connecta BR Digital",
     link: "connectabr.digital/portfolio",
     apiceTag: "Proyecto · Ápice",
-  },
-  zen: {
-    tagline: "Una app de música tranquila y moderna.",
-    lead: "Nació como un fork de Musify, la app en la que ya contribuía, y fue más allá en escritorio, diseño y sincronización entre dispositivos.",
-    download: "Descargar Zenify",
-    code: "Código en GitHub",
-    latest: "Versión",
-    platforms: ["Android", "Linux", "Windows"],
-    showcaseAlt: "Pantalla de inicio de Zenify en escritorio Linux, con playlists sugeridas y favoritos",
-    shotAlts: {
-      player: "Reproductor de Zenify en escritorio, con letras sincronizadas junto a la portada",
-      sync: "Local Sync de Zenify en escritorio: qué sincronizar y los dispositivos emparejados en la misma red",
-    },
-    originTitle: "De colaborador a creador.",
-    origin: [
-      {
-        date: "Mar 2026",
-        title: "Colaborador de Musify",
-        text: "{prs} PRs aceptados en la app original: Time Machine, páginas de artista, mini player flotante, importación de Spotify.",
-      },
-      {
-        date: "May 2026",
-        title: "Musify Desktop Port",
-        text: "Donde el soporte para Windows y Linux, Local Sync y el empaquetado nacieron y se probaron.",
-      },
-      {
-        date: "Oct 2026",
-        title: "Zenify",
-        text: "Un fork con identidad propia, releases para tres plataformas y actualizador integrado.",
-      },
-    ],
-    featuresTitle: "Lo que Zenify hace diferente.",
-    features: [
-      {
-        title: "Nuevo diseño",
-        text: "Isla flotante, dock y riel en escritorio. Sólido, translúcido o desenfocado, con un fondo dinámico en los colores de tus álbumes.",
-      },
-      {
-        title: "Nuevo reproductor",
-        text: "Letras y cola junto a la portada, ondas sonoras que siguen la música y una barra de acciones flotante.",
-      },
-      {
-        title: "Moods y Mix",
-        text: "Mix personal, moods y playlists hechas para ti, con ajuste de gustos, géneros excluidos y artistas bloqueados.",
-      },
-      {
-        title: "Local Sync",
-        text: "Android, Linux y Windows sincronizados por Wi-Fi, con PIN y cifrado. Sin cuenta y sin servidor.",
-      },
-      {
-        title: "Descargas de verdad",
-        text: "Una sola cola, tres a la vez, con progreso, fallos explicados y reintentar.",
-      },
-      {
-        title: "Escritorio de primera",
-        text: "Escala de la interfaz, barra de título en los colores de la app, atajos configurables y carpeta de descargas.",
-      },
-    ],
-    phonesTitle: "Del escritorio al celular, el mismo reproductor.",
-    phones: {
-      playlist: "Playlist",
-      player: "Reproductor",
-      lyrics: "Letras",
-    },
-    marquee: ["Moods", "Mix personal", "Local Sync", "Letras sincronizadas", "Ondas sonoras", "Fondo dinámico", "Gestor de descargas", "Atajos configurables", "Time Machine", "Radios"],
-    nowPlaying: "Sonando ahora",
-    compareTitle: "Musify × Zenify",
-    compare: [
-      ["Plataformas", "Android y builds de escritorio", "Android, Linux y Windows con .deb, instalador y portable"],
-      ["Interfaz", "App bars y navegación inferior", "Isla flotante, dock y riel; fondo dinámico"],
-      ["Reproductor", "Tarjeta que gira a las letras", "Letras y cola integradas, ondas sonoras"],
-      ["Dispositivos", "Copia y restauración", "Local Sync por Wi-Fi entre los tres sistemas"],
-      ["Biblioteca", "Secciones", "Filtros, búsqueda propia y selección múltiple"],
-    ],
   },
   musify: {
     title: "Antes de Zenify, {prs} PRs en Musify.",

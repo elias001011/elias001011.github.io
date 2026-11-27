@@ -1,0 +1,773 @@
+{
+ "capturedAt": "2026-11-17",
+ "items": [
+  {
+   "kind": "artist",
+   "title": "Daft Punk",
+   "artist": "Daft Punk",
+   "detail": "65.9M monthly audience"
+  },
+  {
+   "kind": "album",
+   "title": "Random Access Memories",
+   "artist": "Daft Punk",
+   "detail": "2013"
+  },
+  {
+   "kind": "album",
+   "title": "Discovery",
+   "artist": "Daft Punk",
+   "detail": "2001"
+  },
+  {
+   "kind": "song",
+   "title": "Technologic",
+   "artist": "Daft Punk",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Around the World / Harder, Better, Faster, Stronger",
+   "artist": "Daft Punk",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Infinity Repeating (2013 Demo) [feat. Julian Casablancas+The Voidz]",
+   "artist": "Daft Punk, Julian Casablancas & The Voidz",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Something About Us (Love Theme from Interstella 5555)",
+   "artist": "Daft Punk",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Television Rules the Nation / Crescendolls",
+   "artist": "Daft Punk",
+   "detail": ""
+  },
+  {
+   "kind": "album",
+   "title": "Homework (25th Anniversary Edition)",
+   "artist": "Daft Punk",
+   "detail": "1997"
+  },
+  {
+   "kind": "artist",
+   "title": "Tame Impala",
+   "artist": "Tame Impala",
+   "detail": "234M monthly audience"
+  },
+  {
+   "kind": "album",
+   "title": "Currents",
+   "artist": "Tame Impala",
+   "detail": "2015"
+  },
+  {
+   "kind": "song",
+   "title": "'Cause I'm A Man",
+   "artist": "Tame Impala",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Dracula (feat. JENNIE)",
+   "artist": "Tame Impala",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Lost In Yesterday",
+   "artist": "Tame Impala",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Elephant",
+   "artist": "Tame Impala",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Mind Mischief",
+   "artist": "Tame Impala",
+   "detail": ""
+  },
+  {
+   "kind": "album",
+   "title": "The Slow Rush",
+   "artist": "Tame Impala",
+   "detail": "2020"
+  },
+  {
+   "kind": "album",
+   "title": "Lonerism",
+   "artist": "Tame Impala",
+   "detail": "2012"
+  },
+  {
+   "kind": "artist",
+   "title": "Arctic Monkeys",
+   "artist": "Arctic Monkeys",
+   "detail": "118M monthly audience"
+  },
+  {
+   "kind": "album",
+   "title": "AM",
+   "artist": "Arctic Monkeys",
+   "detail": "2013"
+  },
+  {
+   "kind": "song",
+   "title": "Do I Wanna Know?",
+   "artist": "Arctic Monkeys",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Mad Sounds",
+   "artist": "Arctic Monkeys",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Only Ones Who Know",
+   "artist": "Arctic Monkeys",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Secret Door",
+   "artist": "Arctic Monkeys",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Brianstorm",
+   "artist": "Arctic Monkeys",
+   "detail": ""
+  },
+  {
+   "kind": "album",
+   "title": "Whatever People Say I Am, That's What I'm Not",
+   "artist": "Arctic Monkeys",
+   "detail": "2006"
+  },
+  {
+   "kind": "album",
+   "title": "Favourite Worst Nightmare",
+   "artist": "Arctic Monkeys",
+   "detail": "2007"
+  },
+  {
+   "kind": "artist",
+   "title": "The Weeknd",
+   "artist": "The Weeknd",
+   "detail": "239M monthly audience"
+  },
+  {
+   "kind": "song",
+   "title": "House Of Balloons / Glass Table Girls",
+   "artist": "The Weeknd",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Moth To A Flame",
+   "artist": "Swedish House Mafia & The Weeknd",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "I Feel It Coming (feat. Daft Punk)",
+   "artist": "The Weeknd",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Is There Someone Else?",
+   "artist": "The Weeknd",
+   "detail": ""
+  },
+  {
+   "kind": "album",
+   "title": "Die For You",
+   "artist": "The Weeknd",
+   "detail": "2023"
+  },
+  {
+   "kind": "album",
+   "title": "Starboy",
+   "artist": "The Weeknd",
+   "detail": "2016"
+  },
+  {
+   "kind": "album",
+   "title": "The Idol Episode 1 (Music from the HBO Original Series)",
+   "artist": "The Weeknd, MIKE DEAN & Lily-Rose Depp",
+   "detail": "2023"
+  },
+  {
+   "kind": "artist",
+   "title": "Radiohead",
+   "artist": "Radiohead",
+   "detail": "205M monthly audience"
+  },
+  {
+   "kind": "album",
+   "title": "In Rainbows",
+   "artist": "Radiohead",
+   "detail": "2007"
+  },
+  {
+   "kind": "album",
+   "title": "OK Computer",
+   "artist": "Radiohead",
+   "detail": "1997"
+  },
+  {
+   "kind": "song",
+   "title": "Where I End and You Begin",
+   "artist": "Radiohead",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Paranoid Android",
+   "artist": "Radiohead",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Karma Police",
+   "artist": "Radiohead",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Idioteque",
+   "artist": "Radiohead",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Knives Out",
+   "artist": "Radiohead",
+   "detail": ""
+  },
+  {
+   "kind": "album",
+   "title": "Kid A",
+   "artist": "Radiohead",
+   "detail": "2000"
+  },
+  {
+   "kind": "artist",
+   "title": "Gorillaz",
+   "artist": "Gorillaz",
+   "detail": "79.3M monthly audience"
+  },
+  {
+   "kind": "album",
+   "title": "Gorillaz",
+   "artist": "Gorillaz",
+   "detail": "2001"
+  },
+  {
+   "kind": "album",
+   "title": "Demon Days",
+   "artist": "Gorillaz",
+   "detail": "2005"
+  },
+  {
+   "kind": "album",
+   "title": "The Mountain",
+   "artist": "Gorillaz",
+   "detail": "2026"
+  },
+  {
+   "kind": "song",
+   "title": "Stylo (feat. Bobby Womack & Mos Def)",
+   "artist": "Gorillaz",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Humility (feat. George Benson)",
+   "artist": "Gorillaz",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Tranz",
+   "artist": "Gorillaz",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Andromeda (feat. DRAM)",
+   "artist": "Gorillaz",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Plastic Beach (feat. Mick Jones & Paul Simonon)",
+   "artist": "Gorillaz",
+   "detail": ""
+  },
+  {
+   "kind": "artist",
+   "title": "Djavan",
+   "artist": "Djavan",
+   "detail": "5.5M monthly audience"
+  },
+  {
+   "kind": "album",
+   "title": "Djavan (Ao Vivo)",
+   "artist": "Djavan",
+   "detail": "1999"
+  },
+  {
+   "kind": "song",
+   "title": "Um Amor Puro (Ao Vivo)",
+   "artist": "Djavan",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Se...",
+   "artist": "Djavan",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Açaí",
+   "artist": "Djavan",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "A Ilha",
+   "artist": "Djavan",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Correnteza",
+   "artist": "Djavan",
+   "detail": ""
+  },
+  {
+   "kind": "album",
+   "title": "Djavan",
+   "artist": "Djavan",
+   "detail": "1989"
+  },
+  {
+   "kind": "album",
+   "title": "Melhores Djavan",
+   "artist": "Djavan",
+   "detail": "2020"
+  },
+  {
+   "kind": "song",
+   "title": "Me Chamando de Paixão (Sonsual)",
+   "artist": "Jorge Ben Jor",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Engenho de dentro",
+   "artist": "Jorge Ben Jor",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Zumbi",
+   "artist": "Jorge Ben Jor",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Bom Dia, Boa Tarde, Boa Noite",
+   "artist": "Jorge Ben Jor",
+   "detail": ""
+  },
+  {
+   "kind": "artist",
+   "title": "Tim Maia",
+   "artist": "Tim Maia",
+   "detail": "5.54M monthly audience"
+  },
+  {
+   "kind": "album",
+   "title": "O Descobridor Dos Sete Mares",
+   "artist": "Tim Maia",
+   "detail": "1983"
+  },
+  {
+   "kind": "album",
+   "title": "Racional (Vol 1)",
+   "artist": "Tim Maia",
+   "detail": "1975"
+  },
+  {
+   "kind": "album",
+   "title": "Tim Maia 1973",
+   "artist": "Tim Maia",
+   "detail": "1973"
+  },
+  {
+   "kind": "song",
+   "title": "Me Dê Motivo",
+   "artist": "Tim Maia",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Bom-Senso",
+   "artist": "Tim Maia",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Sossego",
+   "artist": "Tim Maia",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Telefone",
+   "artist": "Tim Maia",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Gostava Tanto De Você",
+   "artist": "Tim Maia",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Tempo Perdido",
+   "artist": "Legião Urbana",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Daniel Na Cova dos Leões",
+   "artist": "Legião Urbana",
+   "detail": ""
+  },
+  {
+   "kind": "artist",
+   "title": "Marisa Monte",
+   "artist": "Marisa Monte",
+   "detail": "10.6M monthly audience"
+  },
+  {
+   "kind": "album",
+   "title": "Verde Anil Amarelo Cor de Rosa e Carvão",
+   "artist": "Marisa Monte",
+   "detail": "1994"
+  },
+  {
+   "kind": "song",
+   "title": "O Que Me Importa (2004 Digital Remaster)",
+   "artist": "Marisa Monte",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Ainda Bem (Ao Vivo)",
+   "artist": "Marisa Monte",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "De Mais Ninguém",
+   "artist": "Marisa Monte",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Segue o Seco",
+   "artist": "Marisa Monte",
+   "detail": ""
+  },
+  {
+   "kind": "album",
+   "title": "Mais",
+   "artist": "Marisa Monte",
+   "detail": "1991"
+  },
+  {
+   "kind": "album",
+   "title": "Infinito Particular",
+   "artist": "Marisa Monte",
+   "detail": "2006"
+  },
+  {
+   "kind": "artist",
+   "title": "Racionais MC's",
+   "artist": "Racionais MC's",
+   "detail": "13.4M monthly audience"
+  },
+  {
+   "kind": "album",
+   "title": "Nada Como um Dia Após o Outro Dia, Vol. 1 & 2",
+   "artist": "Racionais Mc's",
+   "detail": "2002"
+  },
+  {
+   "kind": "album",
+   "title": "Sobrevivendo no Inferno",
+   "artist": "Racionais Mc's",
+   "detail": "1997"
+  },
+  {
+   "kind": "song",
+   "title": "Capítulo 4, Versículo 3",
+   "artist": "Racionais Mc's",
+   "detail": ""
+  },
+  {
+   "kind": "album",
+   "title": "1000 Trutas 1000 Tretas (Ao Vivo)",
+   "artist": "Racionais Mc's",
+   "detail": "2006"
+  },
+  {
+   "kind": "song",
+   "title": "Eu Sou 157",
+   "artist": "Racionais Mc's",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Tô Ouvindo Alguém Me Chamar",
+   "artist": "Racionais Mc's",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "A Vida É Desafio",
+   "artist": "Racionais Mc's & Afro-X",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Negro Drama",
+   "artist": "Racionais Mc's",
+   "detail": ""
+  },
+  {
+   "kind": "artist",
+   "title": "Kendrick Lamar",
+   "artist": "Kendrick Lamar",
+   "detail": "134M monthly audience"
+  },
+  {
+   "kind": "album",
+   "title": "GNX",
+   "artist": "Kendrick Lamar",
+   "detail": "2024"
+  },
+  {
+   "kind": "song",
+   "title": "Alright",
+   "artist": "Kendrick Lamar",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "King Kunta",
+   "artist": "Kendrick Lamar",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "PRIDE.",
+   "artist": "Kendrick Lamar",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "The Recipe (Bonus Track) (feat. Dr. Dre)",
+   "artist": "Kendrick Lamar",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Swimming Pools (Drank)",
+   "artist": "Kendrick Lamar",
+   "detail": ""
+  },
+  {
+   "kind": "album",
+   "title": "DAMN.",
+   "artist": "Kendrick Lamar",
+   "detail": "2017"
+  },
+  {
+   "kind": "album",
+   "title": "Mr. Morale & The Big Steppers",
+   "artist": "Kendrick Lamar",
+   "detail": "2022"
+  },
+  {
+   "kind": "artist",
+   "title": "Billie Eilish",
+   "artist": "Billie Eilish",
+   "detail": "331M monthly audience"
+  },
+  {
+   "kind": "album",
+   "title": "HIT ME HARD AND SOFT",
+   "artist": "Billie Eilish",
+   "detail": "2024"
+  },
+  {
+   "kind": "song",
+   "title": "goodbye",
+   "artist": "Billie Eilish",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "bury a friend",
+   "artist": "Billie Eilish",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "all the good girls go to hell",
+   "artist": "Billie Eilish",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "WILDFLOWER",
+   "artist": "Billie Eilish",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "listen before i go",
+   "artist": "Billie Eilish",
+   "detail": ""
+  },
+  {
+   "kind": "album",
+   "title": "Happier Than Ever",
+   "artist": "Billie Eilish",
+   "detail": "2021"
+  },
+  {
+   "kind": "album",
+   "title": "WHEN WE ALL FALL ASLEEP, WHERE DO WE GO?",
+   "artist": "Billie Eilish",
+   "detail": "2019"
+  },
+  {
+   "kind": "artist",
+   "title": "Queen",
+   "artist": "Queen",
+   "detail": "118M monthly audience"
+  },
+  {
+   "kind": "album",
+   "title": "Greatest Hits",
+   "artist": "Queen",
+   "detail": "1981"
+  },
+  {
+   "kind": "song",
+   "title": "Who Wants to Live Forever",
+   "artist": "Queen",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Don't Stop Me Now (With Long-Lost Guitars)",
+   "artist": "Queen",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Friends Will Be Friends (Live At Wembley Stadium / July 1986)",
+   "artist": "Queen",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "We Will Rock You (Movie Mix)",
+   "artist": "Queen",
+   "detail": ""
+  },
+  {
+   "kind": "album",
+   "title": "Greatest Hits II",
+   "artist": "Queen",
+   "detail": "1991"
+  },
+  {
+   "kind": "album",
+   "title": "Queen Budapest",
+   "artist": "Queen",
+   "detail": "2026"
+  },
+  {
+   "kind": "artist",
+   "title": "PINK FLOYD",
+   "artist": "PINK FLOYD",
+   "detail": "31.4M monthly audience"
+  },
+  {
+   "kind": "album",
+   "title": "The Dark Side of the Moon",
+   "artist": "Pink Floyd",
+   "detail": "1973"
+  },
+  {
+   "kind": "song",
+   "title": "Comfortably Numb",
+   "artist": "Pink Floyd",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Another Brick in the Wall, Pt. 2",
+   "artist": "Pink Floyd",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Pigs (Three Different Ones)",
+   "artist": "Pink Floyd",
+   "detail": ""
+  },
+  {
+   "kind": "song",
+   "title": "Wish You Were Here",
+   "artist": "Pink Floyd",
+   "detail": ""
+  },
+  {
+   "kind": "album",
+   "title": "Animals 50",
+   "artist": "Pink Floyd",
+   "detail": "2027"
+  },
+  {
+   "kind": "album",
+   "title": "Sheep (Original Radio Edit)",
+   "artist": "Pink Floyd",
+   "detail": "2026"
+  }
+ ]
+}
